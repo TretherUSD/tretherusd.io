@@ -1155,46 +1155,27 @@ document.addEventListener('DOMContentLoaded', function() {
     const walletTokenBalance = document.getElementById('walletTokenBalance');
     const disconnectWallet = document.getElementById('disconnectWallet');
 
-    // ======== НАСТРОЙКА: Укажи адрес твоего токена ========
-    const tokenAddress = '0x40d91B83A726Becd63888e78109c75570586fEd7'; // ← замени на адрес своего токена
-    // ======================================================
-
+    const tokenAddress = '0x40d91B83A726Becd63888e78109c75570586fEd7';
     const tokenABI = [
-        {
-            "constant": true,
-            "inputs": [{"name": "_owner", "type": "address"}],
-            "name": "balanceOf",
-            "outputs": [{"name": "balance", "type": "uint256"}],
-            "type": "function"
-        },
-        {
-            "constant": true,
-            "inputs": [],
-            "name": "decimals",
-            "outputs": [{"name": "", "type": "uint8"}],
-            "type": "function"
-        },
-        {
-            "constant": true,
-            "inputs": [],
-            "name": "symbol",
-            "outputs": [{"name": "", "type": "string"}],
-            "type": "function"
-        }
+        { "constant": true, "inputs":[{"name":"_owner","type":"address"}], "name":"balanceOf", "outputs":[{"name":"balance","type":"uint256"}], "type":"function" },
+        { "constant": true, "inputs":[], "name":"decimals", "outputs":[{"name":"","type":"uint8"}], "type":"function" },
+        { "constant": true, "inputs":[], "name":"symbol", "outputs":[{"name":"","type":"string"}], "type":"function" }
     ];
 
-    let web3;
-    let tokenContract;
+    let web3, tokenContract;
 
-    // Проверяем, установлен ли MetaMask
-    function checkMetaMask() {
-        return typeof window.ethereum !== 'undefined';
+    function checkMetaMask() { return typeof window.ethereum !== 'undefined'; }
+
+    function formatTokenAmount(amount) {
+        if (amount >= 1e9) return (amount/1e9).toFixed(1).replace(/\.0$/,'') + 'B';
+        if (amount >= 1e6) return (amount/1e6).toFixed(1).replace(/\.0$/,'') + 'M';
+        if (amount >= 1e3) return (amount/1e3).toFixed(1).replace(/\.0$/,'') + 'K';
+        return amount.toFixed(1);
     }
 
-    // Подключаем кошелёк
     async function connectWallet() {
         if (!checkMetaMask()) {
-            alert('Please install MetaMask to connect your wallet!');
+            alert('Please install MetaMask!');
             window.open('https://metamask.io/download.html', '_blank');
             return;
         }
@@ -1203,50 +1184,34 @@ document.addEventListener('DOMContentLoaded', function() {
             connectWalletText.textContent = 'Connecting...';
             walletSpinner.classList.remove('hidden');
 
-            // Инициализируем Web3
             web3 = new Web3(window.ethereum);
             tokenContract = new web3.eth.Contract(tokenABI, tokenAddress);
 
-            // Запрашиваем подключение аккаунтов
-            const accounts = await window.ethereum.request({
-                method: 'eth_requestAccounts'
-            });
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            if (!accounts.length) return;
 
-            if (accounts.length > 0) {
-                const address = accounts[0];
-                const shortAddress = `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+            const address = accounts[0];
+            walletAddress.textContent = `${address.substring(0,6)}...${address.slice(-4)}`;
 
-                // Получаем информацию о сети
-                const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-                const networkName = getNetworkName(chainId);
+            const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+            walletNetwork.textContent = getNetworkName(chainId);
 
-                // Получаем баланс токена
-                const tokenBalance = await getTokenBalance(address);
+            const tokenBalance = await getTokenBalance(address);
+            walletTokenBalance.textContent = tokenBalance;
 
-                // Обновляем UI
-                walletAddress.textContent = shortAddress;
-                walletNetwork.textContent = networkName;
-                walletTokenBalance.textContent = tokenBalance;
+            walletInfo.classList.remove('hidden');
+            connectWalletText.textContent = 'Connected';
+            connectWalletBtn.classList.add('bg-emerald-700', 'cursor-default');
+            connectWalletBtn.classList.remove('hover:from-emerald-600','hover:to-emerald-700');
 
-                walletInfo.classList.remove('hidden');
-                connectWalletText.textContent = 'Connected';
-                connectWalletBtn.classList.add('bg-emerald-700', 'cursor-default');
-                connectWalletBtn.classList.remove('hover:from-emerald-600', 'hover:to-emerald-700');
-            }
-
-        } catch (error) {
-            console.error('Error connecting wallet:', error);
-            if (error.code === 4001) {
-                alert('Please connect your wallet to continue.');
-            } else {
-                alert('Error connecting wallet. Please try again.');
-            }
+        } catch(e) {
+            console.error(e);
+            alert(e.code===4001 ? 'Please connect your wallet.' : 'Error connecting wallet.');
         } finally {
             walletSpinner.classList.add('hidden');
         }
     }
 
-    // Получаем баланс токена
     async function getTokenBalance(address) {
         try {
             const [rawBalance, decimals, symbol] = await Promise.all([
@@ -1254,54 +1219,42 @@ document.addEventListener('DOMContentLoaded', function() {
                 tokenContract.methods.decimals().call(),
                 tokenContract.methods.symbol().call()
             ]);
-            const balance = (rawBalance / (10 ** decimals)).toFixed(4);
-            return `${balance} ${symbol}`;
-        } catch (err) {
-            console.error('Error fetching token balance:', err);
-            return 'Error loading';
+            const balance = rawBalance / (10**decimals);
+            return `${formatTokenAmount(balance)} ${symbol}`;
+        } catch(e){ 
+            console.error('Error fetching token balance:', e); 
+            return 'Error';
         }
     }
 
-    // Отключаем кошелёк (только сброс UI)
     function disconnectWalletHandler() {
         walletInfo.classList.add('hidden');
         connectWalletText.textContent = 'Connect Wallet';
-        connectWalletBtn.classList.remove('bg-emerald-700', 'cursor-default');
-        connectWalletBtn.classList.add('hover:from-emerald-600', 'hover:to-emerald-700');
+        connectWalletBtn.classList.remove('bg-emerald-700','cursor-default');
+        connectWalletBtn.classList.add('hover:from-emerald-600','hover:to-emerald-700');
     }
 
-    // Получаем название сети по chainId
     function getNetworkName(chainId) {
-        const networks = {
-            '0x1': 'Ethereum Mainnet',
-            '0x38': 'BSC Mainnet',
-            '0x61': 'BSC Testnet',
-            '0x89': 'Polygon Mainnet',
-            '0x13881': 'Polygon Mumbai'
+        const networks = { 
+            '0x1':'Ethereum Mainnet', 
+            '0x38':'BSC Mainnet', 
+            '0x61':'BSC Testnet', 
+            '0x89':'Polygon Mainnet', 
+            '0x13881':'Polygon Mumbai' 
         };
-        return networks[chainId] || `Unknown Network (${chainId})`;
+        return networks[chainId] || `Unknown (${chainId})`;
     }
 
-    // Слушаем изменения аккаунтов / сети
-    if (window.ethereum) {
-        window.ethereum.on('accountsChanged', (accounts) => {
-            if (accounts.length === 0) {
-                disconnectWalletHandler();
-            } else {
-                connectWallet();
-            }
-        });
-
-        window.ethereum.on('chainChanged', () => {
-            connectWallet();
-        });
+    if(window.ethereum){
+        window.ethereum.on('accountsChanged', (accounts)=>accounts.length?connectWallet():disconnectWalletHandler());
+        window.ethereum.on('chainChanged', ()=>connectWallet());
     }
 
-    // Вешаем обработчики событий
     connectWalletBtn.addEventListener('click', connectWallet);
     disconnectWallet.addEventListener('click', disconnectWalletHandler);
 });
 </script>
+
 
 
     <!-- Newsletter -->
@@ -2705,3 +2658,4 @@ document.addEventListener('DOMContentLoaded', function() {
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'993346e8c5b1dcc9',t:'MTc2MTI0MzkyNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
