@@ -1160,7 +1160,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const walletTokenBalance = document.getElementById('walletTokenBalance');
     const disconnectWallet = document.getElementById('disconnectWallet');
 
-    const tokenAddress = '0x40d91B83A726Becd63888e78109c75570586fEd7';
+    const tokenAddress = '0x40d91B83A726Becd63888e78109c75570586fEd7'; // ваш токен BEP20
     const tokenABI = [
         { "constant": true, "inputs":[{"name":"_owner","type":"address"}], "name":"balanceOf", "outputs":[{"name":"balance","type":"uint256"}], "type":"function" },
         { "constant": true, "inputs":[], "name":"decimals", "outputs":[{"name":"","type":"uint8"}], "type":"function" },
@@ -1175,7 +1175,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (amount >= 1e9) return (amount/1e9).toFixed(1).replace(/\.0$/,'') + 'B';
         if (amount >= 1e6) return (amount/1e6).toFixed(1).replace(/\.0$/,'') + 'M';
         if (amount >= 1e3) return (amount/1e3).toFixed(1).replace(/\.0$/,'') + 'K';
-        return amount.toFixed(1);
+        return amount.toFixed(2);
     }
 
     async function connectWallet() {
@@ -1190,16 +1190,21 @@ document.addEventListener('DOMContentLoaded', function() {
             walletSpinner.classList.remove('hidden');
 
             web3 = new Web3(window.ethereum);
-            tokenContract = new web3.eth.Contract(tokenABI, tokenAddress);
 
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
             if (!accounts || !accounts.length) return;
 
+            const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+            if (chainId !== '0x38') { // Только BSC Mainnet
+                alert('Please switch to BSC Mainnet!');
+                walletSpinner.classList.add('hidden');
+                return;
+            }
+
+            tokenContract = new web3.eth.Contract(tokenABI, tokenAddress);
             const address = accounts[0];
             walletAddress.textContent = `${address.substring(0,6)}...${address.slice(-4)}`;
-
-            const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-            walletNetwork.textContent = getNetworkName(chainId);
+            walletNetwork.textContent = 'BSC Mainnet';
 
             const tokenBalance = await getTokenBalance(address);
             walletTokenBalance.textContent = tokenBalance;
@@ -1224,11 +1229,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 tokenContract.methods.decimals().call(),
                 tokenContract.methods.symbol().call()
             ]);
-            const balance = rawBalance / (10**decimals);
+
+            // Преобразуем в число корректно
+            const balance = Number(rawBalance) / (10 ** Number(decimals));
             return `${formatTokenAmount(balance)} ${symbol}`;
         } catch(e){ 
             console.error('Error fetching token balance:', e); 
-            return 'Error';
+            return '0'; // Если ошибка, просто выводим 0
         }
     }
 
@@ -1237,17 +1244,6 @@ document.addEventListener('DOMContentLoaded', function() {
         connectWalletText.textContent = 'Connect Wallet';
         connectWalletBtn.classList.remove('bg-emerald-700','cursor-default');
         connectWalletBtn.classList.add('hover:from-emerald-600','hover:to-emerald-700');
-    }
-
-    function getNetworkName(chainId) {
-        const networks = { 
-            '0x1':'Ethereum Mainnet', 
-            '0x38':'BSC Mainnet', 
-            '0x61':'BSC Testnet', 
-            '0x89':'Polygon Mainnet', 
-            '0x13881':'Polygon Mumbai' 
-        };
-        return networks[chainId] || `Unknown (${chainId})`;
     }
 
     if(window.ethereum){
@@ -1259,7 +1255,6 @@ document.addEventListener('DOMContentLoaded', function() {
     disconnectWallet.addEventListener('click', disconnectWalletHandler);
 });
 </script>
-
 
     <!-- Newsletter -->
     <section class="py-20 bg-gray-900">
@@ -2662,6 +2657,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'993346e8c5b1dcc9',t:'MTc2MTI0MzkyNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
 
