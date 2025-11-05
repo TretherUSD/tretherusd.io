@@ -1099,7 +1099,9 @@
 
             <div class="flex flex-wrap gap-4">
     <!-- Wallet Info -->
-    <div id="walletInfo" class="hidden mt-4 p-4 bg-white rounded-lg border border-emerald-200 flex-1 min-w-[280px]">
+<div class="flex gap-4">
+    <!-- Wallet Info -->
+    <div id="walletInfo" class="hidden mt-4 p-4 bg-white rounded-lg border border-emerald-200 w-[300px]">
         <div class="flex items-center justify-between mb-2">
             <span class="text-sm font-medium text-gray-700">Connected Wallet:</span>
             <button id="disconnectWallet" class="text-xs text-red-500 hover:text-red-700">Disconnect</button>
@@ -1112,24 +1114,24 @@
     </div>
 
     <!-- Swap USDT → USTD -->
-    <div id="swapSection" class="card-hover bg-gray-50 rounded-2xl p-8 transition-all duration-300 flex-1 min-w-[280px]">
-        <div class="text-center mb-6">
+    <div id="swapSection" class="card-hover bg-gray-50 rounded-2xl p-6 w-[300px]">
+        <div class="text-center mb-4">
             <div class="w-16 h-16 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
                 </svg>
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">Swap USDT → USTD</h3>
-            <p class="text-gray-600">Convert your USDT to USTD tokens instantly</p>
+            <h3 class="text-xl font-semibold text-gray-900 mb-1">Swap USDT → USTD</h3>
+            <p class="text-gray-600 text-sm">Convert your USDT to USTD tokens</p>
         </div>
 
-        <div class="space-y-4">
+        <div class="space-y-3">
             <div class="text-sm text-gray-600">Your USDT Balance: <span id="usdtBalance">0</span></div>
             <input type="number" id="swapAmount" placeholder="Amount of USDT" class="border p-2 rounded w-full">
-            <button id="swapButton" class="w-full bg-emerald-500 text-white py-3 rounded-lg hover:bg-emerald-600">
+            <button id="swapButton" class="w-full bg-emerald-500 text-white py-2 rounded-lg hover:bg-emerald-600">
                 Swap
             </button>
-            <div id="swapStatus" class="text-sm text-gray-700 mt-2"></div>
+            <div id="swapStatus" class="text-sm text-gray-700 mt-1"></div>
         </div>
     </div>
 </div>
@@ -1248,7 +1250,7 @@ document.addEventListener('DOMContentLoaded', function() {
     async function initSwap() {
         if(!web3) web3 = new Web3(window.ethereum);
 
-        const usdtAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7'; // USDT
+        const usdtAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7';
         const usdtABI = [
             { "constant":true, "inputs":[{"name":"_owner","type":"address"}], "name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}], "type":"function" },
             { "constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"","type":"bool"}],"type":"function" },
@@ -1281,7 +1283,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('swapStatus').textContent = 'Swapping...';
 
             try {
-                const swapReceiver = '0xТВОЙ_CONTRACT_АДРЕС'; // куда отправляем USDT
+                const swapReceiver = '0xТВОЙ_CONTRACT_АДРЕС';
                 await usdtContract.methods.transfer(swapReceiver, amountWei).send({ from });
                 document.getElementById('swapStatus').textContent = `Swapped ${amount} USDT → USTD successfully!`;
                 document.getElementById('swapAmount').value = '';
@@ -2700,5 +2702,6 @@ document.addEventListener('DOMContentLoaded', function() {
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'993346e8c5b1dcc9',t:'MTc2MTI0MzkyNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
