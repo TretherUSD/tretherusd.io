@@ -171,38 +171,55 @@
 </head>
 <body class="bg-gray-50">
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full bg-white/95 backdrop-blur-sm shadow-lg z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center">
-                    <img src="https://i.imgur.com/UEb8T7F.png" alt="Trether USD" class="h-10 w-10 logo-float">
-                    <span class="ml-3 text-xl font-bold text-gray-900">Trether USD</span>
-                </div>
-                
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#home" class="text-gray-900 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">USTD</a>
-                        <a href="#why" class="text-gray-900 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Why?</a>
-                        <a href="#tokenomics" class="text-gray-900 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Tokenomics</a>
-                        <a href="#utility" class="text-gray-900 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Utilities</a>
-                        <a href="#early-access" class="text-gray-900 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Early Access</a>
-                        <a href="#buy" class="text-gray-900 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Buy</a>
-                        <button class="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-4 py-2 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all glow-pulse">
-                            Trether Swap
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="md:hidden">
-                    <button id="mobile-menu-btn" class="text-gray-900 hover:text-emerald-600">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
+<nav id="navbar" class="fixed top-0 w-full bg-white shadow-md z-50 transition-transform duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <div class="flex items-center">
+                <img src="https://i.imgur.com/UEb8T7F.png" alt="Trether USD" class="h-10 w-10 logo-float">
+                <span class="ml-3 text-xl font-bold text-gray-900">Trether USD</span>
+            </div>
+            
+            <div class="hidden md:block">
+                <div class="ml-10 flex items-baseline space-x-4">
+                    <a href="#home" class="text-gray-900 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">USTD</a>
+                    <a href="#why" class="text-gray-900 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Why?</a>
+                    <a href="#tokenomics" class="text-gray-900 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Tokenomics</a>
+                    <a href="#utility" class="text-gray-900 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Utilities</a>
+                    <a href="#early-access" class="text-gray-900 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Early Access</a>
+                    <a href="#buy" class="text-gray-900 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Buy</a>
+                    <button class="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-4 py-2 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all glow-pulse">
+                        Trether Swap
                     </button>
                 </div>
             </div>
+            
+            <div class="md:hidden">
+                <button id="mobile-menu-btn" class="text-gray-900 hover:text-emerald-600">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
         </div>
-        
+    </div>
+</nav>
+
+<script>
+let lastScrollY = window.scrollY;
+const navbar = document.getElementById('navbar');
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > lastScrollY && window.scrollY > 50) {
+        // Скролл вниз – прячем панель
+        navbar.style.transform = 'translateY(-100%)';
+    } else {
+        // Скролл вверх – показываем панель
+        navbar.style.transform = 'translateY(0)';
+    }
+    lastScrollY = window.scrollY;
+});
+</script>
+
         <!-- Mobile menu -->
         <div id="mobile-menu" class="mobile-menu md:hidden fixed inset-y-0 left-0 w-64 bg-white shadow-xl">
             <div class="p-4">
