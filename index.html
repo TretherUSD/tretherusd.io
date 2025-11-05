@@ -1085,83 +1085,62 @@
                 </button>
                 
                 <!-- Wallet Info -->
-            <section class="py-10">
-  <div class="container mx-auto px-4">
-    <div class="grid md:grid-cols-2 gap-8 items-start">
-
-      <!-- ===== Блок Crypto Wallet ===== -->
-      <div class="flex flex-col gap-4">
-        <!-- Кнопка Connect Wallet -->
-        <button id="connectWalletBtn" 
-                class="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600
-                       text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-all">
-          <span id="connectWalletText">Connect Wallet</span>
-          <svg id="walletSpinner" class="hidden animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-          </svg>
-        </button>
-
-        <!-- Информация о кошельке -->
-        <div id="walletInfo" class="hidden mt-2 p-4 bg-white rounded-lg border border-emerald-200">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-sm font-medium text-gray-700">Connected Wallet:</span>
-            <button id="disconnectWallet" class="text-xs text-red-500 hover:text-red-700">Disconnect</button>
-          </div>
-          <div class="text-sm text-gray-600 space-y-1">
-            <div>Address: <span id="walletAddress" class="font-mono"></span></div>
-            <div>Network: <span id="walletNetwork" class="font-medium"></span></div>
-            <div>Token Balance: <span id="walletTokenBalance" class="font-medium text-emerald-600"></span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ===== Блок Bank Card ===== -->
-      <div class="card-hover bg-gray-50 rounded-2xl p-8 transition-all duration-300">
-        <div class="text-center mb-6">
-          <div class="w-16 h-16 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold text-gray-900 mb-2">Bank Card</h3>
-          <p class="text-gray-600">Purchase directly with bank card</p>
-        </div>
-
-        <div class="space-y-4">
-          <div class="flex items-start">
-            <div class="w-8 h-8 bg-emerald-500 text-white rounded-full flex items-center justify-center text-sm font-semibold mr-3">1</div>
-            <div>
-              <h4 class="font-medium text-gray-900">Enter Card Details</h4>
-              <p class="text-gray-600 text-sm">Secure processing through verified partners</p>
-            </div>
-          </div>
-
-          <div class="flex items-start">
-            <div class="w-8 h-8 bg-emerald-500 text-white rounded-full flex items-center justify-center text-sm font-semibold mr-3">2</div>
-            <div>
-              <h4 class="font-medium text-gray-900">Complete Verification</h4>
-              <p class="text-gray-600 text-sm">Quick KYC procedure for compliance requirements</p>
-            </div>
-          </div>
-
-          <div class="flex items-start">
-            <div class="w-8 h-8 bg-emerald-500 text-white rounded-full flex items-center justify-center text-sm font-semibold mr-3">3</div>
-            <div>
-              <h4 class="font-medium text-gray-900">Receive Tokens</h4>
-              <p class="text-gray-600 text-sm">USDT will be sent to your wallet automatically</p>
-            </div>
-          </div>
-        </div>
-
-        <button class="w-full mt-6 bg-gray-400 border-2 border-gray-400 text-white py-3 rounded-lg font-semibold cursor-not-allowed" disabled>
-          In Development
-        </button>
-      </div>
-
+              <div id="walletInfo" class="hidden mt-4 p-4 bg-white rounded-lg border border-emerald-200">
+    <div class="flex items-center justify-between mb-2">
+        <span class="text-sm font-medium text-gray-700">Connected Wallet:</span>
+        <button id="disconnectWallet" class="text-xs text-red-500 hover:text-red-700">Disconnect</button>
     </div>
-  </div>
+    <div class="text-sm text-gray-600">
+        <div>Address: <span id="walletAddress" class="font-mono"></span></div>
+        <div>Network: <span id="walletNetwork" class="font-medium"></span></div>
+        <div>Token Balance: <span id="walletTokenBalance" class="font-medium text-emerald-600"></span></div>
+    </div>
+</div>
+
+            
+            <div class="card-hover bg-gray-50 rounded-2xl p-8 transition-all duration-300">
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Bank Card</h3>
+                    <p class="text-gray-600">Purchase directly with bank card</p>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-8 h-8 bg-emerald-500 text-white rounded-full flex items-center justify-center text-sm font-semibold mr-3">1</div>
+                        <div>
+                            <h4 class="font-medium text-gray-900">Enter Card Details</h4>
+                            <p class="text-gray-600 text-sm">Secure processing through verified partners</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-8 h-8 bg-emerald-500 text-white rounded-full flex items-center justify-center text-sm font-semibold mr-3">2</div>
+                        <div>
+                            <h4 class="font-medium text-gray-900">Complete Verification</h4>
+                            <p class="text-gray-600 text-sm">Quick KYC procedure for compliance requirements</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-8 h-8 bg-emerald-500 text-white rounded-full flex items-center justify-center text-sm font-semibold mr-3">3</div>
+                        <div>
+                            <h4 class="font-medium text-gray-900">Receive Tokens</h4>
+                            <p class="text-gray-600 text-sm">USTD will be sent to your wallet automatically</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="w-full mt-6 bg-gray-400 border-2 border-gray-400 text-white py-3 rounded-lg font-semibold cursor-not-allowed" disabled>
+                    In Development
+                </button>
+            </div>
+        </div>
+    </div>
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
@@ -1176,27 +1155,46 @@ document.addEventListener('DOMContentLoaded', function() {
     const walletTokenBalance = document.getElementById('walletTokenBalance');
     const disconnectWallet = document.getElementById('disconnectWallet');
 
-    const tokenAddress = '0x40d91B83A726Becd63888e78109c75570586fEd7';
+    // ======== НАСТРОЙКА: Укажи адрес твоего токена ========
+    const tokenAddress = '0x40d91B83A726Becd63888e78109c75570586fEd7'; // ← замени на адрес своего токена
+    // ======================================================
+
     const tokenABI = [
-        { "constant": true, "inputs":[{"name":"_owner","type":"address"}], "name":"balanceOf", "outputs":[{"name":"balance","type":"uint256"}], "type":"function" },
-        { "constant": true, "inputs":[], "name":"decimals", "outputs":[{"name":"","type":"uint8"}], "type":"function" },
-        { "constant": true, "inputs":[], "name":"symbol", "outputs":[{"name":"","type":"string"}], "type":"function" }
+        {
+            "constant": true,
+            "inputs": [{"name": "_owner", "type": "address"}],
+            "name": "balanceOf",
+            "outputs": [{"name": "balance", "type": "uint256"}],
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "decimals",
+            "outputs": [{"name": "", "type": "uint8"}],
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "symbol",
+            "outputs": [{"name": "", "type": "string"}],
+            "type": "function"
+        }
     ];
 
-    let web3, tokenContract;
+    let web3;
+    let tokenContract;
 
-    function checkMetaMask() { return typeof window.ethereum !== 'undefined'; }
-
-    function formatNumber(num) {
-        if (num >= 1e9) return (num/1e9).toFixed(1).replace(/\.0$/,'') + 'B';
-        if (num >= 1e6) return (num/1e6).toFixed(1).replace(/\.0$/,'') + 'M';
-        if (num >= 1e3) return (num/1e3).toFixed(1).replace(/\.0$/,'') + 'K';
-        return num.toString();
+    // Проверяем, установлен ли MetaMask
+    function checkMetaMask() {
+        return typeof window.ethereum !== 'undefined';
     }
 
+    // Подключаем кошелёк
     async function connectWallet() {
         if (!checkMetaMask()) {
-            alert('Please install MetaMask!');
+            alert('Please install MetaMask to connect your wallet!');
             window.open('https://metamask.io/download.html', '_blank');
             return;
         }
@@ -1205,34 +1203,50 @@ document.addEventListener('DOMContentLoaded', function() {
             connectWalletText.textContent = 'Connecting...';
             walletSpinner.classList.remove('hidden');
 
+            // Инициализируем Web3
             web3 = new Web3(window.ethereum);
             tokenContract = new web3.eth.Contract(tokenABI, tokenAddress);
 
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            if (!accounts.length) return;
+            // Запрашиваем подключение аккаунтов
+            const accounts = await window.ethereum.request({
+                method: 'eth_requestAccounts'
+            });
 
-            const address = accounts[0];
-            walletAddress.textContent = `${address.substring(0,6)}...${address.slice(-4)}`;
+            if (accounts.length > 0) {
+                const address = accounts[0];
+                const shortAddress = `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
 
-            const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-            walletNetwork.textContent = getNetworkName(chainId);
+                // Получаем информацию о сети
+                const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+                const networkName = getNetworkName(chainId);
 
-            const tokenBalance = await getTokenBalance(address);
-            walletTokenBalance.textContent = tokenBalance;
+                // Получаем баланс токена
+                const tokenBalance = await getTokenBalance(address);
 
-            walletInfo.classList.remove('hidden');
-            connectWalletText.textContent = 'Connected';
-            connectWalletBtn.classList.add('bg-emerald-700', 'cursor-default');
-            connectWalletBtn.classList.remove('hover:from-emerald-600','hover:to-emerald-700');
+                // Обновляем UI
+                walletAddress.textContent = shortAddress;
+                walletNetwork.textContent = networkName;
+                walletTokenBalance.textContent = tokenBalance;
 
-        } catch(e) {
-            console.error(e);
-            alert(e.code===4001 ? 'Please connect your wallet.' : 'Error connecting wallet.');
+                walletInfo.classList.remove('hidden');
+                connectWalletText.textContent = 'Connected';
+                connectWalletBtn.classList.add('bg-emerald-700', 'cursor-default');
+                connectWalletBtn.classList.remove('hover:from-emerald-600', 'hover:to-emerald-700');
+            }
+
+        } catch (error) {
+            console.error('Error connecting wallet:', error);
+            if (error.code === 4001) {
+                alert('Please connect your wallet to continue.');
+            } else {
+                alert('Error connecting wallet. Please try again.');
+            }
         } finally {
             walletSpinner.classList.add('hidden');
         }
     }
 
+    // Получаем баланс токена
     async function getTokenBalance(address) {
         try {
             const [rawBalance, decimals, symbol] = await Promise.all([
@@ -1240,41 +1254,55 @@ document.addEventListener('DOMContentLoaded', function() {
                 tokenContract.methods.decimals().call(),
                 tokenContract.methods.symbol().call()
             ]);
-            const balance = rawBalance / (10**decimals);
-            return `${formatNumber(balance)} ${symbol}`;
-        } catch(e){ 
-            console.error('Error fetching token balance:', e); 
-            return 'Error';
+            const balance = (rawBalance / (10 ** decimals)).toFixed(4);
+            return `${balance} ${symbol}`;
+        } catch (err) {
+            console.error('Error fetching token balance:', err);
+            return 'Error loading';
         }
     }
 
+    // Отключаем кошелёк (только сброс UI)
     function disconnectWalletHandler() {
         walletInfo.classList.add('hidden');
         connectWalletText.textContent = 'Connect Wallet';
-        connectWalletBtn.classList.remove('bg-emerald-700','cursor-default');
-        connectWalletBtn.classList.add('hover:from-emerald-600','hover:to-emerald-700');
+        connectWalletBtn.classList.remove('bg-emerald-700', 'cursor-default');
+        connectWalletBtn.classList.add('hover:from-emerald-600', 'hover:to-emerald-700');
     }
 
+    // Получаем название сети по chainId
     function getNetworkName(chainId) {
-        const networks = { 
-            '0x1':'Ethereum Mainnet', 
-            '0x38':'BSC Mainnet', 
-            '0x61':'BSC Testnet', 
-            '0x89':'Polygon Mainnet', 
-            '0x13881':'Polygon Mumbai' 
+        const networks = {
+            '0x1': 'Ethereum Mainnet',
+            '0x38': 'BSC Mainnet',
+            '0x61': 'BSC Testnet',
+            '0x89': 'Polygon Mainnet',
+            '0x13881': 'Polygon Mumbai'
         };
-        return networks[chainId] || `Unknown (${chainId})`;
+        return networks[chainId] || `Unknown Network (${chainId})`;
     }
 
-    if(window.ethereum){
-        window.ethereum.on('accountsChanged', (accounts)=>accounts.length?connectWallet():disconnectWalletHandler());
-        window.ethereum.on('chainChanged', ()=>connectWallet());
+    // Слушаем изменения аккаунтов / сети
+    if (window.ethereum) {
+        window.ethereum.on('accountsChanged', (accounts) => {
+            if (accounts.length === 0) {
+                disconnectWalletHandler();
+            } else {
+                connectWallet();
+            }
+        });
+
+        window.ethereum.on('chainChanged', () => {
+            connectWallet();
+        });
     }
 
+    // Вешаем обработчики событий
     connectWalletBtn.addEventListener('click', connectWallet);
     disconnectWallet.addEventListener('click', disconnectWalletHandler);
 });
 </script>
+
 
     <!-- Newsletter -->
     <section class="py-20 bg-gray-900">
@@ -2677,5 +2705,3 @@ document.addEventListener('DOMContentLoaded', function() {
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'993346e8c5b1dcc9',t:'MTc2MTI0MzkyNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
-
-
