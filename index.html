@@ -1088,116 +1088,6 @@
   </button>
 </div>
 
-<!-- Wallet Selection Modal -->
-<div id="walletModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-  <div class="bg-white rounded-lg p-6 w-80">
-    <h3 class="text-lg font-semibold mb-4">Select Wallet</h3>
-    <button id="metaMaskBtn" class="w-full mb-3 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900">MetaMask</button>
-    <button id="walletConnectBtn" class="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">WalletConnect</button>
-    <button id="closeWalletModal" class="mt-4 w-full py-2 bg-gray-200 rounded-lg hover:bg-gray-300">Cancel</button>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@walletconnect/web3-provider@1.7.8/dist/umd/index.min.js"></script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const connectWalletBtn = document.getElementById('connectWalletBtn');
-    const walletModal = document.getElementById('walletModal');
-    const metaMaskBtn = document.getElementById('metaMaskBtn');
-    const walletConnectBtn = document.getElementById('walletConnectBtn');
-    const closeWalletModal = document.getElementById('closeWalletModal');
-    const connectWalletText = document.getElementById('connectWalletText');
-    const walletSpinner = document.getElementById('walletSpinner');
-    const walletInfo = document.getElementById('walletInfo');
-    const walletAddress = document.getElementById('walletAddress');
-    const walletNetwork = document.getElementById('walletNetwork');
-    const disconnectWallet = document.getElementById('disconnectWallet');
-
-    let web3, provider;
-
-    function checkMetaMask() { return typeof window.ethereum !== 'undefined'; }
-
-    function getNetworkName(chainId) {
-        const networks = { 
-            '0x1':'Ethereum Mainnet', 
-            '0x38':'BSC Mainnet', 
-            '0x61':'BSC Testnet', 
-            '0x89':'Polygon Mainnet', 
-            '0x13881':'Polygon Mumbai' 
-        };
-        return networks[chainId] || `Unknown (${chainId})`;
-    }
-
-    async function connect(selectedProvider) {
-        try {
-            connectWalletText.textContent = 'Connecting...';
-            walletSpinner.classList.remove('hidden');
-
-            web3 = new Web3(selectedProvider);
-
-            const accounts = await selectedProvider.request({ method: 'eth_requestAccounts' });
-            if(!accounts.length) return;
-
-            const address = accounts[0];
-            walletAddress.textContent = `${address.substring(0,6)}...${address.slice(-4)}`;
-
-            const chainId = await selectedProvider.request({ method: 'eth_chainId' });
-            walletNetwork.textContent = getNetworkName(chainId);
-
-            walletInfo.classList.remove('hidden');
-            connectWalletText.textContent = 'Connected';
-            connectWalletBtn.classList.add('bg-emerald-700', 'cursor-default');
-            connectWalletBtn.classList.remove('hover:from-emerald-600','hover:to-emerald-700');
-            walletModal.classList.add('hidden');
-
-        } catch(e) {
-            console.error(e);
-            alert(e.code===4001 ? 'Please connect your wallet.' : 'Error connecting wallet.');
-        } finally {
-            walletSpinner.classList.add('hidden');
-        }
-    }
-
-    connectWalletBtn.addEventListener('click', () => {
-        walletModal.classList.remove('hidden');
-    });
-
-    closeWalletModal.addEventListener('click', () => {
-        walletModal.classList.add('hidden');
-    });
-
-    // MetaMask connection
-    metaMaskBtn.addEventListener('click', async () => {
-        if(!checkMetaMask()) {
-            alert('Please install MetaMask!');
-            window.open('https://metamask.io/download.html', '_blank');
-            return;
-        }
-        provider = window.ethereum;
-        await connect(provider);
-    });
-
-    // WalletConnect connection
-    walletConnectBtn.addEventListener('click', async () => {
-        provider = new WalletConnectProvider.default({
-            rpc: { 1: "https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID" }
-        });
-        await provider.enable();
-        await connect(provider);
-    });
-
-    disconnectWallet.addEventListener('click', () => {
-        walletInfo.classList.add('hidden');
-        connectWalletText.textContent = 'Connect Wallet';
-        connectWalletBtn.classList.remove('bg-emerald-700','cursor-default');
-        connectWalletBtn.classList.add('hover:from-emerald-600','hover:to-emerald-700');
-        if(provider && provider.close) provider.close();
-    });
-});
-</script>
-
                 <!-- Wallet Info -->
                 <div id="walletInfo" class="hidden mt-4 p-4 bg-white rounded-lg border border-emerald-200">
                     <div class="flex items-center justify-between mb-2">
@@ -2772,6 +2662,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'993346e8c5b1dcc9',t:'MTc2MTI0MzkyNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
 
