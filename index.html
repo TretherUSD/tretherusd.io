@@ -1085,17 +1085,18 @@
                 </button>
                 
                 <!-- Wallet Info -->
-                <div id="walletInfo" class="hidden mt-4 p-4 bg-white rounded-lg border border-emerald-200">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm font-medium text-gray-700">Connected Wallet:</span>
-                        <button id="disconnectWallet" class="text-xs text-red-500 hover:text-red-700">Disconnect</button>
-                    </div>
-                    <div class="text-sm text-gray-600">
-                        <div>Address: <span id="walletAddress" class="font-mono"></span></div>
-                        <div>Network: <span id="walletNetwork" class="font-medium"></span></div>
-                    </div>
-                </div>
-            </div>
+              <div id="walletInfo" class="hidden mt-4 p-4 bg-white rounded-lg border border-emerald-200">
+    <div class="flex items-center justify-between mb-2">
+        <span class="text-sm font-medium text-gray-700">Connected Wallet:</span>
+        <button id="disconnectWallet" class="text-xs text-red-500 hover:text-red-700">Disconnect</button>
+    </div>
+    <div class="text-sm text-gray-600">
+        <div>Address: <span id="walletAddress" class="font-mono"></span></div>
+        <div>Network: <span id="walletNetwork" class="font-medium"></span></div>
+        <div>Token Balance: <span id="walletTokenBalance" class="font-medium text-emerald-600"></span></div>
+    </div>
+</div>
+
             
             <div class="card-hover bg-gray-50 rounded-2xl p-8 transition-all duration-300">
                 <div class="text-center mb-6">
@@ -1142,6 +1143,7 @@
     </div>
 </section>
 
+<script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const connectWalletBtn = document.getElementById('connectWalletBtn');
@@ -1150,14 +1152,46 @@ document.addEventListener('DOMContentLoaded', function() {
     const walletInfo = document.getElementById('walletInfo');
     const walletAddress = document.getElementById('walletAddress');
     const walletNetwork = document.getElementById('walletNetwork');
+    const walletTokenBalance = document.getElementById('walletTokenBalance');
     const disconnectWallet = document.getElementById('disconnectWallet');
+
+    // ======== НАСТРОЙКА: Укажи адрес твоего токена ========
+    const tokenAddress = '0x40d91B83A726Becd63888e78109c75570586fEd7'; // ← замени на адрес своего токена
+    // ======================================================
+
+    const tokenABI = [
+        {
+            "constant": true,
+            "inputs": [{"name": "_owner", "type": "address"}],
+            "name": "balanceOf",
+            "outputs": [{"name": "balance", "type": "uint256"}],
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "decimals",
+            "outputs": [{"name": "", "type": "uint8"}],
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "symbol",
+            "outputs": [{"name": "", "type": "string"}],
+            "type": "function"
+        }
+    ];
+
+    let web3;
+    let tokenContract;
 
     // Проверяем, установлен ли MetaMask
     function checkMetaMask() {
         return typeof window.ethereum !== 'undefined';
     }
 
-    // Подключаем кошелек
+    // Подключаем кошелёк
     async function connectWallet() {
         if (!checkMetaMask()) {
             alert('Please install MetaMask to connect your wallet!');
@@ -1166,9 +1200,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         try {
-            // Показываем спиннер
             connectWalletText.textContent = 'Connecting...';
             walletSpinner.classList.remove('hidden');
+
+            // Инициализируем Web3
+            web3 = new Web3(window.ethereum);
+            tokenContract = new web3.eth.Contract(tokenABI, tokenAddress);
 
             // Запрашиваем подключение аккаунтов
             const accounts = await window.ethereum.request({
@@ -1178,14 +1215,19 @@ document.addEventListener('DOMContentLoaded', function() {
             if (accounts.length > 0) {
                 const address = accounts[0];
                 const shortAddress = `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
-                
+
                 // Получаем информацию о сети
                 const chainId = await window.ethereum.request({ method: 'eth_chainId' });
                 const networkName = getNetworkName(chainId);
 
+                // Получаем баланс токена
+                const tokenBalance = await getTokenBalance(address);
+
                 // Обновляем UI
                 walletAddress.textContent = shortAddress;
                 walletNetwork.textContent = networkName;
+                walletTokenBalance.textContent = tokenBalance;
+
                 walletInfo.classList.remove('hidden');
                 connectWalletText.textContent = 'Connected';
                 connectWalletBtn.classList.add('bg-emerald-700', 'cursor-default');
@@ -1204,7 +1246,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Отключаем кошелек
+    // Получаем баланс токена
+    async function getTokenBalance(address) {
+        try {
+            const [rawBalance, decimals, symbol] = await Promise.all([
+                tokenContract.methods.balanceOf(address).call(),
+                tokenContract.methods.decimals().call(),
+                tokenContract.methods.symbol().call()
+            ]);
+            const balance = (rawBalance / (10 ** decimals)).toFixed(4);
+            return `${balance} ${symbol}`;
+        } catch (err) {
+            console.error('Error fetching token balance:', err);
+            return 'Error loading';
+        }
+    }
+
+    // Отключаем кошелёк (только сброс UI)
     function disconnectWalletHandler() {
         walletInfo.classList.add('hidden');
         connectWalletText.textContent = 'Connect Wallet';
@@ -1224,7 +1282,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return networks[chainId] || `Unknown Network (${chainId})`;
     }
 
-    // Слушаем изменения аккаунтов
+    // Слушаем изменения аккаунтов / сети
     if (window.ethereum) {
         window.ethereum.on('accountsChanged', (accounts) => {
             if (accounts.length === 0) {
@@ -1244,6 +1302,7 @@ document.addEventListener('DOMContentLoaded', function() {
     disconnectWallet.addEventListener('click', disconnectWalletHandler);
 });
 </script>
+
 
     <!-- Newsletter -->
     <section class="py-20 bg-gray-900">
@@ -2646,6 +2705,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'993346e8c5b1dcc9',t:'MTc2MTI0MzkyNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
 
