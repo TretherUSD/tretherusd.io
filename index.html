@@ -203,35 +203,35 @@
             </div>
         </div>
     </div>
+</nav>
 
-    <!-- Мобильное меню -->
-    <div id="mobile-menu" class="fixed inset-y-0 left-0 w-64 bg-white shadow-xl z-50 top-0 transform -translate-x-full transition-transform duration-300 md:hidden">
-        <div class="p-4 h-full flex flex-col">
-            <div class="flex items-center justify-between mb-8">
-                <div class="flex items-center">
-                    <img src="https://i.imgur.com/UEb8T7F.png" alt="Trether USD" class="h-8 w-8">
-                    <span class="ml-2 text-lg font-bold text-gray-900">Trether USD</span>
-                </div>
-                <button id="mobile-menu-close" class="text-gray-900">
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
+<!-- Вынесенное мобильное меню сразу в body -->
+<div id="mobile-menu" class="fixed inset-y-0 left-0 w-64 bg-white shadow-xl z-50 transform -translate-x-full transition-transform duration-300 md:hidden">
+    <div class="p-4 h-full flex flex-col">
+        <div class="flex items-center justify-between mb-8">
+            <div class="flex items-center">
+                <img src="https://i.imgur.com/UEb8T7F.png" alt="Trether USD" class="h-8 w-8">
+                <span class="ml-2 text-lg font-bold text-gray-900">Trether USD</span>
             </div>
-            <div class="flex-grow space-y-4">
-                <a href="#home" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">USTD</a>
-                <a href="#why" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">Why?</a>
-                <a href="#tokenomics" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">Tokenomics</a>
-                <a href="#utility" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">Utilities</a>
-                <a href="#early-access" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">Early Access</a>
-                <a href="#buy" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">Buy</a>
-                <button class="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-4 py-2 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all mt-4">
-                    Trether Swap
-                </button>
-            </div>
+            <button id="mobile-menu-close" class="text-gray-900">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div class="flex-grow space-y-4">
+            <a href="#home" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">USTD</a>
+            <a href="#why" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">Why?</a>
+            <a href="#tokenomics" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">Tokenomics</a>
+            <a href="#utility" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">Utilities</a>
+            <a href="#early-access" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">Early Access</a>
+            <a href="#buy" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">Buy</a>
+            <button class="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-4 py-2 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all mt-4">
+                Trether Swap
+            </button>
         </div>
     </div>
-</nav>
+</div>
 
 <script>
     // Скролл navbar
@@ -260,6 +260,7 @@
         mobileMenu.classList.add('-translate-x-full'); // скрыть меню
     });
 </script>
+
 
 
     <!-- Hero Section -->
@@ -2686,6 +2687,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'993346e8c5b1dcc9',t:'MTc2MTI0MzkyNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
 
