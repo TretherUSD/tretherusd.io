@@ -171,97 +171,66 @@
 </head>
 <body class="bg-gray-50">
     <!-- Navigation -->
-<nav id="navbar" class="fixed top-0 left-0 w-full bg-white shadow-md z-40 transition-transform duration-300">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
-            <!-- Логотип -->
-            <div class="flex items-center">
-                <img src="https://i.imgur.com/UEb8T7F.png" alt="Trether USD" class="h-8 w-8">
-                <span class="ml-2 text-lg font-bold text-gray-900">Trether USD</span>
-            </div>
-
-            <!-- Меню для ПК -->
-            <div class="hidden md:flex space-x-6">
-                <a href="#home" class="text-gray-900 hover:text-emerald-600 transition-colors">USTD</a>
-                <a href="#why" class="text-gray-900 hover:text-emerald-600 transition-colors">Why?</a>
-                <a href="#tokenomics" class="text-gray-900 hover:text-emerald-600 transition-colors">Tokenomics</a>
-                <a href="#utility" class="text-gray-900 hover:text-emerald-600 transition-colors">Utilities</a>
-                <a href="#early-access" class="text-gray-900 hover:text-emerald-600 transition-colors">Early Access</a>
-                <a href="#buy" class="text-gray-900 hover:text-emerald-600 transition-colors">Buy</a>
-                <button class="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-4 py-2 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all">
-                    Trether Swap
-                </button>
-            </div>
-
-            <!-- Кнопка мобильного меню -->
-            <div class="md:hidden">
-                <button id="mobile-menu-btn" class="text-gray-900 hover:text-emerald-600">
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
+    <nav class="fixed top-0 w-full bg-white/95 backdrop-blur-sm shadow-lg z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <img src="https://i.imgur.com/UEb8T7F.png" alt="Trether USD" class="h-10 w-10 logo-float">
+                    <span class="ml-3 text-xl font-bold text-gray-900">Trether USD</span>
+                </div>
+                
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#home" class="text-gray-900 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">USTD</a>
+                        <a href="#why" class="text-gray-900 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Why?</a>
+                        <a href="#tokenomics" class="text-gray-900 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Tokenomics</a>
+                        <a href="#utility" class="text-gray-900 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Utilities</a>
+                        <a href="#early-access" class="text-gray-900 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Early Access</a>
+                        <a href="#buy" class="text-gray-900 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Buy</a>
+                        <button class="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-4 py-2 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all glow-pulse">
+                            Trether Swap
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-900 hover:text-emerald-600">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-</nav>
-
-<!-- Вынесенное мобильное меню сразу в body -->
-<div id="mobile-menu" class="fixed inset-y-0 left-0 w-64 bg-white shadow-xl z-50 transform -translate-x-full transition-transform duration-300 md:hidden">
-    <div class="p-4 h-full flex flex-col">
-        <div class="flex items-center justify-between mb-8">
-            <div class="flex items-center">
-                <img src="https://i.imgur.com/UEb8T7F.png" alt="Trether USD" class="h-8 w-8">
-                <span class="ml-2 text-lg font-bold text-gray-900">Trether USD</span>
+        
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="mobile-menu md:hidden fixed inset-y-0 left-0 w-64 bg-white shadow-xl">
+            <div class="p-4">
+                <div class="flex items-center justify-between mb-8">
+                    <div class="flex items-center">
+                        <img src="https://i.imgur.com/UEb8T7F.png" alt="Trether USD" class="h-8 w-8">
+                        <span class="ml-2 text-lg font-bold text-gray-900">Trether USD</span>
+                    </div>
+                    <button id="mobile-menu-close" class="text-gray-900">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="space-y-4">
+                    <a href="#home" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">USTD</a>
+                    <a href="#why" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">Why?</a>
+                    <a href="#tokenomics" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">Tokenomics</a>
+                    <a href="#utility" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">Utilities</a>
+                    <a href="#early-access" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">Early Access</a>
+                    <a href="#buy" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">Buy</a>
+                    <button class="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-4 py-2 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all mt-4">
+                        Trether Swap
+                    </button>
+                </div>
             </div>
-            <button id="mobile-menu-close" class="text-gray-900">
-                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
         </div>
-        <div class="flex-grow space-y-4">
-            <a href="#home" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">USTD</a>
-            <a href="#why" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">Why?</a>
-            <a href="#tokenomics" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">Tokenomics</a>
-            <a href="#utility" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">Utilities</a>
-            <a href="#early-access" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">Early Access</a>
-            <a href="#buy" class="block text-gray-900 hover:text-emerald-600 py-2 transition-colors">Buy</a>
-            <button class="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-4 py-2 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all mt-4">
-                Trether Swap
-            </button>
-        </div>
-    </div>
-</div>
-
-<script>
-    // Скролл navbar
-    let lastScrollY = window.scrollY;
-    const navbar = document.getElementById('navbar');
-
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > lastScrollY && window.scrollY > 50) {
-            navbar.style.transform = 'translateY(-100%)';
-        } else {
-            navbar.style.transform = 'translateY(0)';
-        }
-        lastScrollY = window.scrollY;
-    });
-
-    // Открытие/закрытие мобильного меню
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const mobileMenuClose = document.getElementById('mobile-menu-close');
-
-    mobileMenuBtn.addEventListener('click', () => {
-        mobileMenu.classList.remove('-translate-x-full'); // показать меню
-    });
-
-    mobileMenuClose.addEventListener('click', () => {
-        mobileMenu.classList.add('-translate-x-full'); // скрыть меню
-    });
-</script>
-
-
+    </nav>
 
     <!-- Hero Section -->
     <section id="home" class="relative min-h-screen gradient-bg flex items-center justify-center overflow-hidden">
@@ -293,17 +262,12 @@
                     <div class="flex flex-col sm:flex-row gap-4 mb-8">
                         <button class="bg-white text-emerald-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 glow-pulse">
                             Buy USTD
-                       </button>
-<a
-    href="https://tretherusd.notion.site/Trether-USD-USTD-A-Stable-Digital-Asset-for-the-Next-Era-of-Decentralized-Finance-White-Paper-2a5c47d902e2804983edc43eb56333a3"
-    target="_blank"
-    class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-emerald-600 transition-all transform hover:scale-105"
->
-    White Paper
-</a>
-</div>
-</div>
-
+                        </button>
+                        <button class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-emerald-600 transition-all transform hover:scale-105">
+                            White Paper
+                        </button>
+                    </div>
+                </div>
                 
                 <!-- Right side - Logo, Contracts and Chart -->
                 <div class="slide-in-right flex flex-col items-center space-y-8">
@@ -1173,7 +1137,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener('DOMContentLoaded', function() {
     const connectWalletBtn = document.getElementById('connectWalletBtn');
     const connectWalletText = document.getElementById('connectWalletText');
     const walletSpinner = document.getElementById('walletSpinner');
@@ -1192,9 +1156,19 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     let web3, tokenContract;
 
+    function checkMetaMask() { return typeof window.ethereum !== 'undefined'; }
+
+    function formatTokenAmount(amount) {
+        if (amount >= 1e9) return (amount/1e9).toFixed(1).replace(/\.0$/,'') + 'B';
+        if (amount >= 1e6) return (amount/1e6).toFixed(1).replace(/\.0$/,'') + 'M';
+        if (amount >= 1e3) return (amount/1e3).toFixed(1).replace(/\.0$/,'') + 'K';
+        return amount.toFixed(2);
+    }
+
     async function connectWallet() {
-        if (typeof window.ethereum === 'undefined') {
-            alert('Please install MetaMask or use Trust Wallet browser!');
+        if (!checkMetaMask()) {
+            alert('Please install MetaMask!');
+            window.open('https://metamask.io/download.html', '_blank');
             return;
         }
 
@@ -1204,30 +1178,14 @@ document.addEventListener('DOMContentLoaded', async function() {
 
             web3 = new Web3(window.ethereum);
 
-            // Пытаемся подключить кошелек
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
             if (!accounts || !accounts.length) return;
 
-            // Автоматическое переключение на BSC
-            const bscChainId = '0x38'; // BSC Mainnet
-            try {
-                await window.ethereum.request({ method: 'wallet_switchEthereumChain', params:[{ chainId: bscChainId }] });
-            } catch(switchError) {
-                // Если сети нет, добавляем
-                if (switchError.code === 4902) {
-                    await window.ethereum.request({
-                        method: 'wallet_addEthereumChain',
-                        params: [{
-                            chainId: bscChainId,
-                            chainName: 'BSC Mainnet',
-                            rpcUrls: ['https://bsc-dataseed.binance.org/'],
-                            nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
-                            blockExplorerUrls: ['https://bscscan.com']
-                        }]
-                    });
-                } else {
-                    throw switchError;
-                }
+            const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+            if (chainId !== '0x38') { // Только BSC Mainnet
+                alert('Please switch to BSC Mainnet!');
+                walletSpinner.classList.add('hidden');
+                return;
             }
 
             tokenContract = new web3.eth.Contract(tokenABI, tokenAddress);
@@ -1258,12 +1216,14 @@ document.addEventListener('DOMContentLoaded', async function() {
                 tokenContract.methods.decimals().call(),
                 tokenContract.methods.symbol().call()
             ]);
+
+            // Преобразуем в число корректно
             const balance = Number(rawBalance) / (10 ** Number(decimals));
-            return balance >= 1e9 ? (balance/1e9).toFixed(1)+'B' :
-                   balance >= 1e6 ? (balance/1e6).toFixed(1)+'M' :
-                   balance >= 1e3 ? (balance/1e3).toFixed(1)+'K' :
-                   balance.toFixed(2) + ' ' + symbol;
-        } catch(e){ console.error(e); return '0'; }
+            return `${formatTokenAmount(balance)} ${symbol}`;
+        } catch(e){ 
+            console.error('Error fetching token balance:', e); 
+            return '0'; // Если ошибка, просто выводим 0
+        }
     }
 
     function disconnectWalletHandler() {
@@ -1279,9 +1239,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     connectWalletBtn.addEventListener('click', connectWallet);
-
-    // Автоматическое подключение при загрузке
-    connectWallet();
     disconnectWallet.addEventListener('click', disconnectWalletHandler);
 });
 </script>
@@ -2687,3 +2644,11 @@ document.addEventListener('DOMContentLoaded', async function() {
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'993346e8c5b1dcc9',t:'MTc2MTI0MzkyNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
+
+
+
+
+
+
+
