@@ -2381,152 +2381,171 @@ document.addEventListener('DOMContentLoaded', function() {
                 `
             },
             swap: {
-              title: 'Trether Swap Demo',
-content: `
-<div class="grid lg:grid-cols-2 gap-8">
-    
-    <!-- LEFT -->
-    <div>
-        <h3 class="text-xl font-semibold text-gray-900 mb-4">Swap Interface</h3>
-        <div class="bg-gray-50 rounded-xl p-6">
-            <div class="space-y-4">
-
-                <!-- FROM -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">From</label>
-                    <div class="flex items-center space-x-3 p-4 bg-white rounded-lg border">
-                        <img src="https://8upload.com/image/3a060e1c301815ab/USTD.png" class="w-8 h-8">
-                        <div class="flex-1">
-                            <input type="number" id="swap-from-amount" value="1000" class="w-full text-lg font-semibold bg-transparent border-none outline-none">
-                            <div class="text-sm text-gray-500">USTD</div>
+                title: 'Trether Swap Demo',
+                content: `
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-4">Swap Interface</h3>
+                            <div class="bg-gray-50 rounded-xl p-6">
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">From</label>
+                                        <div class="flex items-center space-x-3 p-4 bg-white rounded-lg border">
+                                            <img src="https://8upload.com/image/3a060e1c301815ab/USTD.png" alt="USTD" class="w-8 h-8">
+                                            <div class="flex-1">
+                                                <input type="number" id="swap-from-amount" value="1000" class="w-full text-lg font-semibold bg-transparent border-none outline-none">
+                                                <div class="text-sm text-gray-500">USTD</div>
+                                            </div>
+                                            <div class="text-right">
+                                                <div class="text-sm text-gray-500">Balance</div>
+                                                <div class="font-medium">5,000 USTD</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex justify-center">
+                                        <button class="p-2 bg-emerald-500 text-white rounded-full hover:bg-emerald-600 transition-colors" onclick="swapTokens()">
+                                            <svg class="w-5 h-5 transform rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">To</label>
+                                        <div class="flex items-center space-x-3 p-4 bg-white rounded-lg border">
+                                            <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
+                                                <span class="text-white font-bold text-sm">₮</span>
+                                            </div>
+                                            <div class="flex-1">
+                                                <input type="number" id="swap-to-amount" value="1000" readonly class="w-full text-lg font-semibold bg-transparent border-none outline-none">
+                                                <div class="text-sm text-gray-500">USDT</div>
+                                            </div>
+                                            <div class="text-right">
+                                                <div class="text-sm text-gray-500">Balance</div>
+                                                <div class="font-medium">2,500 USDT</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-blue-50 rounded-lg p-4">
+                                        <div class="flex justify-between text-sm mb-2">
+                                            <span class="text-gray-600">Exchange Rate</span>
+                                            <span class="font-medium">1 USTD = 1.0000 USDT</span>
+                                        </div>
+                                        <div class="flex justify-between text-sm mb-2">
+                                            <span class="text-gray-600">Network Fee</span>
+                                            <span class="font-medium">$2.50</span>
+                                        </div>
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-gray-600">Slippage</span>
+                                            <span class="font-medium">0.1%</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <button class="w-full bg-emerald-500 text-white py-4 rounded-lg font-semibold hover:bg-emerald-600 transition-colors" onclick="executeSwap()">
+                                        Swap Tokens
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="text-right">
-                            <div class="text-sm text-gray-500">Balance</div>
-                            <div class="font-medium">5,000 USTD</div>
+                        
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-4">Available Trading Pairs</h3>
+                            <div class="space-y-3 mb-6">
+                                <div class="flex items-center justify-between p-4 bg-emerald-50 rounded-lg border-2 border-emerald-200">
+                                    <div class="flex items-center">
+                                        <div class="flex -space-x-2 mr-3">
+                                            <img src="https://8upload.com/image/3a060e1c301815ab/USTD.png" alt="USTD" class="w-8 h-8 rounded-full border-2 border-white">
+                                            <div class="w-8 h-8 bg-yellow-500 rounded-full border-2 border-white flex items-center justify-center">
+                                                <span class="text-white font-bold text-xs">₮</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="font-semibold">USTD/USDT</div>
+                                            <div class="text-sm text-gray-500">24h Volume: $125K</div>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="font-bold text-emerald-600">$1.0000</div>
+                                        <div class="text-sm text-emerald-500">+0.02%</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between p-4 bg-gray-100 rounded-lg opacity-60">
+                                    <div class="flex items-center">
+                                        <div class="flex -space-x-2 mr-3">
+                                            <img src="https://8upload.com/image/3a060e1c301815ab/USTD.png" alt="USTD" class="w-8 h-8 rounded-full border-2 border-white">
+                                            <div class="w-8 h-8 bg-yellow-400 rounded-full border-2 border-white flex items-center justify-center">
+                                                <span class="text-white font-bold text-xs">B</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="font-semibold text-gray-600">USTD/BNB</div>
+                                            <div class="text-sm text-gray-400">Coming Soon</div>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="font-bold text-gray-400">-</div>
+                                        <div class="text-sm text-gray-400">-</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between p-4 bg-gray-100 rounded-lg opacity-60">
+                                    <div class="flex items-center">
+                                        <div class="flex -space-x-2 mr-3">
+                                            <img src="https://8upload.com/image/3a060e1c301815ab/USTD.png" alt="USTD" class="w-8 h-8 rounded-full border-2 border-white">
+                                            <div class="w-8 h-8 bg-blue-500 rounded-full border-2 border-white flex items-center justify-center">
+                                                <span class="text-white font-bold text-xs">E</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="font-semibold text-gray-600">USTD/ETH</div>
+                                            <div class="text-sm text-gray-400">Coming Soon</div>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="font-bold text-gray-400">-</div>
+                                        <div class="text-sm text-gray-400">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-xl p-6 text-white">
+                                <h4 class="text-lg font-semibold mb-4">Swap Features</h4>
+                                <div class="space-y-3">
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>Instant swaps with minimal slippage</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>Non-custodial and secure</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>Low fees (0.25% + network)</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>Multi-chain support</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                `
+            }
+        };
 
-                <!-- SWITCH -->
-                <div class="flex justify-center">
-                    <button class="p-2 bg-emerald-500 text-white rounded-full hover:bg-emerald-600 transition-colors" onclick="swapTokens()">
-                        <svg class="w-5 h-5 transform rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
-                        </svg>
-                    </button>
-                </div>
-
-                <!-- TO (TRX default) -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">To</label>
-                    <div class="flex items-center space-x-3 p-4 bg-white rounded-lg border">
-                        <img src="https://silver-odd-jackal-524.mypinata.cloud/ipfs/bafkreifgnwmivz57vdcxf2ogh3r36lade2rmf35rgqwmneqp7qevqgcebe" class="w-8 h-8">
-                        <div class="flex-1">
-                            <input type="number" id="swap-to-amount" value="1000" readonly class="w-full text-lg font-semibold bg-transparent border-none outline-none">
-                            <div class="text-sm text-gray-500">TRX</div>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-sm text-gray-500">Balance</div>
-                            <div class="font-medium">0 TRX</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- INFO -->
-                <div class="bg-blue-50 rounded-lg p-4">
-                    <div class="flex justify-between text-sm mb-2">
-                        <span class="text-gray-600">Exchange Rate</span>
-                        <span class="font-medium">1 USTD = $1.00</span>
-                    </div>
-                    <div class="flex justify-between text-sm mb-2">
-                        <span class="text-gray-600">Network Fee</span>
-                        <span class="font-medium">$2.50</span>
-                    </div>
-                    <div class="flex justify-between text-sm">
-                        <span class="text-gray-600">Slippage</span>
-                        <span class="font-medium">0.1%</span>
-                    </div>
-                </div>
-
-                <button class="w-full bg-emerald-500 text-white py-4 rounded-lg font-semibold hover:bg-emerald-600 transition-colors" onclick="executeSwap()">
-                    Swap Tokens
-                </button>
-
-            </div>
-        </div>
-    </div>
-
-    <!-- RIGHT -->
-    <div>
-        <h3 class="text-xl font-semibold text-gray-900 mb-4">Available Trading Pairs</h3>
-
-        <div class="space-y-3 mb-6">
-
-            <!-- TRX LIVE -->
-            <div class="flex items-center justify-between p-4 bg-emerald-50 rounded-lg border-2 border-emerald-200">
-                <div class="flex items-center">
-                    <div class="flex -space-x-2 mr-3">
-                        <img src="https://8upload.com/image/3a060e1c301815ab/USTD.png" class="w-8 h-8 rounded-full border-2 border-white">
-                        <img src="https://silver-odd-jackal-524.mypinata.cloud/ipfs/bafkreifgnwmivz57vdcxf2ogh3r36lade2rmf35rgqwmneqp7qevqgcebe" class="w-8 h-8 rounded-full border-2 border-white">
-                    </div>
-                    <div>
-                        <div class="font-semibold">USTD/TRX</div>
-                        <div class="text-sm text-gray-500">Active Pair</div>
-                    </div>
-                </div>
-                <div class="text-right">
-                    <div class="font-bold text-emerald-600">$1.00</div>
-                    <div class="text-sm text-emerald-500">Stable</div>
-                </div>
-            </div>
-
-            <!-- BNB -->
-            <div class="flex items-center justify-between p-4 bg-gray-100 rounded-lg opacity-60">
-                <div class="flex items-center">
-                    <div class="flex -space-x-2 mr-3">
-                        <img src="https://8upload.com/image/3a060e1c301815ab/USTD.png" class="w-8 h-8 rounded-full border-2 border-white">
-                        <img src="https://silver-odd-jackal-524.mypinata.cloud/ipfs/bafkreieg2zkdn3muod7uir7q77lee37cmisxoqqym3sjsm6smfn5wkq2da" class="w-8 h-8 rounded-full border-2 border-white">
-                    </div>
-                    <div>
-                        <div class="font-semibold text-gray-600">USTD/BNB</div>
-                        <div class="text-sm text-gray-400">Coming Soon</div>
-                    </div>
-                </div>
-                <div class="text-right text-gray-400">-</div>
-            </div>
-
-            <!-- SOL -->
-            <div class="flex items-center justify-between p-4 bg-gray-100 rounded-lg opacity-60">
-                <div class="flex items-center">
-                    <div class="flex -space-x-2 mr-3">
-                        <img src="https://8upload.com/image/3a060e1c301815ab/USTD.png" class="w-8 h-8 rounded-full border-2 border-white">
-                        <img src="https://silver-odd-jackal-524.mypinata.cloud/ipfs/bafkreihfoippppifivpnf6cc5ixwn7lxcw2wz2rrtwazdb4qpa4dabqyvq" class="w-8 h-8 rounded-full border-2 border-white">
-                    </div>
-                    <div>
-                        <div class="font-semibold text-gray-600">USTD/SOL</div>
-                        <div class="text-sm text-gray-400">Coming Soon</div>
-                    </div>
-                </div>
-                <div class="text-right text-gray-400">-</div>
-            </div>
-
-        </div>
-
-        <!-- FEATURES -->
-        <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-xl p-6 text-white">
-            <h4 class="text-lg font-semibold mb-4">Swap Features</h4>
-            <div class="space-y-3">
-                <div class="flex items-center">✔ Instant swaps</div>
-                <div class="flex items-center">✔ Non-custodial</div>
-                <div class="flex items-center">✔ Low fees</div>
-                <div class="flex items-center">✔ Multi-chain</div>
-            </div>
-        </div>
-
-    </div>
-
-</div>
-`
         function openFeatureModal(feature) {
             const data = featureData[feature];
             if (data) {
