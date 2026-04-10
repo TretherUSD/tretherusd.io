@@ -430,34 +430,62 @@
                 
                 <!-- Trether Swap Card -->
                 <div class="feature-card card-hover bg-gray-50 rounded-2xl p-8 text-center transition-all duration-500 hover:shadow-2xl hover:bg-white transform hover:-translate-y-2 cursor-pointer" data-feature="swap" style="animation-delay: 0.4s;">
-                    <div class="w-16 h-16 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 floating glow-pulse" style="animation-delay: 4s;">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="animation: floating 3s ease-in-out infinite;">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-4 transition-colors duration-300 hover:text-emerald-600">Trether Swap (Exchange)</h3>
-                    <p class="text-gray-600 transition-all duration-300 hover:text-gray-800 mb-4">
-                        Convert USTD to other major crypto assets (BTC, ETH, etc.) instantly with minimal fees through our non-custodial swap service.
-                    </p>
-                    <div class="space-y-2 mb-4">
-                        <div class="trading-pair flex items-center justify-between bg-emerald-50 rounded-lg p-2 hover:bg-emerald-100 transition-colors cursor-pointer" data-pair="USTD/USDT">
-                            <span class="text-sm font-medium">USTD/USDT</span>
-                            <span class="text-xs bg-green-500 text-white px-2 py-1 rounded pulse-animation">Live</span>
-                        </div>
-                        <div class="trading-pair flex items-center justify-between bg-gray-100 rounded-lg p-2 hover:bg-gray-200 transition-colors cursor-pointer" data-pair="USTD/BNB">
-                            <span class="text-sm font-medium text-gray-600">USTD/BNB</span>
-                            <span class="text-xs bg-gray-400 text-white px-2 py-1 rounded">Wait</span>
-                        </div>
-                        <div class="trading-pair flex items-center justify-between bg-gray-100 rounded-lg p-2 hover:bg-gray-200 transition-colors cursor-pointer" data-pair="USTD/USDC">
-                            <span class="text-sm font-medium text-gray-600">USTD/USDC</span>
-                            <span class="text-xs bg-gray-400 text-white px-2 py-1 rounded">Wait</span>
-                        </div>
-                    </div>
-                    <button class="learn-more-btn w-full bg-emerald-500 text-white py-2 px-4 rounded-lg hover:bg-emerald-600 transition-colors text-sm font-medium" onclick="openFeatureModal('swap')">
-                        Try Swap Demo
-                    </button>
-                </div>
+    
+    <div class="w-16 h-16 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 floating glow-pulse" style="animation-delay: 4s;">
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="animation: floating 3s ease-in-out infinite;">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+        </svg>
+    </div>
+
+    <h3 class="text-xl font-semibold text-gray-900 mb-4 transition-colors duration-300 hover:text-emerald-600">
+        Trether Swap (Exchange)
+    </h3>
+
+    <p class="text-gray-600 transition-all duration-300 hover:text-gray-800 mb-2">
+        Convert USTD to major crypto assets instantly with minimal fees.
+    </p>
+
+    <!-- USTD = $1 -->
+    <div class="text-sm text-emerald-600 font-medium mb-4">
+        1 USTD = 1 USD
+    </div>
+
+    <div class="space-y-2 mb-4">
+
+        <!-- TRX -->
+        <div class="trading-pair flex items-center justify-between bg-emerald-50 rounded-lg p-2 hover:bg-emerald-100 transition-colors cursor-pointer" data-pair="USTD/TRX">
+            <div class="flex items-center space-x-2">
+                <img src="https://silver-odd-jackal-524.mypinata.cloud/ipfs/bafkreifgnwmivz57vdcxf2ogh3r36lade2rmf35rgqwmneqp7qevqgcebe" class="w-5 h-5">
+                <span class="text-sm font-medium">USTD/TRX</span>
             </div>
+            <span class="text-xs bg-green-500 text-white px-2 py-1 rounded pulse-animation">Live</span>
+        </div>
+
+        <!-- BNB -->
+        <div class="trading-pair flex items-center justify-between bg-gray-100 rounded-lg p-2 hover:bg-gray-200 transition-colors cursor-pointer" data-pair="USTD/BNB">
+            <div class="flex items-center space-x-2">
+                <img src="https://silver-odd-jackal-524.mypinata.cloud/ipfs/bafkreieg2zkdn3muod7uir7q77lee37cmisxoqqym3sjsm6smfn5wkq2da" class="w-5 h-5">
+                <span class="text-sm font-medium text-gray-600">USTD/BNB</span>
+            </div>
+            <span class="text-xs bg-gray-400 text-white px-2 py-1 rounded">Wait</span>
+        </div>
+
+        <!-- SOL -->
+        <div class="trading-pair flex items-center justify-between bg-gray-100 rounded-lg p-2 hover:bg-gray-200 transition-colors cursor-pointer" data-pair="USTD/SOL">
+            <div class="flex items-center space-x-2">
+                <img src="https://silver-odd-jackal-524.mypinata.cloud/ipfs/bafkreihfoippppifivpnf6cc5ixwn7lxcw2wz2rrtwazdb4qpa4dabqyvq" class="w-5 h-5">
+                <span class="text-sm font-medium text-gray-600">USTD/SOL</span>
+            </div>
+            <span class="text-xs bg-gray-400 text-white px-2 py-1 rounded">Wait</span>
+        </div>
+
+    </div>
+
+    <button class="learn-more-btn w-full bg-emerald-500 text-white py-2 px-4 rounded-lg hover:bg-emerald-600 transition-colors text-sm font-medium" onclick="openFeatureModal('swap')">
+        Try Swap Demo
+    </button>
+
+</div>
             
             <!-- Live Statistics Bar -->
             <div class="mt-16 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-2xl p-8 text-white">
