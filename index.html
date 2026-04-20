@@ -7,1053 +7,940 @@
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <script src="/_sdk/element_sdk.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
   <script>
-tailwind.config={theme:{extend:{colors:{primary:'#00a77b',bg1:'#0f172a',bg2:'#020617',accent:'#f7e1d7',txt:'#dcdcdc'},fontFamily:{sans:['DM Sans','sans-serif'],mono:['JetBrains Mono','monospace']}}}}
+tailwind.config={theme:{extend:{colors:{primary:'#00a77b',accent:'#f7e1d7',bg1:'#0f172a',bg2:'#020617',txt:'#dcdcdc'},fontFamily:{sans:['DM Sans','sans-serif'],mono:['Space Mono','monospace']}}}}
 </script>
   <style>
-html,body{height:100%;margin:0;overflow-x:hidden;font-family:'DM Sans',sans-serif;background:#020617;color:#dcdcdc}
-*{scrollbar-width:thin;scrollbar-color:#00a77b33 transparent}
-::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#00a77b44;border-radius:3px}
-.glass{background:rgba(15,23,42,.6);backdrop-filter:blur(16px);border:1px solid rgba(0,167,123,.12)}
-.glass-strong{background:rgba(15,23,42,.8);backdrop-filter:blur(24px);border:1px solid rgba(0,167,123,.15)}
-.glow{box-shadow:0 0 40px rgba(0,167,123,.1)}
-.glow-text{text-shadow:0 0 30px rgba(0,167,123,.3)}
-.btn-primary{background:linear-gradient(135deg,#00a77b,#008f69);transition:all .3s}
-.btn-primary:hover{box-shadow:0 0 30px rgba(0,167,123,.4);transform:translateY(-1px)}
-.btn-outline{border:1px solid rgba(0,167,123,.4);transition:all .3s}
-.btn-outline:hover{border-color:#00a77b;background:rgba(0,167,123,.1)}
-.fade-up{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.4,0,.2,1)}
-.fade-up.visible{opacity:1;transform:translateY(0)}
-.progress-bar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,#00a77b,#00d4a0);z-index:9999;transition:width .1s}
-#preloader{position:fixed;inset:0;z-index:10000;background:#020617;display:flex;align-items:center;justify-content:center;transition:opacity .6s}
-#preloader.done{opacity:0;pointer-events:none}
-canvas#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
-.section-anchor{scroll-margin-top:80px}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-@keyframes pulse-ring{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.8);opacity:0}}
-@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.marquee-track{animation:marquee 30s linear infinite}
-.chart-segment{transition:all .4s cubic-bezier(.4,0,.2,1);cursor:pointer}
+html,body{height:100%;margin:0;overflow-x:hidden;background:#020617;color:#dcdcdc;font-family:'DM Sans',sans-serif}
+*{box-sizing:border-box}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#0f172a}
+::-webkit-scrollbar-thumb{background:#00a77b33;border-radius:3px}
+#preloader{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#020617;transition:opacity .6s}
+#preloader.hide{opacity:0;pointer-events:none}
+.preloader-ring{width:60px;height:60px;border:3px solid #00a77b22;border-top-color:#00a77b;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#scroll-progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,#00a77b,#00d4a0);z-index:1001;transition:width .1s}
+.glass{background:rgba(15,23,42,.55);backdrop-filter:blur(16px);border:1px solid rgba(0,167,123,.12)}
+.glass-card{background:rgba(15,23,42,.45);backdrop-filter:blur(12px);border:1px solid rgba(0,167,123,.1);border-radius:12px;transition:all .3s}
+.glass-card:hover{border-color:rgba(0,167,123,.3);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,167,123,.08)}
+.glow{box-shadow:0 0 20px rgba(0,167,123,.15)}
+.btn-primary{background:linear-gradient(135deg,#00a77b,#00d4a0);color:#020617;font-weight:600;padding:10px 24px;border-radius:8px;transition:all .3s;border:none;cursor:pointer;font-size:14px}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,167,123,.3)}
+.btn-outline{border:1px solid rgba(0,167,123,.4);color:#00a77b;padding:10px 24px;border-radius:8px;transition:all .3s;background:transparent;cursor:pointer;font-size:14px;font-weight:500}
+.btn-outline:hover{background:rgba(0,167,123,.1);border-color:#00a77b}
+#blockchain-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+.section-fade{opacity:0;transform:translateY(30px);transition:opacity .7s,transform .7s}
+.section-fade.visible{opacity:1;transform:translateY(0)}
+.chart-segment{transition:all .4s cubic-bezier(.4,0,.2,1);cursor:pointer;transform-origin:center}
 .chart-segment:hover{filter:brightness(1.2)}
-@keyframes countUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.accordion-content{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1)}
-.accordion-content.open{max-height:500px}
-.tab-active{background:rgba(0,167,123,.2);color:#00a77b;border-color:#00a77b}
-.activity-item{animation:countUp .5s ease}
-.quick-panel{position:fixed;right:20px;bottom:20px;z-index:100}
-@media(max-width:768px){.quick-panel{right:10px;bottom:10px}}
+.tab-btn{padding:8px 16px;border-radius:6px;font-size:13px;font-weight:500;transition:all .3s;cursor:pointer;border:1px solid transparent;background:transparent;color:#dcdcdc}
+.tab-btn.active{background:rgba(0,167,123,.15);border-color:rgba(0,167,123,.4);color:#00a77b}
+.faq-item{border-bottom:1px solid rgba(0,167,123,.1)}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.faq-item.open .faq-answer{max-height:300px}
+.faq-item.open .faq-chevron{transform:rotate(180deg)}
+.faq-chevron{transition:transform .3s}
+.partner-track{display:flex;gap:48px;animation:scrollPartners 20s linear infinite}
+@keyframes scrollPartners{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.network-btn{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;border:1px solid rgba(0,167,123,.2);background:transparent;color:#dcdcdc;cursor:pointer;transition:all .3s;font-family:'Space Mono',monospace}
+.network-btn.active{background:rgba(0,167,123,.15);border-color:#00a77b;color:#00a77b}
+.stat-number{font-family:'Space Mono',monospace}
+.roadmap-line{position:absolute;left:16px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,#00a77b,#00a77b22)}
+.roadmap-dot{width:10px;height:10px;border-radius:50%;background:#00a77b;position:absolute;left:12px;top:6px;box-shadow:0 0 8px rgba(0,167,123,.4)}
+.roadmap-dot.future{background:#0f172a;border:2px solid #00a77b44}
+.activity-item{animation:fadeSlide .5s ease}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.quick-panel{position:fixed;right:20px;bottom:20px;z-index:100;display:flex;flex-direction:column;gap:8px}
+.quick-btn{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s}
+.quick-btn:hover{transform:scale(1.1)}
+@media(max-width:768px){.quick-panel{right:12px;bottom:12px}.quick-btn{width:38px;height:38px}}
 </style>
   <style>body { box-sizing: border-box; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
  </head>
- <body class="h-full"><!-- Preloader -->
+ <body class="h-full">
   <div id="preloader">
-   <div class="text-center">
-    <div class="relative inline-block">
-     <div class="w-16 h-16 rounded-full border-2 border-primary flex items-center justify-center text-primary font-bold text-xl">
-      U
-     </div>
-     <div class="absolute inset-0 rounded-full border-2 border-primary" style="animation:pulse-ring 1.5s ease infinite"></div>
+   <div class="preloader-ring"></div>
+  </div>
+  <div id="scroll-progress" style="width:0%"></div>
+  <canvas id="blockchain-canvas"></canvas><!-- HEADER -->
+  <header id="main-header" class="fixed top-0 left-0 w-full z-50 glass" style="border-bottom:1px solid rgba(0,167,123,.08)">
+   <div class="max-w-7xl mx-auto px-4 flex items-center justify-between" style="height:64px">
+    <div class="flex items-center gap-2"><img src="https://silver-odd-jackal-524.mypinata.cloud/ipfs/bafkreie7k5lfvoo6bxmd7tftzdeujhbuiexykdjjdk6zyvimc7pph45vm4" alt="Trivest USDI Logo" width="32" height="32" loading="lazy" style="object-fit:contain" onerror="console.error('Logo failed to load:', this.src); this.style.background='#00a77b'; this.alt='Logo unavailable';"><span class="font-semibold text-sm tracking-wide" style="color:#fff">TRIVEST <span style="color:#00a77b">USDI</span></span>
     </div>
-    <p class="mt-4 text-sm text-txt/60 font-mono">Loading Trivest USDI</p>
+    <nav class="hidden lg:flex items-center gap-6">
+     <a href="#about" class="text-xs font-medium text-txt hover:text-primary transition" data-i18n="nav_about">About</a> <a href="#benefits" class="text-xs font-medium text-txt hover:text-primary transition" data-i18n="nav_benefits">Benefits</a> <a href="#tokenomics" class="text-xs font-medium text-txt hover:text-primary transition" data-i18n="nav_tokenomics">Tokenomics</a> <a href="#calculator" class="text-xs font-medium text-txt hover:text-primary transition" data-i18n="nav_calculator">Calculator</a> <a href="#buy" class="text-xs font-medium text-txt hover:text-primary transition" data-i18n="nav_buy">Buy</a> <a href="#community" class="text-xs font-medium text-txt hover:text-primary transition" data-i18n="nav_community">Community</a>
+    </nav>
+    <div class="flex items-center gap-3">
+     <button id="lang-toggle" class="text-xs font-mono font-bold px-3 py-1.5 rounded-md border border-primary/30 text-primary hover:bg-primary/10 transition cursor-pointer">EN</button> <button class="btn-primary text-xs hidden sm:block" data-i18n="nav_cta">Buy USDI</button> <button id="mobile-menu-btn" class="lg:hidden text-txt p-1 cursor-pointer" style="background:none;border:none"><i data-lucide="menu" style="width:22px;height:22px"></i></button>
+    </div>
    </div>
-  </div><!-- Progress Bar -->
-  <div class="progress-bar" id="scrollProgress" style="width:0%"></div><!-- BG Canvas -->
-  <canvas id="bgCanvas"></canvas><!-- Main Wrapper -->
-  <div id="app" class="relative z-10 w-full h-full overflow-auto"><!-- Header -->
-   <header id="header" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background:rgba(2,6,23,.7);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,167,123,.08)">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16"><a href="#" class="flex items-center gap-2 text-white font-bold text-lg">
-      <div class="w-8 h-8 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center text-primary text-sm font-bold">
-       U
-      </div><span>Trivest <span class="text-primary">USDI</span></span> </a>
-     <nav class="hidden lg:flex items-center gap-6 text-sm text-txt/70"><a href="#about" class="hover:text-primary transition" data-i18n="nav_about">About</a> <a href="#benefits" class="hover:text-primary transition" data-i18n="nav_benefits">Benefits</a> <a href="#tokenomics" class="hover:text-primary transition" data-i18n="nav_tokenomics">Tokenomics</a> <a href="#calculator" class="hover:text-primary transition" data-i18n="nav_calculator">Calculator</a> <a href="#buy" class="hover:text-primary transition" data-i18n="nav_buy">Buy</a> <a href="#community" class="hover:text-primary transition" data-i18n="nav_community">Community</a>
-     </nav>
-     <div class="flex items-center gap-3"><button id="langToggle" class="text-xs font-mono text-txt/60 hover:text-primary transition px-2 py-1 rounded border border-white/10 hover:border-primary/40">EN</button> <a href="#buy" class="hidden sm:inline-flex btn-primary text-white text-sm font-semibold px-4 py-2 rounded-lg" data-i18n="nav_buy_btn">Buy USDI</a> <button id="mobileMenuBtn" class="lg:hidden text-txt/70 hover:text-primary"><i data-lucide="menu" class="w-5 h-5"></i></button>
-     </div>
-    </div><!-- Mobile Menu -->
-    <div id="mobileMenu" class="hidden lg:hidden glass-strong border-t border-white/5">
-     <div class="px-4 py-4 flex flex-col gap-3 text-sm text-txt/70"><a href="#about" class="hover:text-primary transition py-1" data-i18n="nav_about">About</a> <a href="#benefits" class="hover:text-primary transition py-1" data-i18n="nav_benefits">Benefits</a> <a href="#tokenomics" class="hover:text-primary transition py-1" data-i18n="nav_tokenomics">Tokenomics</a> <a href="#calculator" class="hover:text-primary transition py-1" data-i18n="nav_calculator">Calculator</a> <a href="#buy" class="hover:text-primary transition py-1" data-i18n="nav_buy">Buy</a> <a href="#community" class="hover:text-primary transition py-1" data-i18n="nav_community">Community</a>
-     </div>
+   <div id="mobile-menu" class="lg:hidden hidden px-4 pb-4 pt-2 border-t border-primary/10">
+    <div class="flex flex-col gap-3">
+     <a href="#about" class="text-sm text-txt" data-i18n="nav_about">About</a> <a href="#benefits" class="text-sm text-txt" data-i18n="nav_benefits">Benefits</a> <a href="#tokenomics" class="text-sm text-txt" data-i18n="nav_tokenomics">Tokenomics</a> <a href="#calculator" class="text-sm text-txt" data-i18n="nav_calculator">Calculator</a> <a href="#buy" class="text-sm text-txt" data-i18n="nav_buy">Buy</a> <a href="#community" class="text-sm text-txt" data-i18n="nav_community">Community</a> <button class="btn-primary text-sm w-full mt-2" data-i18n="nav_cta">Buy USDI</button>
     </div>
-   </header><!-- HERO -->
-   <section class="pt-24 pb-16 sm:pt-32 sm:pb-24 px-4 sm:px-6 section-anchor" id="about">
-    <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
-     <div class="fade-up">
-      <div class="inline-flex items-center gap-2 text-xs font-mono text-primary/80 bg-primary/10 border border-primary/20 rounded-full px-3 py-1 mb-6"><span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> <span data-i18n="hero_badge">Live on BSC, TRC20, Solana</span>
+   </div>
+  </header><!-- MAIN CONTENT -->
+  <div id="app-wrapper" class="w-full h-full overflow-auto" style="position:relative;z-index:1">
+   <div style="height:64px"></div><!-- HERO -->
+   <section class="section-fade max-w-7xl mx-auto px-4 py-16 md:py-24">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+     <div>
+      <div class="inline-block px-3 py-1 rounded-full text-xs font-mono mb-6" style="background:rgba(0,167,123,.1);border:1px solid rgba(0,167,123,.2);color:#00a77b" data-i18n="hero_badge">
+       Stable. Secure. Scalable.
       </div>
-      <h1 id="heroTitle" class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-4 glow-text">Trivest USDI — <span class="text-primary">Stability</span> of the Dollar in Web3</h1>
-      <p id="heroSubtitle" class="text-txt/60 text-base sm:text-lg mb-8 max-w-lg" data-i18n="hero_sub">A fully reserve-backed stablecoin designed for institutional-grade security, deep liquidity, and seamless cross-chain transactions.</p>
-      <div class="flex flex-wrap gap-3"><a href="#buy" class="btn-primary text-white font-semibold px-6 py-3 rounded-lg inline-flex items-center gap-2"><i data-lucide="wallet" class="w-4 h-4"></i> <span data-i18n="hero_buy">Buy USDI</span></a> <a href="#" class="btn-outline text-txt/80 font-medium px-6 py-3 rounded-lg inline-flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4"></i> <span data-i18n="hero_wp">Whitepaper</span></a>
+      <h1 id="hero-title" class="text-3xl md:text-5xl font-bold leading-tight mb-5" style="color:#fff">Trivest USDI — Stability of the Dollar in Web3</h1>
+      <p id="hero-subtitle" class="text-base md:text-lg mb-8 leading-relaxed" style="color:#9ca3af">A fully-backed stablecoin engineered for institutional-grade reliability, seamless cross-chain liquidity, and the speed your portfolio demands.</p>
+      <div class="flex flex-wrap gap-3">
+       <button class="btn-primary" data-i18n="hero_buy">Buy USDI</button> <button class="btn-outline" data-i18n="hero_wp">Whitepaper</button>
       </div>
-     </div><!-- Right: Chart + Peg + Network -->
-     <div class="fade-up" style="transition-delay:.2s">
-      <div class="glass rounded-2xl p-5 glow"><!-- Network Switch -->
-       <div class="flex items-center justify-between mb-4">
-        <div class="flex gap-1" id="networkSwitch"><button class="net-btn text-xs font-mono px-3 py-1 rounded-md bg-primary/20 text-primary border border-primary/30" data-net="BEP20">BEP20</button> <button class="net-btn text-xs font-mono px-3 py-1 rounded-md text-txt/50 border border-white/10 hover:border-primary/30 transition" data-net="TRC20">TRC20</button> <button class="net-btn text-xs font-mono px-3 py-1 rounded-md text-txt/50 border border-white/10 hover:border-primary/30 transition" data-net="SOL">SOL</button>
+     </div>
+     <div class="glass-card p-5">
+      <div class="flex items-center justify-between mb-4">
+       <div>
+        <div class="text-xs text-gray-400 mb-1" data-i18n="chart_label">
+         USDI / USD
         </div>
-        <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> <span class="text-xs text-green-400 font-mono" data-i18n="peg_label">Peg: $1.000</span>
-        </div>
-       </div><!-- Chart -->
-       <canvas id="pegChart" height="180" class="w-full"></canvas><!-- Stats row -->
-       <div class="grid grid-cols-3 gap-3 mt-4">
-        <div class="text-center">
-         <div class="text-xs text-txt/40 mb-1">
-          24h Vol
-         </div>
-         <div class="text-sm font-mono text-white">
-          $12.4M
-         </div>
-        </div>
-        <div class="text-center">
-         <div class="text-xs text-txt/40 mb-1">
-          MCap
-         </div>
-         <div class="text-sm font-mono text-white">
-          $1.0B
-         </div>
-        </div>
-        <div class="text-center">
-         <div class="text-xs text-txt/40 mb-1" data-i18n="chart_stability">
-          Stability
-         </div>
-         <div class="text-sm font-mono text-primary">
-          99.98%
-         </div>
+        <div class="flex items-center gap-2">
+         <span id="peg-display" class="text-2xl font-mono font-bold" style="color:#00a77b">$1.000</span> <span class="text-xs px-2 py-0.5 rounded" style="background:rgba(0,167,123,.15);color:#00a77b">Stable</span>
         </div>
        </div>
+       <div id="network-switch" class="flex gap-1.5">
+        <button class="network-btn active" data-net="BEP20">BEP20</button> <button class="network-btn" data-net="TRC20">TRC20</button> <button class="network-btn" data-net="SOL">SOL</button>
+       </div>
+      </div>
+      <canvas id="peg-chart" width="500" height="180" style="width:100%;height:auto"></canvas>
+      <div class="flex items-center justify-between mt-3 text-xs text-gray-500">
+       <span data-i18n="chart_range">24h Range</span> <span class="font-mono">0.9992 — 1.0008</span>
       </div>
      </div>
     </div>
-   </section><!-- Trust Indicators -->
-   <section class="py-12 px-4 sm:px-6">
-    <div class="max-w-7xl mx-auto">
-     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 fade-up">
-      <div class="glass rounded-xl p-5 text-center hover:border-primary/30 transition"><i data-lucide="shield-check" class="w-8 h-8 text-primary mx-auto mb-3"></i>
-       <div class="text-white font-semibold text-sm mb-1" data-i18n="trust_1_t">
-        Reserve-Backed
-       </div>
-       <div class="text-txt/40 text-xs" data-i18n="trust_1_d">
-        100% collateralized by USD reserves
-       </div>
+   </section><!-- TRUST + PARTNERS -->
+   <section id="about" class="section-fade max-w-7xl mx-auto px-4 py-16">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+     <div class="glass-card p-5 text-center">
+      <i data-lucide="shield-check" style="width:28px;height:28px;color:#00a77b;margin:0 auto 10px"></i>
+      <div class="text-sm font-semibold mb-1" style="color:#fff" data-i18n="trust_reserve">
+       Reserve-Backed
       </div>
-      <div class="glass rounded-xl p-5 text-center hover:border-primary/30 transition"><i data-lucide="search" class="w-8 h-8 text-primary mx-auto mb-3"></i>
-       <div class="text-white font-semibold text-sm mb-1" data-i18n="trust_2_t">
-        Audited
-       </div>
-       <div class="text-txt/40 text-xs" data-i18n="trust_2_d">
-        Regular third-party audits
-       </div>
+      <div class="text-xs text-gray-400" data-i18n="trust_reserve_d">
+       100%+ collateralized
       </div>
-      <div class="glass rounded-xl p-5 text-center hover:border-primary/30 transition"><i data-lucide="droplets" class="w-8 h-8 text-primary mx-auto mb-3"></i>
-       <div class="text-white font-semibold text-sm mb-1" data-i18n="trust_3_t">
-        High Liquidity
-       </div>
-       <div class="text-txt/40 text-xs" data-i18n="trust_3_d">
-        Deep pools across DEXs
-       </div>
+     </div>
+     <div class="glass-card p-5 text-center">
+      <i data-lucide="file-check" style="width:28px;height:28px;color:#00a77b;margin:0 auto 10px"></i>
+      <div class="text-sm font-semibold mb-1" style="color:#fff" data-i18n="trust_audit">
+       Audited
       </div>
-      <div class="glass rounded-xl p-5 text-center hover:border-primary/30 transition"><i data-lucide="zap" class="w-8 h-8 text-primary mx-auto mb-3"></i>
-       <div class="text-white font-semibold text-sm mb-1" data-i18n="trust_4_t">
-        Fast Transactions
-       </div>
-       <div class="text-txt/40 text-xs" data-i18n="trust_4_d">
-        Sub-second finality
-       </div>
+      <div class="text-xs text-gray-400" data-i18n="trust_audit_d">
+       Third-party verified
+      </div>
+     </div>
+     <div class="glass-card p-5 text-center">
+      <i data-lucide="droplets" style="width:28px;height:28px;color:#00a77b;margin:0 auto 10px"></i>
+      <div class="text-sm font-semibold mb-1" style="color:#fff" data-i18n="trust_liq">
+       High Liquidity
+      </div>
+      <div class="text-xs text-gray-400" data-i18n="trust_liq_d">
+       Deep order books
+      </div>
+     </div>
+     <div class="glass-card p-5 text-center">
+      <i data-lucide="zap" style="width:28px;height:28px;color:#00a77b;margin:0 auto 10px"></i>
+      <div class="text-sm font-semibold mb-1" style="color:#fff" data-i18n="trust_fast">
+       Fast Transactions
+      </div>
+      <div class="text-xs text-gray-400" data-i18n="trust_fast_d">
+       Sub-second finality
+      </div>
+     </div>
+    </div><!-- Partners -->
+    <div class="overflow-hidden" style="mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)">
+     <div class="partner-track">
+      <div class="flex items-center gap-12 shrink-0" id="partner-set-1"></div>
+      <div class="flex items-center gap-12 shrink-0" id="partner-set-2"></div>
+     </div>
+    </div>
+   </section><!-- PROOF OF RESERVES -->
+   <section class="section-fade max-w-7xl mx-auto px-4 py-16">
+    <div class="glass-card p-8 max-w-2xl mx-auto text-center">
+     <div class="text-xs uppercase tracking-widest text-gray-400 mb-3 font-mono" data-i18n="por_label">
+      Proof of Reserves
+     </div>
+     <div id="reserve-display" class="text-4xl font-mono font-bold mb-4" style="color:#00a77b">
+      102%
+     </div>
+     <div class="w-full rounded-full h-2 mb-4" style="background:rgba(0,167,123,.1)">
+      <div id="reserve-bar" class="h-2 rounded-full transition-all duration-1000" style="width:0%;background:linear-gradient(90deg,#00a77b,#00d4a0)"></div>
+     </div>
+     <p class="text-sm text-gray-400 mb-4" data-i18n="por_desc">All USDI tokens are backed by verifiable reserves exceeding the total circulating supply.</p><button class="btn-outline text-xs" data-i18n="por_btn">View Details</button>
+    </div>
+   </section><!-- AUDIT & SECURITY -->
+   <section class="section-fade max-w-7xl mx-auto px-4 py-12">
+    <div class="glass-card p-8 max-w-2xl mx-auto">
+     <div class="flex flex-col md:flex-row items-center gap-6">
+      <div class="flex-1">
+       <h3 class="text-lg font-semibold mb-2" style="color:#fff" data-i18n="audit_title">Audit &amp; Security</h3>
+       <p class="text-sm text-gray-400 mb-3" data-i18n="audit_desc">Smart contracts audited by leading blockchain security firms. Multi-sig governance and real-time monitoring.</p>
+       <div class="flex gap-3 flex-wrap mb-4">
+        <span class="text-xs px-3 py-1 rounded-full" style="background:rgba(0,167,123,.1);color:#00a77b">Smart Contract Audit</span> <span class="text-xs px-3 py-1 rounded-full" style="background:rgba(0,167,123,.1);color:#00a77b">Multi-Sig</span> <span class="text-xs px-3 py-1 rounded-full" style="background:rgba(0,167,123,.1);color:#00a77b">24/7 Monitoring</span>
+       </div><button class="btn-outline text-xs" data-i18n="audit_btn">View Report</button>
+      </div>
+      <div class="w-20 h-20 rounded-full flex items-center justify-center glow" style="background:rgba(0,167,123,.1)">
+       <i data-lucide="lock" style="width:32px;height:32px;color:#00a77b"></i>
       </div>
      </div>
     </div>
-   </section><!-- Partners Marquee -->
-   <section class="py-8 px-4 overflow-hidden border-y border-white/5">
-    <div class="relative">
-     <div class="marquee-track flex items-center gap-16 whitespace-nowrap"><span class="text-txt/20 font-semibold text-lg">PancakeSwap</span> <span class="text-txt/20 font-semibold text-lg">SunSwap</span> <span class="text-txt/20 font-semibold text-lg">Raydium</span> <span class="text-txt/20 font-semibold text-lg">Chainlink</span> <span class="text-txt/20 font-semibold text-lg">CertiK</span> <span class="text-txt/20 font-semibold text-lg">DeFiLlama</span> <span class="text-txt/20 font-semibold text-lg">CoinGecko</span> <span class="text-txt/20 font-semibold text-lg">CoinMarketCap</span> <span class="text-txt/20 font-semibold text-lg">PancakeSwap</span> <span class="text-txt/20 font-semibold text-lg">SunSwap</span> <span class="text-txt/20 font-semibold text-lg">Raydium</span> <span class="text-txt/20 font-semibold text-lg">Chainlink</span> <span class="text-txt/20 font-semibold text-lg">CertiK</span> <span class="text-txt/20 font-semibold text-lg">DeFiLlama</span> <span class="text-txt/20 font-semibold text-lg">CoinGecko</span> <span class="text-txt/20 font-semibold text-lg">CoinMarketCap</span>
+   </section><!-- WHY USDI -->
+   <section id="benefits" class="section-fade max-w-7xl mx-auto px-4 py-16">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-3" style="color:#fff" data-i18n="why_title">Why USDI</h2>
+    <p class="text-center text-sm text-gray-400 mb-12 max-w-lg mx-auto" data-i18n="why_sub">Built for yield generation and ecosystem participation</p>
+    <div class="grid md:grid-cols-3 gap-5">
+     <div class="glass-card p-6">
+      <i data-lucide="trending-up" style="width:24px;height:24px;color:#00a77b;margin-bottom:12px"></i>
+      <h4 class="text-sm font-semibold mb-2" style="color:#fff" data-i18n="why_staking">Staking Rewards</h4>
+      <p class="text-xs text-gray-400" data-i18n="why_staking_d">Earn passive income by staking USDI with competitive APY rates.</p>
+     </div>
+     <div class="glass-card p-6">
+      <i data-lucide="gift" style="width:24px;height:24px;color:#00a77b;margin-bottom:12px"></i>
+      <h4 class="text-sm font-semibold mb-2" style="color:#fff" data-i18n="why_airdrop">Airdrops</h4>
+      <p class="text-xs text-gray-400" data-i18n="why_airdrop_d">USDI holders receive periodic airdrops and ecosystem incentives.</p>
+     </div>
+     <div class="glass-card p-6">
+      <i data-lucide="repeat" style="width:24px;height:24px;color:#00a77b;margin-bottom:12px"></i>
+      <h4 class="text-sm font-semibold mb-2" style="color:#fff" data-i18n="why_exchange">Internal Exchange</h4>
+      <p class="text-xs text-gray-400" data-i18n="why_exchange_d">Swap USDI seamlessly within the Trivest ecosystem at minimal fees.</p>
      </div>
     </div>
-   </section><!-- Proof of Reserves -->
-   <section class="py-16 px-4 sm:px-6 section-anchor" id="reserves">
-    <div class="max-w-3xl mx-auto fade-up">
-     <div class="glass rounded-2xl p-8 glow text-center">
-      <h2 class="text-2xl font-bold text-white mb-2" data-i18n="por_title">Proof of Reserves</h2>
-      <p class="text-txt/50 text-sm mb-6" data-i18n="por_sub">Transparent, verifiable collateralization</p>
-      <div class="text-5xl font-bold text-primary mb-4 font-mono" id="reserveRatio">
-       102%
+   </section><!-- USE CASES -->
+   <section class="section-fade max-w-7xl mx-auto px-4 py-12">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-10" style="color:#fff" data-i18n="uc_title">Use Cases</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+     <div class="glass-card p-5 text-center"><i data-lucide="credit-card" style="width:24px;height:24px;color:#00a77b;margin:0 auto 8px"></i>
+      <div class="text-sm font-semibold" style="color:#fff" data-i18n="uc_pay">
+       Payments
       </div>
-      <div class="w-full bg-white/5 rounded-full h-3 mb-6 overflow-hidden">
-       <div id="reserveBar" class="h-full rounded-full bg-gradient-to-r from-primary to-green-400 transition-all duration-[2s]" style="width:0%"></div>
+     </div>
+     <div class="glass-card p-5 text-center"><i data-lucide="layers" style="width:24px;height:24px;color:#00a77b;margin:0 auto 8px"></i>
+      <div class="text-sm font-semibold" style="color:#fff" data-i18n="uc_defi">
+       DeFi
       </div>
-      <div class="flex justify-between text-xs text-txt/40 mb-6"><span data-i18n="por_circ">Circulating: 1,000,000,000 USDI</span> <span data-i18n="por_res">Reserves: $1,020,000,000</span>
-      </div><button class="btn-outline text-sm px-5 py-2 rounded-lg text-txt/70" data-i18n="por_btn">View Details</button>
      </div>
-    </div>
-   </section><!-- Audit & Security -->
-   <section class="py-12 px-4 sm:px-6">
-    <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-6 fade-up">
-     <div class="glass rounded-2xl p-6"><i data-lucide="file-check" class="w-8 h-8 text-primary mb-4"></i>
-      <h3 class="text-lg font-bold text-white mb-2" data-i18n="audit_title">Smart Contract Audit</h3>
-      <p class="text-txt/50 text-sm mb-4" data-i18n="audit_desc">Comprehensive audit by leading blockchain security firms. All critical and medium findings resolved.</p>
-      <div class="flex items-center gap-3 mb-4">
-       <div class="flex items-center gap-1 text-xs text-green-400">
-        <i data-lucide="check-circle" class="w-3 h-3"></i> <span data-i18n="audit_c1">No critical issues</span>
-       </div>
-       <div class="flex items-center gap-1 text-xs text-green-400">
-        <i data-lucide="check-circle" class="w-3 h-3"></i> <span data-i18n="audit_c2">Verified source</span>
-       </div>
-      </div><button class="btn-outline text-sm px-4 py-2 rounded-lg text-txt/70" data-i18n="audit_btn">View Report</button>
+     <div class="glass-card p-5 text-center"><i data-lucide="bar-chart-2" style="width:24px;height:24px;color:#00a77b;margin:0 auto 8px"></i>
+      <div class="text-sm font-semibold" style="color:#fff" data-i18n="uc_trade">
+       Trading
+      </div>
      </div>
-     <div class="glass rounded-2xl p-6"><i data-lucide="lock" class="w-8 h-8 text-primary mb-4"></i>
-      <h3 class="text-lg font-bold text-white mb-2" data-i18n="sec_title">Security Infrastructure</h3>
-      <p class="text-txt/50 text-sm mb-4" data-i18n="sec_desc">Multi-sig wallets, time-locked contracts, and real-time monitoring protect every transaction.</p>
-      <div class="grid grid-cols-2 gap-2">
-       <div class="bg-white/5 rounded-lg p-3 text-center">
-        <div class="text-primary text-xl font-bold">
-         3/5
-        </div>
-        <div class="text-txt/40 text-xs" data-i18n="sec_m">
-         Multi-sig
-        </div>
-       </div>
-       <div class="bg-white/5 rounded-lg p-3 text-center">
-        <div class="text-primary text-xl font-bold">
-         48h
-        </div>
-        <div class="text-txt/40 text-xs" data-i18n="sec_t">
-         Timelock
-        </div>
-       </div>
+     <div class="glass-card p-5 text-center"><i data-lucide="piggy-bank" style="width:24px;height:24px;color:#00a77b;margin:0 auto 8px"></i>
+      <div class="text-sm font-semibold" style="color:#fff" data-i18n="uc_save">
+       Savings
       </div>
      </div>
     </div>
-   </section><!-- Why USDI -->
-   <section class="py-16 px-4 sm:px-6 section-anchor" id="benefits">
-    <div class="max-w-5xl mx-auto text-center fade-up">
-     <h2 class="text-2xl sm:text-3xl font-bold text-white mb-2" data-i18n="why_title">Why USDI</h2>
-     <p class="text-txt/50 text-sm mb-10" data-i18n="why_sub">Built for the modern DeFi ecosystem</p>
-     <div class="grid md:grid-cols-3 gap-6">
-      <div class="glass rounded-2xl p-6 hover:border-primary/30 transition group">
-       <div class="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition"><i data-lucide="trending-up" class="w-6 h-6 text-primary"></i>
+   </section><!-- TOKENOMICS -->
+   <section id="tokenomics" class="section-fade max-w-7xl mx-auto px-4 py-16">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-3" style="color:#fff" data-i18n="tok_title">Tokenomics</h2>
+    <p class="text-center text-sm text-gray-400 mb-10" data-i18n="tok_sub">Total Supply: 1,000,000,000 USDI</p>
+    <div class="flex flex-col md:flex-row items-center justify-center gap-10">
+     <div style="position:relative;width:260px;height:260px">
+      <canvas id="donut-chart" width="260" height="260" style="width:260px;height:260px;cursor:pointer"></canvas>
+      <div id="donut-center" class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+       <div class="text-2xl font-mono font-bold" style="color:#fff">
+        1B
        </div>
-       <h3 class="text-white font-semibold mb-2" data-i18n="why_1_t">Staking Rewards</h3>
-       <p class="text-txt/50 text-sm" data-i18n="why_1_d">Earn passive income through flexible staking programs with competitive APY rates.</p>
-      </div>
-      <div class="glass rounded-2xl p-6 hover:border-primary/30 transition group">
-       <div class="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition"><i data-lucide="gift" class="w-6 h-6 text-primary"></i>
+       <div class="text-xs text-gray-400">
+        USDI
        </div>
-       <h3 class="text-white font-semibold mb-2" data-i18n="why_2_t">Airdrops</h3>
-       <p class="text-txt/50 text-sm" data-i18n="why_2_d">Regular token distributions to active community members and liquidity providers.</p>
-      </div>
-      <div class="glass rounded-2xl p-6 hover:border-primary/30 transition group">
-       <div class="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition"><i data-lucide="repeat" class="w-6 h-6 text-primary"></i>
-       </div>
-       <h3 class="text-white font-semibold mb-2" data-i18n="why_3_t">Internal Exchange</h3>
-       <p class="text-txt/50 text-sm" data-i18n="why_3_d">Seamless swaps within the Trivest ecosystem with zero slippage on USDI pairs.</p>
       </div>
      </div>
+     <div id="tok-legend" class="flex flex-col gap-3"></div>
     </div>
-   </section><!-- Use Cases -->
-   <section class="py-12 px-4 sm:px-6">
-    <div class="max-w-5xl mx-auto fade-up">
-     <h2 class="text-2xl font-bold text-white text-center mb-8" data-i18n="uc_title">Use Cases</h2>
-     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="glass rounded-xl p-5 text-center hover:border-primary/30 transition cursor-default"><i data-lucide="credit-card" class="w-7 h-7 text-primary mx-auto mb-3"></i>
-       <div class="text-white text-sm font-semibold" data-i18n="uc_1">
-        Payments
+    <div id="tok-tooltip" class="fixed hidden glass-card px-4 py-2 text-sm font-mono pointer-events-none z-50" style="color:#fff"></div>
+   </section><!-- CALCULATOR -->
+   <section id="calculator" class="section-fade max-w-7xl mx-auto px-4 py-16">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-10" style="color:#fff" data-i18n="calc_title">Yield Calculator</h2>
+    <div class="glass-card p-6 max-w-lg mx-auto">
+     <div class="flex gap-2 mb-6">
+      <button class="tab-btn active" data-tab="staking" data-i18n="calc_staking">Staking</button> <button class="tab-btn" data-tab="liquidity" data-i18n="calc_liq">Liquidity</button> <button class="tab-btn" data-tab="loyalty" data-i18n="calc_loyalty">Loyalty</button>
+     </div>
+     <div class="mb-4">
+      <label class="text-xs text-gray-400 block mb-1" data-i18n="calc_amount">Amount (USDI)</label> <input id="calc-amount" type="number" value="10000" min="1" class="w-full rounded-lg px-4 py-2.5 text-sm font-mono" style="background:rgba(0,0,0,.3);border:1px solid rgba(0,167,123,.2);color:#fff;outline:none">
+     </div>
+     <div class="mb-6">
+      <label class="text-xs text-gray-400 block mb-1" data-i18n="calc_period">Period (months)</label> <input id="calc-period" type="range" min="1" max="24" value="12" class="w-full accent-primary">
+      <div class="flex justify-between text-xs text-gray-500 mt-1"><span>1</span><span id="calc-period-val" class="font-mono text-primary">12</span><span>24</span>
+      </div>
+     </div>
+     <div class="grid grid-cols-2 gap-4 p-4 rounded-lg" style="background:rgba(0,167,123,.05)">
+      <div>
+       <div class="text-xs text-gray-400 mb-1" data-i18n="calc_apy">
+        APY
+       </div>
+       <div id="calc-apy" class="text-lg font-mono font-bold" style="color:#00a77b">
+        8.5%
        </div>
       </div>
-      <div class="glass rounded-xl p-5 text-center hover:border-primary/30 transition cursor-default"><i data-lucide="layers" class="w-7 h-7 text-primary mx-auto mb-3"></i>
-       <div class="text-white text-sm font-semibold" data-i18n="uc_2">
-        DeFi
+      <div>
+       <div class="text-xs text-gray-400 mb-1" data-i18n="calc_earn">
+        Estimated Earnings
        </div>
-      </div>
-      <div class="glass rounded-xl p-5 text-center hover:border-primary/30 transition cursor-default"><i data-lucide="bar-chart-2" class="w-7 h-7 text-primary mx-auto mb-3"></i>
-       <div class="text-white text-sm font-semibold" data-i18n="uc_3">
-        Trading
-       </div>
-      </div>
-      <div class="glass rounded-xl p-5 text-center hover:border-primary/30 transition cursor-default"><i data-lucide="piggy-bank" class="w-7 h-7 text-primary mx-auto mb-3"></i>
-       <div class="text-white text-sm font-semibold" data-i18n="uc_4">
-        Savings
+       <div id="calc-earn" class="text-lg font-mono font-bold" style="color:#fff">
+        $850.00
        </div>
       </div>
      </div>
     </div>
-   </section><!-- Tokenomics -->
-   <section class="py-16 px-4 sm:px-6 section-anchor" id="tokenomics">
-    <div class="max-w-5xl mx-auto fade-up">
-     <h2 class="text-2xl sm:text-3xl font-bold text-white text-center mb-2" data-i18n="tok_title">Tokenomics</h2>
-     <p class="text-txt/50 text-sm text-center mb-10" data-i18n="tok_sub">Total Supply: 1,000,000,000 USDI</p>
-     <div class="grid md:grid-cols-2 gap-8 items-center">
-      <div class="flex justify-center">
-       <svg id="donutChart" viewbox="0 0 200 200" width="280" height="280" class="drop-shadow-lg"></svg>
+   </section><!-- LIVE STATS -->
+   <section class="section-fade max-w-7xl mx-auto px-4 py-16">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+     <div class="glass-card p-5 text-center">
+      <div class="text-xs text-gray-400 mb-1" data-i18n="stat_supply">
+       Total Supply
       </div>
-      <div id="tokenLegend" class="space-y-3"><!-- Filled by JS -->
+      <div class="stat-number text-xl font-bold" style="color:#fff" data-target="1000000000" data-prefix="$">
+       $0
+      </div>
+     </div>
+     <div class="glass-card p-5 text-center">
+      <div class="text-xs text-gray-400 mb-1" data-i18n="stat_holders">
+       Holders
+      </div>
+      <div class="stat-number text-xl font-bold" style="color:#fff" data-target="47832">
+       0
+      </div>
+     </div>
+     <div class="glass-card p-5 text-center">
+      <div class="text-xs text-gray-400 mb-1" data-i18n="stat_tx">
+       Transactions
+      </div>
+      <div class="stat-number text-xl font-bold" style="color:#fff" data-target="2156000">
+       0
+      </div>
+     </div>
+     <div class="glass-card p-5 text-center">
+      <div class="text-xs text-gray-400 mb-1" data-i18n="stat_liq">
+       Liquidity
+      </div>
+      <div class="stat-number text-xl font-bold" style="color:#fff" data-target="125000000" data-prefix="$">
+       $0
       </div>
      </div>
     </div>
-   </section><!-- Calculator -->
-   <section class="py-16 px-4 sm:px-6 section-anchor" id="calculator">
-    <div class="max-w-2xl mx-auto fade-up">
-     <h2 class="text-2xl font-bold text-white text-center mb-8" data-i18n="calc_title">Calculator</h2>
-     <div class="glass rounded-2xl p-6 glow">
-      <div class="flex gap-1 mb-6 bg-white/5 rounded-lg p-1"><button class="calc-tab tab-active flex-1 text-sm py-2 rounded-md border border-transparent transition font-medium" data-tab="staking">Staking</button> <button class="calc-tab flex-1 text-sm py-2 rounded-md border border-transparent transition text-txt/50 font-medium" data-tab="liquidity">Liquidity</button> <button class="calc-tab flex-1 text-sm py-2 rounded-md border border-transparent transition text-txt/50 font-medium" data-tab="loyalty">Loyalty</button>
+   </section><!-- LIVE ACTIVITY -->
+   <section class="section-fade max-w-7xl mx-auto px-4 py-12">
+    <h2 class="text-lg font-semibold mb-5" style="color:#fff" data-i18n="activity_title">Live Activity</h2>
+    <div id="activity-feed" class="glass-card p-4 space-y-2 max-h-48 overflow-hidden"></div>
+   </section><!-- WALLETS -->
+   <section class="section-fade max-w-7xl mx-auto px-4 py-12">
+    <h2 class="text-2xl font-bold text-center mb-8" style="color:#fff" data-i18n="wallet_title">Supported Wallets</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+     <div class="glass-card p-5 text-center">
+      <div class="text-sm font-semibold" style="color:#fff">
+       MetaMask
       </div>
-      <div class="space-y-4">
-       <div><label class="text-xs text-txt/50 mb-1 block" data-i18n="calc_amount">Amount (USDI)</label> <input id="calcAmount" type="number" value="10000" min="1" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white font-mono focus:border-primary/50 focus:outline-none transition">
-       </div>
-       <div><label class="text-xs text-txt/50 mb-1 block" data-i18n="calc_period">Period</label>
-        <div class="flex gap-2" id="periodBtns"><button class="period-btn text-xs font-mono px-3 py-2 rounded-md bg-primary/20 text-primary border border-primary/30" data-months="3">3m</button> <button class="period-btn text-xs font-mono px-3 py-2 rounded-md text-txt/50 border border-white/10" data-months="6">6m</button> <button class="period-btn text-xs font-mono px-3 py-2 rounded-md text-txt/50 border border-white/10" data-months="12">12m</button>
-        </div>
-       </div>
-       <div class="bg-white/5 rounded-xl p-4 mt-4">
-        <div class="flex justify-between mb-2">
-         <span class="text-txt/50 text-sm" data-i18n="calc_apy">APY</span><span id="calcApy" class="text-primary font-mono font-bold">8.5%</span>
-        </div>
-        <div class="flex justify-between">
-         <span class="text-txt/50 text-sm" data-i18n="calc_earn">Estimated Earnings</span><span id="calcEarn" class="text-white font-mono font-bold">$212.50</span>
-        </div>
-       </div>
+     </div>
+     <div class="glass-card p-5 text-center">
+      <div class="text-sm font-semibold" style="color:#fff">
+       Trust Wallet
+      </div>
+     </div>
+     <div class="glass-card p-5 text-center">
+      <div class="text-sm font-semibold" style="color:#fff">
+       OKX Wallet
+      </div>
+     </div>
+     <div class="glass-card p-5 text-center">
+      <div class="text-sm font-semibold" style="color:#fff">
+       Phantom
       </div>
      </div>
     </div>
-   </section><!-- Live Stats -->
-   <section class="py-16 px-4 sm:px-6">
-    <div class="max-w-5xl mx-auto fade-up">
-     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="glass rounded-xl p-5 text-center">
-       <div class="text-xs text-txt/40 mb-1" data-i18n="stat_supply">
-        Total Supply
-       </div>
-       <div class="text-xl font-bold text-white font-mono counter" data-target="1000000000" data-prefix="" data-suffix="">
-        0
-       </div>
+   </section><!-- HOW TO BUY -->
+   <section id="buy" class="section-fade max-w-7xl mx-auto px-4 py-16">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-10" style="color:#fff" data-i18n="buy_title">How to Buy</h2>
+    <div class="grid md:grid-cols-2 gap-5 max-w-2xl mx-auto">
+     <div class="glass-card p-6 text-center" style="opacity:.5">
+      <i data-lucide="credit-card" style="width:28px;height:28px;color:#00a77b;margin:0 auto 10px"></i>
+      <div class="text-sm font-semibold mb-1" style="color:#fff" data-i18n="buy_card">
+       Buy with Card
       </div>
-      <div class="glass rounded-xl p-5 text-center">
-       <div class="text-xs text-txt/40 mb-1" data-i18n="stat_holders">
-        Holders
-       </div>
-       <div class="text-xl font-bold text-white font-mono counter" data-target="84521" data-prefix="" data-suffix="">
-        0
-       </div>
+      <div class="text-xs text-gray-500 mb-3" data-i18n="buy_soon">
+       Coming Soon
       </div>
-      <div class="glass rounded-xl p-5 text-center">
-       <div class="text-xs text-txt/40 mb-1" data-i18n="stat_tx">
-        Transactions
-       </div>
-       <div class="text-xl font-bold text-white font-mono counter" data-target="2450000" data-prefix="" data-suffix="">
-        0
-       </div>
-      </div>
-      <div class="glass rounded-xl p-5 text-center">
-       <div class="text-xs text-txt/40 mb-1" data-i18n="stat_liq">
-        Liquidity
-       </div>
-       <div class="text-xl font-bold text-primary font-mono counter" data-target="45200000" data-prefix="$" data-suffix="">
-        0
-       </div>
-      </div>
+     </div>
+     <div class="glass-card p-6 text-center">
+      <i data-lucide="coins" style="width:28px;height:28px;color:#00a77b;margin:0 auto 10px"></i>
+      <div class="text-sm font-semibold mb-2" style="color:#fff" data-i18n="buy_crypto">
+       Buy with Crypto
+      </div><button class="btn-primary text-xs" data-i18n="buy_now">Buy USDI</button>
      </div>
     </div>
-   </section><!-- Live Activity -->
-   <section class="py-8 px-4 sm:px-6">
-    <div class="max-w-3xl mx-auto fade-up">
-     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> <span data-i18n="activity_title">Live Activity</span></h3>
-     <div id="activityFeed" class="glass rounded-xl p-4 space-y-2 max-h-48 overflow-hidden">
-     </div>
-    </div>
-   </section><!-- Wallets -->
-   <section class="py-12 px-4 sm:px-6">
-    <div class="max-w-4xl mx-auto text-center fade-up">
-     <h2 class="text-2xl font-bold text-white mb-8" data-i18n="wallet_title">Supported Wallets</h2>
-     <div class="flex flex-wrap justify-center gap-4">
-      <div class="glass rounded-xl px-6 py-4 flex items-center gap-3 hover:border-primary/30 transition">
-       <div class="w-8 h-8 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 font-bold text-xs">
-        M
-       </div><span class="text-white text-sm font-medium">MetaMask</span>
-      </div>
-      <div class="glass rounded-xl px-6 py-4 flex items-center gap-3 hover:border-primary/30 transition">
-       <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-xs">
-        T
-       </div><span class="text-white text-sm font-medium">Trust Wallet</span>
-      </div>
-      <div class="glass rounded-xl px-6 py-4 flex items-center gap-3 hover:border-primary/30 transition">
-       <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white font-bold text-xs">
-        O
-       </div><span class="text-white text-sm font-medium">OKX Wallet</span>
-      </div>
-      <div class="glass rounded-xl px-6 py-4 flex items-center gap-3 hover:border-primary/30 transition">
-       <div class="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 font-bold text-xs">
-        P
-       </div><span class="text-white text-sm font-medium">Phantom</span>
-      </div>
-     </div>
-    </div>
-   </section><!-- How to Buy -->
-   <section class="py-16 px-4 sm:px-6 section-anchor" id="buy">
-    <div class="max-w-3xl mx-auto fade-up">
-     <h2 class="text-2xl font-bold text-white text-center mb-8" data-i18n="htb_title">How to Buy USDI</h2>
-     <div class="grid sm:grid-cols-2 gap-4">
-      <div class="glass rounded-2xl p-6 text-center opacity-60"><i data-lucide="credit-card" class="w-10 h-10 text-txt/40 mx-auto mb-3"></i>
-       <h3 class="text-white font-semibold mb-1" data-i18n="htb_card">Buy with Card</h3><span class="text-xs text-accent bg-accent/10 px-2 py-0.5 rounded-full" data-i18n="htb_soon">Coming Soon</span>
-      </div>
-      <div class="glass rounded-2xl p-6 text-center hover:border-primary/30 transition"><i data-lucide="bitcoin" class="w-10 h-10 text-primary mx-auto mb-3"></i>
-       <h3 class="text-white font-semibold mb-2" data-i18n="htb_crypto">Buy with Crypto</h3><button class="btn-primary text-white text-sm font-semibold px-6 py-2 rounded-lg" data-i18n="htb_buy_btn">Buy USDI</button>
-      </div>
-     </div>
-    </div>
-   </section><!-- Roadmap -->
-   <section class="py-16 px-4 sm:px-6">
-    <div class="max-w-4xl mx-auto fade-up">
-     <h2 class="text-2xl font-bold text-white text-center mb-10" data-i18n="road_title">Roadmap</h2>
-     <div class="relative">
-      <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-primary/20"></div>
-      <div class="space-y-8" id="roadmapItems">
-       <div class="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-8 fade-up">
-        <div class="md:text-right md:pr-8">
-         <div class="text-primary font-mono text-sm mb-1">
-          Q1 2025
-         </div>
-         <div class="text-white font-semibold text-sm" data-i18n="road_1">
-          Token Launch &amp; Initial Listings
-         </div>
-        </div>
-        <div class="hidden md:block"></div>
-        <div class="absolute left-2 md:left-1/2 md:-translate-x-1/2 top-1 w-4 h-4 rounded-full bg-primary border-2 border-bg2"></div>
-       </div>
-       <div class="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-8 fade-up" style="transition-delay:.15s">
-        <div class="hidden md:block"></div>
-        <div class="md:pl-8">
-         <div class="text-primary font-mono text-sm mb-1">
-          Q2 2025
-         </div>
-         <div class="text-white font-semibold text-sm" data-i18n="road_2">
-          Staking Platform &amp; Cross-chain Bridge
-         </div>
-        </div>
-        <div class="absolute left-2 md:left-1/2 md:-translate-x-1/2 top-1 w-4 h-4 rounded-full bg-primary/40 border-2 border-bg2"></div>
-       </div>
-       <div class="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-8 fade-up" style="transition-delay:.3s">
-        <div class="md:text-right md:pr-8">
-         <div class="text-primary font-mono text-sm mb-1">
-          Q3 2025
-         </div>
-         <div class="text-white font-semibold text-sm" data-i18n="road_3">
-          Internal Exchange &amp; Fiat Gateway
-         </div>
-        </div>
-        <div class="hidden md:block"></div>
-        <div class="absolute left-2 md:left-1/2 md:-translate-x-1/2 top-1 w-4 h-4 rounded-full bg-primary/20 border-2 border-bg2"></div>
-       </div>
-       <div class="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-8 fade-up" style="transition-delay:.45s">
-        <div class="hidden md:block"></div>
-        <div class="md:pl-8">
-         <div class="text-primary font-mono text-sm mb-1">
-          Q4 2025
-         </div>
-         <div class="text-white font-semibold text-sm" data-i18n="road_4">
-          Institutional Partnerships &amp; DAO Governance
-         </div>
-        </div>
-        <div class="absolute left-2 md:left-1/2 md:-translate-x-1/2 top-1 w-4 h-4 rounded-full bg-primary/10 border-2 border-bg2"></div>
-       </div>
-      </div>
-     </div>
+   </section><!-- ROADMAP -->
+   <section class="section-fade max-w-7xl mx-auto px-4 py-16">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-10" style="color:#fff" data-i18n="road_title">Roadmap</h2>
+    <div class="max-w-xl mx-auto relative pl-10" style="min-height:200px">
+     <div class="roadmap-line"></div>
+     <div id="roadmap-items" class="space-y-8"></div>
     </div>
    </section><!-- FAQ -->
-   <section class="py-16 px-4 sm:px-6">
-    <div class="max-w-3xl mx-auto fade-up">
-     <h2 class="text-2xl font-bold text-white text-center mb-8" data-i18n="faq_title">FAQ</h2>
-     <div class="space-y-2" id="faqList">
-      <div class="glass rounded-xl overflow-hidden"><button class="faq-btn w-full text-left px-5 py-4 flex items-center justify-between text-white text-sm font-medium"> <span data-i18n="faq_1_q">What is USDI?</span> <i data-lucide="chevron-down" class="w-4 h-4 text-txt/40 transition-transform"></i> </button>
-       <div class="accordion-content px-5 text-txt/50 text-sm">
-        <p class="pb-4" data-i18n="faq_1_a">USDI is a fully reserve-backed stablecoin pegged 1:1 to the US Dollar, designed for seamless use across multiple blockchain networks.</p>
-       </div>
-      </div>
-      <div class="glass rounded-xl overflow-hidden"><button class="faq-btn w-full text-left px-5 py-4 flex items-center justify-between text-white text-sm font-medium"> <span data-i18n="faq_2_q">How is USDI backed?</span> <i data-lucide="chevron-down" class="w-4 h-4 text-txt/40 transition-transform"></i> </button>
-       <div class="accordion-content px-5 text-txt/50 text-sm">
-        <p class="pb-4" data-i18n="faq_2_a">Every USDI token is backed by USD reserves held in audited accounts, ensuring full collateralization at all times.</p>
-       </div>
-      </div>
-      <div class="glass rounded-xl overflow-hidden"><button class="faq-btn w-full text-left px-5 py-4 flex items-center justify-between text-white text-sm font-medium"> <span data-i18n="faq_3_q">Which networks are supported?</span> <i data-lucide="chevron-down" class="w-4 h-4 text-txt/40 transition-transform"></i> </button>
-       <div class="accordion-content px-5 text-txt/50 text-sm">
-        <p class="pb-4" data-i18n="faq_3_a">USDI is currently available on BNB Smart Chain (BEP-20), TRON (TRC-20), and Solana, with more networks planned.</p>
-       </div>
-      </div>
-      <div class="glass rounded-xl overflow-hidden"><button class="faq-btn w-full text-left px-5 py-4 flex items-center justify-between text-white text-sm font-medium"> <span data-i18n="faq_4_q">How can I earn with USDI?</span> <i data-lucide="chevron-down" class="w-4 h-4 text-txt/40 transition-transform"></i> </button>
-       <div class="accordion-content px-5 text-txt/50 text-sm">
-        <p class="pb-4" data-i18n="faq_4_a">You can stake USDI to earn rewards, provide liquidity for additional yield, and participate in airdrops and loyalty programs.</p>
-       </div>
-      </div>
-     </div>
+   <section class="section-fade max-w-7xl mx-auto px-4 py-16">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-10" style="color:#fff" data-i18n="faq_title">Frequently Asked Questions</h2>
+    <div id="faq-list" class="max-w-2xl mx-auto"></div>
+   </section><!-- TEAM -->
+   <section class="section-fade max-w-7xl mx-auto px-4 py-16">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-10" style="color:#fff" data-i18n="team_title">Team</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto" id="team-grid"></div>
+   </section><!-- COMMUNITY -->
+   <section id="community" class="section-fade max-w-7xl mx-auto px-4 py-16 text-center">
+    <h2 class="text-2xl md:text-3xl font-bold mb-4" style="color:#fff" data-i18n="comm_title">Join the Community</h2>
+    <p class="text-sm text-gray-400 mb-8 max-w-md mx-auto" data-i18n="comm_sub">Stay updated and connect with the Trivest ecosystem.</p>
+    <div class="flex justify-center gap-4">
+     <a href="#" target="_blank" rel="noopener noreferrer" class="glass-card px-6 py-3 flex items-center gap-2 text-sm font-semibold" style="color:#fff"><i data-lucide="twitter" style="width:18px;height:18px;color:#00a77b"></i> Twitter</a> <a href="#" target="_blank" rel="noopener noreferrer" class="glass-card px-6 py-3 flex items-center gap-2 text-sm font-semibold" style="color:#fff"><i data-lucide="send" style="width:18px;height:18px;color:#00a77b"></i> Telegram</a>
     </div>
-   </section><!-- Team -->
-   <section class="py-16 px-4 sm:px-6">
-    <div class="max-w-5xl mx-auto fade-up">
-     <h2 class="text-2xl font-bold text-white text-center mb-8" data-i18n="team_title">Team</h2>
-     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="glass rounded-2xl p-5 text-center hover:border-primary/30 transition">
-       <div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 mx-auto mb-3 flex items-center justify-center text-primary text-2xl font-bold">
-        A
-       </div>
-       <div class="text-white font-semibold text-sm">
-        Alex Morgan
-       </div>
-       <div class="text-primary text-xs mb-2">
-        CEO &amp; Founder
-       </div>
-       <div class="text-txt/40 text-xs">
-        10+ years in fintech &amp; blockchain
-       </div>
-      </div>
-      <div class="glass rounded-2xl p-5 text-center hover:border-primary/30 transition">
-       <div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 mx-auto mb-3 flex items-center justify-center text-primary text-2xl font-bold">
-        S
-       </div>
-       <div class="text-white font-semibold text-sm">
-        Sarah Chen
-       </div>
-       <div class="text-primary text-xs mb-2">
-        CTO
-       </div>
-       <div class="text-txt/40 text-xs">
-        Ex-Binance smart contract lead
-       </div>
-      </div>
-      <div class="glass rounded-2xl p-5 text-center hover:border-primary/30 transition">
-       <div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 mx-auto mb-3 flex items-center justify-center text-primary text-2xl font-bold">
-        D
-       </div>
-       <div class="text-white font-semibold text-sm">
-        David Kim
-       </div>
-       <div class="text-primary text-xs mb-2">
-        Head of Compliance
-       </div>
-       <div class="text-txt/40 text-xs">
-        Former regulatory advisor at SEC
-       </div>
-      </div>
-      <div class="glass rounded-2xl p-5 text-center hover:border-primary/30 transition">
-       <div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 mx-auto mb-3 flex items-center justify-center text-primary text-2xl font-bold">
-        L
-       </div>
-       <div class="text-white font-semibold text-sm">
-        Lisa Petrov
-       </div>
-       <div class="text-primary text-xs mb-2">
-        Head of Growth
-       </div>
-       <div class="text-txt/40 text-xs">
-        Marketing veteran from Circle
-       </div>
-      </div>
-     </div>
+   </section><!-- DISCLAIMER -->
+   <section class="max-w-7xl mx-auto px-4 py-8">
+    <div class="text-xs text-gray-600 text-center max-w-2xl mx-auto leading-relaxed" data-i18n="disclaimer">
+     Disclaimer: USDI is a digital asset and not legal tender. This website does not constitute financial advice. Digital assets involve risks including potential loss of value. Past performance does not guarantee future results. Always conduct your own research.
     </div>
-   </section><!-- Community -->
-   <section class="py-16 px-4 sm:px-6 section-anchor" id="community">
-    <div class="max-w-3xl mx-auto text-center fade-up">
-     <h2 class="text-2xl font-bold text-white mb-4" data-i18n="comm_title">Join the Community</h2>
-     <p class="text-txt/50 text-sm mb-8" data-i18n="comm_sub">Stay updated and connect with the Trivest ecosystem</p>
-     <div class="flex justify-center gap-4"><a href="#" target="_blank" rel="noopener noreferrer" class="glass rounded-xl px-8 py-4 flex items-center gap-3 hover:border-primary/30 transition group"> <i data-lucide="twitter" class="w-5 h-5 text-primary group-hover:scale-110 transition-transform"></i> <span class="text-white text-sm font-medium">Twitter</span> </a> <a href="#" target="_blank" rel="noopener noreferrer" class="glass rounded-xl px-8 py-4 flex items-center gap-3 hover:border-primary/30 transition group"> <i data-lucide="send" class="w-5 h-5 text-primary group-hover:scale-110 transition-transform"></i> <span class="text-white text-sm font-medium">Telegram</span> </a>
+   </section><!-- FOOTER -->
+   <footer class="border-t border-primary/10 mt-8">
+    <div class="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+     <div class="text-xs text-gray-500">
+      © 2025 Trivest USDI. All rights reserved.
      </div>
-    </div>
-   </section><!-- Disclaimer -->
-   <section class="py-8 px-4 sm:px-6 border-t border-white/5">
-    <div class="max-w-4xl mx-auto">
-     <p class="text-txt/30 text-xs text-center leading-relaxed" data-i18n="disclaimer">Disclaimer: USDI is a digital asset and carries inherent risks. Past performance does not guarantee future results. This website does not constitute financial advice. Please conduct your own research before making any investment decisions. Trivest USDI is not available in restricted jurisdictions.</p>
-    </div>
-   </section><!-- Footer -->
-   <footer class="py-8 px-4 sm:px-6 border-t border-white/5">
-    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-     <div class="flex items-center gap-2 text-white font-bold text-sm">
-      <div class="w-6 h-6 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center text-primary text-xs font-bold">
-       U
-      </div> Trivest USDI
-     </div>
-     <div class="flex gap-6 text-xs text-txt/40"><a href="#" class="hover:text-primary transition" data-i18n="footer_terms">Terms of Service</a> <a href="#" class="hover:text-primary transition" data-i18n="footer_privacy">Privacy Policy</a> <a href="#" class="hover:text-primary transition" data-i18n="footer_docs">Documentation</a>
-     </div>
-     <div class="text-xs text-txt/30">
-      © 2025 Trivest. All rights reserved.
+     <div class="flex gap-6 text-xs text-gray-500">
+      <a href="#" class="hover:text-primary transition" data-i18n="footer_privacy">Privacy Policy</a> <a href="#" class="hover:text-primary transition" data-i18n="footer_terms">Terms of Service</a> <a href="#" class="hover:text-primary transition" data-i18n="footer_docs">Documentation</a>
      </div>
     </div>
    </footer>
-  </div><!-- /app --> <!-- Quick Action Panel -->
-  <div class="quick-panel z-50">
-   <div id="quickPanel" class="hidden flex-col gap-2"><a href="#buy" class="btn-primary text-white text-xs font-semibold px-4 py-2 rounded-lg text-center">Buy</a> <a href="#calculator" class="glass text-white text-xs font-medium px-4 py-2 rounded-lg text-center hover:border-primary/30 transition">Stake</a> <a href="#" class="glass text-white text-xs font-medium px-4 py-2 rounded-lg text-center hover:border-primary/30 transition">Docs</a>
-   </div><button id="quickToggle" class="w-12 h-12 rounded-full btn-primary text-white flex items-center justify-center shadow-lg mt-2"> <i data-lucide="plus" class="w-5 h-5"></i> </button>
+  </div><!-- QUICK PANEL -->
+  <div class="quick-panel">
+   <div class="quick-btn glass glow" title="Buy" style="background:rgba(0,167,123,.2)"><i data-lucide="dollar-sign" style="width:18px;height:18px;color:#00a77b"></i>
+   </div>
+   <div class="quick-btn glass" title="Stake" style="background:rgba(15,23,42,.7)"><i data-lucide="trending-up" style="width:18px;height:18px;color:#00a77b"></i>
+   </div>
+   <div class="quick-btn glass" title="Docs" style="background:rgba(15,23,42,.7)"><i data-lucide="file-text" style="width:18px;height:18px;color:#00a77b"></i>
+   </div>
   </div>
   <script>
 // ===== I18N =====
-const translations = {
-  en: {
-    nav_about:'About',nav_benefits:'Benefits',nav_tokenomics:'Tokenomics',nav_calculator:'Calculator',nav_buy:'Buy',nav_community:'Community',nav_buy_btn:'Buy USDI',
-    hero_badge:'Live on BSC, TRC20, Solana',
-    hero_sub:'A fully reserve-backed stablecoin designed for institutional-grade security, deep liquidity, and seamless cross-chain transactions.',
-    hero_buy:'Buy USDI',hero_wp:'Whitepaper',peg_label:'Peg: $1.000',chart_stability:'Stability',
-    trust_1_t:'Reserve-Backed',trust_1_d:'100% collateralized by USD reserves',trust_2_t:'Audited',trust_2_d:'Regular third-party audits',trust_3_t:'High Liquidity',trust_3_d:'Deep pools across DEXs',trust_4_t:'Fast Transactions',trust_4_d:'Sub-second finality',
-    por_title:'Proof of Reserves',por_sub:'Transparent, verifiable collateralization',por_circ:'Circulating: 1,000,000,000 USDI',por_res:'Reserves: $1,020,000,000',por_btn:'View Details',
-    audit_title:'Smart Contract Audit',audit_desc:'Comprehensive audit by leading blockchain security firms. All critical and medium findings resolved.',audit_c1:'No critical issues',audit_c2:'Verified source',audit_btn:'View Report',
-    sec_title:'Security Infrastructure',sec_desc:'Multi-sig wallets, time-locked contracts, and real-time monitoring protect every transaction.',sec_m:'Multi-sig',sec_t:'Timelock',
-    why_title:'Why USDI',why_sub:'Built for the modern DeFi ecosystem',why_1_t:'Staking Rewards',why_1_d:'Earn passive income through flexible staking programs with competitive APY rates.',why_2_t:'Airdrops',why_2_d:'Regular token distributions to active community members and liquidity providers.',why_3_t:'Internal Exchange',why_3_d:'Seamless swaps within the Trivest ecosystem with zero slippage on USDI pairs.',
-    uc_title:'Use Cases',uc_1:'Payments',uc_2:'DeFi',uc_3:'Trading',uc_4:'Savings',
-    tok_title:'Tokenomics',tok_sub:'Total Supply: 1,000,000,000 USDI',
-    calc_title:'Calculator',calc_amount:'Amount (USDI)',calc_period:'Period',calc_apy:'APY',calc_earn:'Estimated Earnings',
-    stat_supply:'Total Supply',stat_holders:'Holders',stat_tx:'Transactions',stat_liq:'Liquidity',
-    activity_title:'Live Activity',
-    wallet_title:'Supported Wallets',
-    htb_title:'How to Buy USDI',htb_card:'Buy with Card',htb_soon:'Coming Soon',htb_crypto:'Buy with Crypto',htb_buy_btn:'Buy USDI',
-    road_title:'Roadmap',road_1:'Token Launch & Initial Listings',road_2:'Staking Platform & Cross-chain Bridge',road_3:'Internal Exchange & Fiat Gateway',road_4:'Institutional Partnerships & DAO Governance',
-    faq_title:'FAQ',faq_1_q:'What is USDI?',faq_1_a:'USDI is a fully reserve-backed stablecoin pegged 1:1 to the US Dollar, designed for seamless use across multiple blockchain networks.',faq_2_q:'How is USDI backed?',faq_2_a:'Every USDI token is backed by USD reserves held in audited accounts, ensuring full collateralization at all times.',faq_3_q:'Which networks are supported?',faq_3_a:'USDI is currently available on BNB Smart Chain (BEP-20), TRON (TRC-20), and Solana, with more networks planned.',faq_4_q:'How can I earn with USDI?',faq_4_a:'You can stake USDI to earn rewards, provide liquidity for additional yield, and participate in airdrops and loyalty programs.',
-    team_title:'Team',comm_title:'Join the Community',comm_sub:'Stay updated and connect with the Trivest ecosystem',
-    disclaimer:'Disclaimer: USDI is a digital asset and carries inherent risks. Past performance does not guarantee future results. This website does not constitute financial advice. Please conduct your own research before making any investment decisions. Trivest USDI is not available in restricted jurisdictions.',
-    footer_terms:'Terms of Service',footer_privacy:'Privacy Policy',footer_docs:'Documentation'
-  },
-  ru: {
-    nav_about:'О проекте',nav_benefits:'Преимущества',nav_tokenomics:'Токеномика',nav_calculator:'Калькулятор',nav_buy:'Купить',nav_community:'Сообщество',nav_buy_btn:'Купить USDI',
-    hero_badge:'Доступен на BSC, TRC20, Solana',
-    hero_sub:'Полностью обеспеченный стейблкоин, разработанный для институциональной безопасности, глубокой ликвидности и бесшовных кросс-чейн транзакций.',
-    hero_buy:'Купить USDI',hero_wp:'Whitepaper',peg_label:'Привязка: $1.000',chart_stability:'Стабильность',
-    trust_1_t:'Обеспечен резервами',trust_1_d:'100% обеспечение в USD',trust_2_t:'Аудит пройден',trust_2_d:'Регулярные проверки',trust_3_t:'Высокая ликвидность',trust_3_d:'Глубокие пулы на DEX',trust_4_t:'Быстрые транзакции',trust_4_d:'Мгновенная финализация',
-    por_title:'Подтверждение резервов',por_sub:'Прозрачная, верифицируемая обеспеченность',por_circ:'В обращении: 1 000 000 000 USDI',por_res:'Резервы: $1 020 000 000',por_btn:'Подробнее',
-    audit_title:'Аудит смарт-контракта',audit_desc:'Комплексный аудит ведущими фирмами в области безопасности блокчейна.',audit_c1:'Нет критических проблем',audit_c2:'Верифицированный код',audit_btn:'Смотреть отчёт',
-    sec_title:'Инфраструктура безопасности',sec_desc:'Мультиподписные кошельки, контракты с таймлоком и мониторинг в реальном времени.',sec_m:'Мультиподпись',sec_t:'Таймлок',
-    why_title:'Почему USDI',why_sub:'Создан для современной DeFi-экосистемы',why_1_t:'Стейкинг',why_1_d:'Получайте пассивный доход через гибкие программы стейкинга.',why_2_t:'Аирдропы',why_2_d:'Регулярные раздачи токенов активным участникам сообщества.',why_3_t:'Внутренняя биржа',why_3_d:'Обмен внутри экосистемы Trivest без проскальзывания.',
-    uc_title:'Применение',uc_1:'Платежи',uc_2:'DeFi',uc_3:'Трейдинг',uc_4:'Сбережения',
-    tok_title:'Токеномика',tok_sub:'Общая эмиссия: 1 000 000 000 USDI',
-    calc_title:'Калькулятор',calc_amount:'Сумма (USDI)',calc_period:'Период',calc_apy:'Годовая доходность',calc_earn:'Ожидаемый доход',
-    stat_supply:'Общая эмиссия',stat_holders:'Холдеры',stat_tx:'Транзакции',stat_liq:'Ликвидность',
-    activity_title:'Активность',
-    wallet_title:'Поддерживаемые кошельки',
-    htb_title:'Как купить USDI',htb_card:'Купить картой',htb_soon:'Скоро',htb_crypto:'Купить за крипто',htb_buy_btn:'Купить USDI',
-    road_title:'Дорожная карта',road_1:'Запуск токена и первичные листинги',road_2:'Платформа стейкинга и кросс-чейн мост',road_3:'Внутренняя биржа и фиатный шлюз',road_4:'Институциональные партнёрства и DAO',
-    faq_title:'Вопросы и ответы',faq_1_q:'Что такое USDI?',faq_1_a:'USDI — полностью обеспеченный стейблкоин, привязанный 1:1 к доллару США, для использования в нескольких блокчейн-сетях.',faq_2_q:'Чем обеспечен USDI?',faq_2_a:'Каждый токен USDI обеспечен резервами в USD на аудированных счетах.',faq_3_q:'Какие сети поддерживаются?',faq_3_a:'USDI доступен на BNB Smart Chain (BEP-20), TRON (TRC-20) и Solana.',faq_4_q:'Как заработать с USDI?',faq_4_a:'Стейкинг, предоставление ликвидности, участие в аирдропах и программах лояльности.',
-    team_title:'Команда',comm_title:'Присоединяйтесь',comm_sub:'Будьте в курсе и станьте частью экосистемы Trivest',
-    disclaimer:'Отказ от ответственности: USDI — цифровой актив, несущий риски. Прошлые результаты не гарантируют будущих. Данный сайт не является финансовой рекомендацией. Проведите собственное исследование перед принятием инвестиционных решений.',
-    footer_terms:'Условия использования',footer_privacy:'Политика конфиденциальности',footer_docs:'Документация'
-  }
+const i18n = {
+en: {
+nav_about:'About',nav_benefits:'Benefits',nav_tokenomics:'Tokenomics',nav_calculator:'Calculator',nav_buy:'Buy',nav_community:'Community',nav_cta:'Buy USDI',
+hero_badge:'Stable. Secure. Scalable.',hero_buy:'Buy USDI',hero_wp:'Whitepaper',
+chart_label:'USDI / USD',chart_range:'24h Range',
+trust_reserve:'Reserve-Backed',trust_reserve_d:'100%+ collateralized',trust_audit:'Audited',trust_audit_d:'Third-party verified',trust_liq:'High Liquidity',trust_liq_d:'Deep order books',trust_fast:'Fast Transactions',trust_fast_d:'Sub-second finality',
+por_label:'Proof of Reserves',por_desc:'All USDI tokens are backed by verifiable reserves exceeding the total circulating supply.',por_btn:'View Details',
+audit_title:'Audit & Security',audit_desc:'Smart contracts audited by leading blockchain security firms. Multi-sig governance and real-time monitoring.',audit_btn:'View Report',
+why_title:'Why USDI',why_sub:'Built for yield generation and ecosystem participation',why_staking:'Staking Rewards',why_staking_d:'Earn passive income by staking USDI with competitive APY rates.',why_airdrop:'Airdrops',why_airdrop_d:'USDI holders receive periodic airdrops and ecosystem incentives.',why_exchange:'Internal Exchange',why_exchange_d:'Swap USDI seamlessly within the Trivest ecosystem at minimal fees.',
+uc_title:'Use Cases',uc_pay:'Payments',uc_defi:'DeFi',uc_trade:'Trading',uc_save:'Savings',
+tok_title:'Tokenomics',tok_sub:'Total Supply: 1,000,000,000 USDI',
+calc_title:'Yield Calculator',calc_staking:'Staking',calc_liq:'Liquidity',calc_loyalty:'Loyalty',calc_amount:'Amount (USDI)',calc_period:'Period (months)',calc_apy:'APY',calc_earn:'Estimated Earnings',
+stat_supply:'Total Supply',stat_holders:'Holders',stat_tx:'Transactions',stat_liq:'Liquidity',
+activity_title:'Live Activity',wallet_title:'Supported Wallets',
+buy_title:'How to Buy',buy_card:'Buy with Card',buy_soon:'Coming Soon',buy_crypto:'Buy with Crypto',buy_now:'Buy USDI',
+road_title:'Roadmap',faq_title:'Frequently Asked Questions',team_title:'Team',
+comm_title:'Join the Community',comm_sub:'Stay updated and connect with the Trivest ecosystem.',
+disclaimer:'Disclaimer: USDI is a digital asset and not legal tender. This website does not constitute financial advice. Digital assets involve risks including potential loss of value. Past performance does not guarantee future results. Always conduct your own research.',
+footer_privacy:'Privacy Policy',footer_terms:'Terms of Service',footer_docs:'Documentation'
+},
+ru: {
+nav_about:'О проекте',nav_benefits:'Преимущества',nav_tokenomics:'Токеномика',nav_calculator:'Калькулятор',nav_buy:'Купить',nav_community:'Сообщество',nav_cta:'Купить USDI',
+hero_badge:'Стабильно. Безопасно. Масштабируемо.',hero_buy:'Купить USDI',hero_wp:'Whitepaper',
+chart_label:'USDI / USD',chart_range:'Диапазон 24ч',
+trust_reserve:'Обеспечен резервами',trust_reserve_d:'100%+ обеспечение',trust_audit:'Аудит пройден',trust_audit_d:'Верификация третьей стороной',trust_liq:'Высокая ликвидность',trust_liq_d:'Глубокие ордербуки',trust_fast:'Быстрые транзакции',trust_fast_d:'Финализация менее секунды',
+por_label:'Подтверждение резервов',por_desc:'Все токены USDI обеспечены верифицируемыми резервами, превышающими общий объём эмиссии.',por_btn:'Подробнее',
+audit_title:'Аудит и безопасность',audit_desc:'Смарт-контракты проверены ведущими фирмами по безопасности блокчейна. Мультисиг-управление и мониторинг 24/7.',audit_btn:'Отчёт',
+why_title:'Почему USDI',why_sub:'Создан для генерации дохода и участия в экосистеме',why_staking:'Стейкинг',why_staking_d:'Пассивный доход от стейкинга USDI с конкурентной APY.',why_airdrop:'Аирдропы',why_airdrop_d:'Держатели USDI получают периодические аирдропы и стимулы.',why_exchange:'Внутренняя биржа',why_exchange_d:'Обмен USDI внутри экосистемы Trivest с минимальными комиссиями.',
+uc_title:'Варианты использования',uc_pay:'Платежи',uc_defi:'DeFi',uc_trade:'Трейдинг',uc_save:'Накопления',
+tok_title:'Токеномика',tok_sub:'Общий выпуск: 1 000 000 000 USDI',
+calc_title:'Калькулятор доходности',calc_staking:'Стейкинг',calc_liq:'Ликвидность',calc_loyalty:'Лояльность',calc_amount:'Сумма (USDI)',calc_period:'Период (месяцев)',calc_apy:'APY',calc_earn:'Ориентировочный доход',
+stat_supply:'Общий выпуск',stat_holders:'Держатели',stat_tx:'Транзакции',stat_liq:'Ликвидность',
+activity_title:'Последняя активность',wallet_title:'Поддерживаемые кошельки',
+buy_title:'Как купить',buy_card:'Купить картой',buy_soon:'Скоро',buy_crypto:'Купить за крипту',buy_now:'Купить USDI',
+road_title:'Дорожная карта',faq_title:'Часто задаваемые вопросы',team_title:'Команда',
+comm_title:'Присоединяйтесь к сообществу',comm_sub:'Следите за новостями экосистемы Trivest.',
+disclaimer:'Отказ от ответственности: USDI — цифровой актив, не являющийся законным платёжным средством. Данный сайт не является финансовой консультацией. Цифровые активы сопряжены с рисками, включая возможную потерю стоимости.',
+footer_privacy:'Политика конфиденциальности',footer_terms:'Условия использования',footer_docs:'Документация'
+}
 };
 let currentLang = 'en';
-function setLang(lang) {
-  currentLang = lang;
-  document.getElementById('langToggle').textContent = lang.toUpperCase();
-  const t = translations[lang];
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (t[key]) el.textContent = t[key];
-  });
+
+function applyLang(lang) {
+currentLang = lang;
+document.querySelectorAll('[data-i18n]').forEach(el => {
+const key = el.getAttribute('data-i18n');
+if (i18n[lang][key]) el.textContent = i18n[lang][key];
+});
+document.getElementById('lang-toggle').textContent = lang.toUpperCase() === 'EN' ? 'RU' : 'EN';
 }
-document.getElementById('langToggle').addEventListener('click', () => {
-  setLang(currentLang === 'en' ? 'ru' : 'en');
+
+document.getElementById('lang-toggle').addEventListener('click', () => {
+applyLang(currentLang === 'en' ? 'ru' : 'en');
 });
 
-// ===== BLOCKCHAIN BG =====
-const canvas = document.getElementById('bgCanvas');
+// ===== BLOCKCHAIN CANVAS =====
+const canvas = document.getElementById('blockchain-canvas');
 const ctx = canvas.getContext('2d');
-let mouseX = 0, mouseY = 0, nodes = [];
-function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; initNodes(); }
-function initNodes() {
-  nodes = [];
-  const count = Math.min(60, Math.floor((canvas.width * canvas.height) / 25000));
-  for (let i = 0; i < count; i++) {
-    nodes.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3, r: Math.random() * 2 + 1 });
-  }
+let mouseX = 0, mouseY = 0;
+let nodes = [];
+
+function resizeCanvas() {
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 }
-function drawBg() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  nodes.forEach(n => {
-    n.x += n.vx; n.y += n.vy;
-    // Mouse repulsion
-    const dx = n.x - mouseX, dy = n.y - mouseY, dist = Math.sqrt(dx*dx + dy*dy);
-    if (dist < 150) { n.vx += dx / dist * 0.05; n.vy += dy / dist * 0.05; }
-    if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
-    if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
-    n.vx *= 0.999; n.vy *= 0.999;
-  });
-  // Connections
-  for (let i = 0; i < nodes.length; i++) {
-    for (let j = i + 1; j < nodes.length; j++) {
-      const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y, d = Math.sqrt(dx*dx + dy*dy);
-      if (d < 150) {
-        ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y);
-        ctx.strokeStyle = `rgba(0,167,123,${(1 - d / 150) * 0.12})`; ctx.lineWidth = 0.5; ctx.stroke();
-      }
-    }
-  }
-  // Nodes
-  nodes.forEach(n => {
-    ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(0,167,123,0.25)'; ctx.fill();
-  });
-  requestAnimationFrame(drawBg);
-}
+resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
-resizeCanvas(); drawBg();
+
+function initNodes() {
+nodes = [];
+const count = Math.min(60, Math.floor(window.innerWidth * window.innerHeight / 20000));
+for (let i = 0; i < count; i++) {
+nodes.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - .5) * .3, vy: (Math.random() - .5) * .3, r: Math.random() * 2 + 1 });
+}
+}
+initNodes();
+
+function drawNodes() {
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+const maxDist = 150;
+nodes.forEach(n => {
+n.x += n.vx; n.y += n.vy;
+if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
+if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
+const dx = mouseX - n.x, dy = mouseY - n.y, d = Math.sqrt(dx*dx+dy*dy);
+if (d < 200) { n.x -= dx * .003; n.y -= dy * .003; }
+});
+for (let i = 0; i < nodes.length; i++) {
+for (let j = i + 1; j < nodes.length; j++) {
+const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y, d = Math.sqrt(dx*dx+dy*dy);
+if (d < maxDist) {
+ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y);
+ctx.strokeStyle = `rgba(0,167,123,${.08 * (1 - d/maxDist)})`; ctx.lineWidth = .5; ctx.stroke();
+}
+}
+}
+nodes.forEach(n => {
+ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+ctx.fillStyle = 'rgba(0,167,123,.25)'; ctx.fill();
+});
+requestAnimationFrame(drawNodes);
+}
+drawNodes();
 
 // ===== PEG CHART =====
+const pegCanvas = document.getElementById('peg-chart');
+const pCtx = pegCanvas.getContext('2d');
+let pegData = [];
+for (let i = 0; i < 100; i++) pegData.push(.9995 + Math.random() * .001 + Math.sin(i * .1) * .0003);
+
 function drawPegChart() {
-  const c = document.getElementById('pegChart');
-  const cx = c.getContext('2d');
-  const W = c.width = c.offsetWidth * 2; const H = c.height = 360;
-  cx.scale(1, 1);
-  const points = [];
-  const numPoints = 80;
-  let seed = Date.now();
-  for (let i = 0; i < numPoints; i++) {
-    seed = (seed * 16807 + 12345) % 2147483647;
-    const val = 1.0 + (((seed % 1000) / 1000) - 0.5) * 0.012;
-    points.push(val);
-  }
-  // Animate last point
-  const time = Date.now() / 2000;
-  points[numPoints - 1] = 1.0 + Math.sin(time) * 0.003;
-
-  const minV = 0.993, maxV = 1.007;
-  const padL = 50, padR = 10, padT = 20, padB = 30;
-  const chartW = W - padL - padR, chartH = H - padT - padB;
-
-  cx.clearRect(0, 0, W, H);
-
-  // Grid
-  [0.995, 1.0, 1.005].forEach(v => {
-    const y = padT + chartH - ((v - minV) / (maxV - minV)) * chartH;
-    cx.beginPath(); cx.moveTo(padL, y); cx.lineTo(W - padR, y);
-    cx.strokeStyle = 'rgba(255,255,255,0.04)'; cx.lineWidth = 1; cx.stroke();
-    cx.fillStyle = 'rgba(255,255,255,0.2)'; cx.font = '18px JetBrains Mono';
-    cx.fillText(v.toFixed(3), 2, y + 5);
-  });
-
-  // Line
-  cx.beginPath();
-  points.forEach((v, i) => {
-    const x = padL + (i / (numPoints - 1)) * chartW;
-    const y = padT + chartH - ((v - minV) / (maxV - minV)) * chartH;
-    i === 0 ? cx.moveTo(x, y) : cx.lineTo(x, y);
-  });
-  cx.strokeStyle = '#00a77b'; cx.lineWidth = 2; cx.stroke();
-
-  // Gradient fill
-  const lastX = padL + chartW;
-  const grad = cx.createLinearGradient(0, padT, 0, padT + chartH);
-  grad.addColorStop(0, 'rgba(0,167,123,0.15)'); grad.addColorStop(1, 'rgba(0,167,123,0)');
-  cx.lineTo(lastX, padT + chartH); cx.lineTo(padL, padT + chartH); cx.closePath();
-  cx.fillStyle = grad; cx.fill();
-
-  // Pulse dot on last point
-  const lv = points[numPoints - 1];
-  const lx = lastX, ly = padT + chartH - ((lv - minV) / (maxV - minV)) * chartH;
-  cx.beginPath(); cx.arc(lx, ly, 5, 0, Math.PI * 2); cx.fillStyle = '#00a77b'; cx.fill();
-  cx.beginPath(); cx.arc(lx, ly, 10, 0, Math.PI * 2); cx.fillStyle = 'rgba(0,167,123,0.2)'; cx.fill();
-}
-setInterval(drawPegChart, 1000);
-drawPegChart();
-
-// ===== NETWORK SWITCH =====
-document.getElementById('networkSwitch').addEventListener('click', e => {
-  const btn = e.target.closest('.net-btn');
-  if (!btn) return;
-  document.querySelectorAll('.net-btn').forEach(b => { b.className = 'net-btn text-xs font-mono px-3 py-1 rounded-md text-txt/50 border border-white/10 hover:border-primary/30 transition'; });
-  btn.className = 'net-btn text-xs font-mono px-3 py-1 rounded-md bg-primary/20 text-primary border border-primary/30';
+const w = pegCanvas.width, h = pegCanvas.height;
+pCtx.clearRect(0, 0, w, h);
+const min = .998, max = 1.002, range = max - min;
+// grid
+pCtx.strokeStyle = 'rgba(0,167,123,.06)'; pCtx.lineWidth = .5;
+for (let i = 0; i < 5; i++) { const y = (i/4)*h; pCtx.beginPath(); pCtx.moveTo(0,y); pCtx.lineTo(w,y); pCtx.stroke(); }
+// line
+const grad = pCtx.createLinearGradient(0, 0, w, 0);
+grad.addColorStop(0, '#00a77b'); grad.addColorStop(1, '#00d4a0');
+pCtx.beginPath();
+pegData.forEach((v, i) => {
+const x = (i / (pegData.length - 1)) * w, y = h - ((v - min) / range) * h;
+i === 0 ? pCtx.moveTo(x, y) : pCtx.lineTo(x, y);
 });
+pCtx.strokeStyle = grad; pCtx.lineWidth = 1.5; pCtx.stroke();
+// fill
+pCtx.lineTo(w, h); pCtx.lineTo(0, h); pCtx.closePath();
+const fg = pCtx.createLinearGradient(0, 0, 0, h);
+fg.addColorStop(0, 'rgba(0,167,123,.12)'); fg.addColorStop(1, 'rgba(0,167,123,0)');
+pCtx.fillStyle = fg; pCtx.fill();
+}
+drawPegChart();
+setInterval(() => {
+pegData.shift();
+pegData.push(.9995 + Math.random() * .001 + Math.sin(Date.now() * .001) * .0003);
+drawPegChart();
+}, 2000);
+
+// Network switch
+document.querySelectorAll('.network-btn').forEach(btn => {
+btn.addEventListener('click', () => {
+document.querySelectorAll('.network-btn').forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+});
+});
+
+// ===== PARTNERS =====
+const partners = ['PancakeSwap','Binance','CoinGecko','CoinMarketCap','DeFiLlama','Certik'];
+['partner-set-1','partner-set-2'].forEach(id => {
+const el = document.getElementById(id);
+partners.forEach(p => {
+const s = document.createElement('span');
+s.className = 'text-sm font-semibold whitespace-nowrap';
+s.style.cssText = 'color:rgba(255,255,255,.2);font-family:DM Sans,sans-serif;letter-spacing:2px;text-transform:uppercase;';
+s.textContent = p;
+el.appendChild(s);
+});
+});
+
+// ===== RESERVE BAR =====
+setTimeout(() => { document.getElementById('reserve-bar').style.width = '100%'; }, 800);
 
 // ===== DONUT CHART =====
-const tokenData = [
-  { label: 'Liquidity', pct: 40, color: '#00a77b' },
-  { label: 'Reserves', pct: 25, color: '#008f69' },
-  { label: 'Staking', pct: 15, color: '#00d4a0' },
-  { label: 'Team', pct: 10, color: '#0e7a5e' },
-  { label: 'Marketing', pct: 10, color: '#004d3a' }
+const tokData = [
+{label:'Liquidity',pct:40,color:'#00a77b'},
+{label:'Reserves',pct:25,color:'#00d4a0'},
+{label:'Staking',pct:15,color:'#007a5a'},
+{label:'Team',pct:10,color:'#005940'},
+{label:'Marketing',pct:10,color:'#f7e1d7'}
 ];
-let hoveredSegment = -1;
+const dCanvas = document.getElementById('donut-chart');
+const dCtx = dCanvas.getContext('2d');
+let hoveredSeg = -1;
+let animProgress = 0;
+
 function drawDonut() {
-  const svg = document.getElementById('donutChart');
-  svg.innerHTML = '';
-  const cx = 100, cy = 100, R = 80, r = 50;
-  let startAngle = -Math.PI / 2;
-  tokenData.forEach((seg, i) => {
-    const angle = (seg.pct / 100) * Math.PI * 2;
-    const endAngle = startAngle + angle;
-    const grow = hoveredSegment === i ? 6 : 0;
-    const midA = startAngle + angle / 2;
-    const ox = grow ? Math.cos(midA) * 4 : 0;
-    const oy = grow ? Math.sin(midA) * 4 : 0;
-    const outerR = R + grow;
-
-    const x1 = cx + ox + Math.cos(startAngle) * outerR;
-    const y1 = cy + oy + Math.sin(startAngle) * outerR;
-    const x2 = cx + ox + Math.cos(endAngle) * outerR;
-    const y2 = cy + oy + Math.sin(endAngle) * outerR;
-    const x3 = cx + ox + Math.cos(endAngle) * r;
-    const y3 = cy + oy + Math.sin(endAngle) * r;
-    const x4 = cx + ox + Math.cos(startAngle) * r;
-    const y4 = cy + oy + Math.sin(startAngle) * r;
-    const large = angle > Math.PI ? 1 : 0;
-
-    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
-    path.setAttribute('d', `M${x1},${y1} A${outerR},${outerR} 0 ${large} 1 ${x2},${y2} L${x3},${y3} A${r},${r} 0 ${large} 0 ${x4},${y4} Z`);
-    path.setAttribute('fill', seg.color);
-    path.setAttribute('class', 'chart-segment');
-    path.setAttribute('data-idx', i);
-    path.style.opacity = hoveredSegment >= 0 && hoveredSegment !== i ? 0.5 : 1;
-    svg.appendChild(path);
-
-    // Tooltip on hover
-    if (hoveredSegment === i) {
-      const tx = cx + ox + Math.cos(midA) * ((outerR + r) / 2);
-      const ty = cy + oy + Math.sin(midA) * ((outerR + r) / 2);
-      const text = document.createElementNS('http://www.w3.org/2000/svg','text');
-      text.setAttribute('x', tx); text.setAttribute('y', ty);
-      text.setAttribute('text-anchor','middle'); text.setAttribute('dominant-baseline','middle');
-      text.setAttribute('fill','white'); text.setAttribute('font-size','11'); text.setAttribute('font-weight','bold');
-      text.textContent = seg.pct + '%';
-      svg.appendChild(text);
-    }
-    startAngle = endAngle;
-  });
-  // Center text
-  const ct = document.createElementNS('http://www.w3.org/2000/svg','text');
-  ct.setAttribute('x',cx); ct.setAttribute('y',cy-6); ct.setAttribute('text-anchor','middle');
-  ct.setAttribute('fill','white'); ct.setAttribute('font-size','14'); ct.setAttribute('font-weight','bold');
-  ct.textContent = '1B';
-  svg.appendChild(ct);
-  const ct2 = document.createElementNS('http://www.w3.org/2000/svg','text');
-  ct2.setAttribute('x',cx); ct2.setAttribute('y',cy+10); ct2.setAttribute('text-anchor','middle');
-  ct2.setAttribute('fill','rgba(220,220,220,0.4)'); ct2.setAttribute('font-size','9');
-  ct2.textContent = 'USDI';
-  svg.appendChild(ct2);
-}
-document.getElementById('donutChart').addEventListener('mousemove', e => {
-  const el = e.target.closest('.chart-segment');
-  hoveredSegment = el ? parseInt(el.dataset.idx) : -1;
-  drawDonut(); updateLegend();
+const cx = 130, cy = 130, r = 100, inner = 60;
+dCtx.clearRect(0, 0, 260, 260);
+let angle = -Math.PI / 2;
+const drawAngle = animProgress * Math.PI * 2;
+tokData.forEach((d, i) => {
+const sweep = (d.pct / 100) * Math.PI * 2;
+const actualSweep = Math.min(sweep, Math.max(0, drawAngle - (angle + Math.PI/2)));
+if (actualSweep <= 0) { angle += sweep; return; }
+const isHov = i === hoveredSeg;
+const offset = isHov ? 6 : 0;
+const mid = angle + sweep / 2;
+const ox = Math.cos(mid) * offset, oy = Math.sin(mid) * offset;
+dCtx.beginPath();
+dCtx.arc(cx + ox, cy + oy, r, angle, angle + actualSweep);
+dCtx.arc(cx + ox, cy + oy, inner, angle + actualSweep, angle, true);
+dCtx.closePath();
+dCtx.fillStyle = d.color;
+if (isHov) dCtx.shadowColor = d.color, dCtx.shadowBlur = 16;
+else dCtx.shadowBlur = 0;
+dCtx.fill();
+dCtx.shadowBlur = 0;
+angle += sweep;
 });
-document.getElementById('donutChart').addEventListener('mouseleave', () => { hoveredSegment = -1; drawDonut(); updateLegend(); });
-
-function updateLegend() {
-  const container = document.getElementById('tokenLegend');
-  container.innerHTML = '';
-  tokenData.forEach((seg, i) => {
-    const active = hoveredSegment === i;
-    const div = document.createElement('div');
-    div.className = `flex items-center gap-3 p-3 rounded-lg transition cursor-pointer ${active ? 'bg-white/5' : ''}`;
-    div.innerHTML = `<div class="w-3 h-3 rounded-full flex-shrink-0" style="background:${seg.color}"></div><div class="flex-1"><div class="text-white text-sm font-medium">${seg.label}</div></div><div class="text-primary font-mono font-bold text-sm">${seg.pct}%</div>`;
-    div.addEventListener('mouseenter', () => { hoveredSegment = i; drawDonut(); updateLegend(); });
-    div.addEventListener('mouseleave', () => { hoveredSegment = -1; drawDonut(); updateLegend(); });
-    container.appendChild(div);
-  });
 }
-drawDonut(); updateLegend();
+
+function animateDonut() {
+if (animProgress < 1) { animProgress += .02; drawDonut(); requestAnimationFrame(animateDonut); }
+else { animProgress = 1; drawDonut(); }
+}
+
+dCanvas.addEventListener('mousemove', e => {
+const rect = dCanvas.getBoundingClientRect();
+const x = (e.clientX - rect.left) * (260/rect.width) - 130;
+const y = (e.clientY - rect.top) * (260/rect.height) - 130;
+const dist = Math.sqrt(x*x + y*y);
+const tooltip = document.getElementById('tok-tooltip');
+if (dist < 100 && dist > 60) {
+let ang = Math.atan2(y, x) + Math.PI/2; if (ang < 0) ang += Math.PI*2;
+let cum = 0;
+hoveredSeg = -1;
+for (let i = 0; i < tokData.length; i++) {
+cum += tokData[i].pct / 100;
+if (ang <= cum * Math.PI * 2) { hoveredSeg = i; break; }
+}
+if (hoveredSeg >= 0) {
+tooltip.classList.remove('hidden');
+tooltip.innerHTML = `<span style="color:${tokData[hoveredSeg].color}">${tokData[hoveredSeg].label}</span>: ${tokData[hoveredSeg].pct}%`;
+tooltip.style.left = e.clientX + 12 + 'px';
+tooltip.style.top = e.clientY - 20 + 'px';
+}
+} else { hoveredSeg = -1; tooltip.classList.add('hidden'); }
+drawDonut();
+});
+dCanvas.addEventListener('mouseleave', () => { hoveredSeg = -1; drawDonut(); document.getElementById('tok-tooltip').classList.add('hidden'); });
+
+// Legend
+const legend = document.getElementById('tok-legend');
+tokData.forEach(d => {
+const div = document.createElement('div');
+div.className = 'flex items-center gap-3';
+div.innerHTML = `<span style="width:12px;height:12px;border-radius:3px;background:${d.color};display:inline-block"></span><span class="text-sm" style="color:#fff">${d.label}</span><span class="text-sm font-mono text-gray-400">${d.pct}%</span>`;
+legend.appendChild(div);
+});
 
 // ===== CALCULATOR =====
-const apyRates = { staking: { 3: 8.5, 6: 12, 12: 18 }, liquidity: { 3: 12, 6: 18, 12: 25 }, loyalty: { 3: 5, 6: 8, 12: 12 } };
-let calcTab = 'staking', calcMonths = 3;
+const apyRates = { staking: 8.5, liquidity: 12, loyalty: 5 };
+let calcTab = 'staking';
+document.querySelectorAll('.tab-btn').forEach(btn => {
+btn.addEventListener('click', () => {
+document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+calcTab = btn.dataset.tab;
+updateCalc();
+});
+});
+const amtInput = document.getElementById('calc-amount');
+const periodInput = document.getElementById('calc-period');
+amtInput.addEventListener('input', updateCalc);
+periodInput.addEventListener('input', () => {
+document.getElementById('calc-period-val').textContent = periodInput.value;
+updateCalc();
+});
 function updateCalc() {
-  const amt = parseFloat(document.getElementById('calcAmount').value) || 0;
-  const apy = apyRates[calcTab][calcMonths];
-  const earnings = amt * (apy / 100) * (calcMonths / 12);
-  document.getElementById('calcApy').textContent = apy + '%';
-  document.getElementById('calcEarn').textContent = '$' + earnings.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+const amt = parseFloat(amtInput.value) || 0;
+const months = parseInt(periodInput.value);
+const apy = apyRates[calcTab];
+const earn = amt * (apy/100) * (months/12);
+document.getElementById('calc-apy').textContent = apy + '%';
+document.getElementById('calc-earn').textContent = '$' + earn.toFixed(2);
 }
-document.querySelectorAll('.calc-tab').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.calc-tab').forEach(b => b.className = 'calc-tab flex-1 text-sm py-2 rounded-md border border-transparent transition text-txt/50 font-medium');
-    btn.className = 'calc-tab tab-active flex-1 text-sm py-2 rounded-md border border-transparent transition font-medium';
-    calcTab = btn.dataset.tab; updateCalc();
-  });
-});
-document.querySelectorAll('.period-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.period-btn').forEach(b => b.className = 'period-btn text-xs font-mono px-3 py-2 rounded-md text-txt/50 border border-white/10');
-    btn.className = 'period-btn text-xs font-mono px-3 py-2 rounded-md bg-primary/20 text-primary border border-primary/30';
-    calcMonths = parseInt(btn.dataset.months); updateCalc();
-  });
-});
-document.getElementById('calcAmount').addEventListener('input', updateCalc);
 updateCalc();
 
-// ===== COUNTERS =====
+// ===== STAT COUNTERS =====
+let statsAnimated = false;
 function animateCounters() {
-  document.querySelectorAll('.counter').forEach(el => {
-    const target = parseInt(el.dataset.target);
-    const prefix = el.dataset.prefix || '';
-    const duration = 2000;
-    const start = performance.now();
-    function step(now) {
-      const elapsed = now - start;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      const val = Math.floor(eased * target);
-      el.textContent = prefix + val.toLocaleString();
-      if (progress < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  });
+if (statsAnimated) return; statsAnimated = true;
+document.querySelectorAll('.stat-number').forEach(el => {
+const target = parseInt(el.dataset.target);
+const prefix = el.dataset.prefix || '';
+const dur = 2000;
+const start = Date.now();
+function tick() {
+const p = Math.min(1, (Date.now() - start) / dur);
+const ease = 1 - Math.pow(1 - p, 3);
+const val = Math.floor(target * ease);
+el.textContent = prefix + val.toLocaleString();
+if (p < 1) requestAnimationFrame(tick);
+}
+tick();
+});
 }
 
-// ===== LIVE ACTIVITY =====
-const activityTypes = [
-  { action: 'Bought', amounts: ['1,000', '5,000', '10,000', '25,000', '50,000'] },
-  { action: 'Staked', amounts: ['2,500', '10,000', '50,000', '100,000'] },
-  { action: 'Transferred', amounts: ['500', '2,000', '15,000', '30,000'] }
-];
-const wallets = ['0x7a3...f82', '0xb1e...c41', '0x3f9...d27', '0x8c2...a15', '0xe4d...b93', '0x1f6...e08'];
+// ===== ACTIVITY FEED =====
+const activityTypes = ['Swap','Transfer','Stake','Mint'];
+const wallets = ['0x7a3B','0x1fC9','0x9e2D','0xaB47','0x3c8F'];
 function addActivity() {
-  const feed = document.getElementById('activityFeed');
-  const type = activityTypes[Math.floor(Math.random() * activityTypes.length)];
-  const amount = type.amounts[Math.floor(Math.random() * type.amounts.length)];
-  const wallet = wallets[Math.floor(Math.random() * wallets.length)];
-  const item = document.createElement('div');
-  item.className = 'activity-item flex items-center justify-between py-2 border-b border-white/5 last:border-0';
-  item.innerHTML = `<div class="flex items-center gap-2"><span class="text-xs font-mono text-txt/40">${wallet}</span><span class="text-xs text-primary font-medium">${type.action}</span></div><span class="text-xs font-mono text-white">${amount} USDI</span>`;
-  feed.prepend(item);
-  if (feed.children.length > 6) feed.lastChild.remove();
+const feed = document.getElementById('activity-feed');
+const type = activityTypes[Math.floor(Math.random()*activityTypes.length)];
+const wallet = wallets[Math.floor(Math.random()*wallets.length)];
+const amt = (Math.random()*50000+100).toFixed(0);
+const div = document.createElement('div');
+div.className = 'activity-item flex items-center justify-between text-xs py-1.5';
+div.innerHTML = `<span class="font-mono text-gray-500">${wallet}...${Math.random().toString(36).substr(2,4)}</span><span style="color:#00a77b">${type}</span><span class="font-mono" style="color:#fff">${Number(amt).toLocaleString()} USDI</span>`;
+feed.prepend(div);
+if (feed.children.length > 8) feed.lastChild.remove();
 }
-for (let i = 0; i < 4; i++) addActivity();
+for (let i = 0; i < 5; i++) addActivity();
 setInterval(addActivity, 4000);
 
+// ===== ROADMAP =====
+const roadmap = [
+{q:'Q1 2025',title:'Token Launch',desc:'USDI token deployed on BEP20',done:true},
+{q:'Q2 2025',title:'Multi-Chain Expansion',desc:'TRC20 and Solana deployment',done:true},
+{q:'Q3 2025',title:'Staking Platform',desc:'Launch staking with competitive APY',done:false},
+{q:'Q4 2025',title:'Card Payments',desc:'Fiat on-ramp integration',done:false},
+{q:'Q1 2026',title:'Institutional API',desc:'Enterprise-grade integration layer',done:false}
+];
+const rmContainer = document.getElementById('roadmap-items');
+roadmap.forEach(r => {
+const div = document.createElement('div');
+div.className = 'relative pl-8';
+div.innerHTML = `<div class="roadmap-dot ${r.done?'':'future'}"></div><div class="text-xs font-mono mb-1" style="color:#00a77b">${r.q}</div><div class="text-sm font-semibold mb-1" style="color:${r.done?'#fff':'#666'}">${r.title}</div><div class="text-xs text-gray-500">${r.desc}</div>`;
+rmContainer.appendChild(div);
+});
+
 // ===== FAQ =====
-document.querySelectorAll('.faq-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const content = btn.nextElementSibling;
-    const icon = btn.querySelector('i');
-    const isOpen = content.classList.contains('open');
-    document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('open'));
-    document.querySelectorAll('.faq-btn i').forEach(i => i.style.transform = '');
-    if (!isOpen) { content.classList.add('open'); icon.style.transform = 'rotate(180deg)'; }
-  });
+const faqs = [
+{q:'What is USDI?',a:'USDI is a USD-pegged stablecoin issued by Trivest, fully backed by verifiable reserves and audited by third-party firms.',qr:'Что такое USDI?',ar:'USDI — стейблкоин, привязанный к доллару США, выпущенный Trivest, полностью обеспеченный верифицируемыми резервами.'},
+{q:'How is USDI backed?',a:'USDI maintains a reserve ratio above 100%, with assets held in regulated custodial accounts and verified through periodic audits.',qr:'Как обеспечен USDI?',ar:'USDI поддерживает коэффициент резервирования выше 100%, активы хранятся на регулируемых кастодиальных счетах.'},
+{q:'Which networks support USDI?',a:'USDI is available on BNB Chain (BEP20), TRON (TRC20), and Solana, with more chains planned.',qr:'Какие сети поддерживают USDI?',ar:'USDI доступен на BNB Chain (BEP20), TRON (TRC20) и Solana, с планами на расширение.'},
+{q:'How can I earn yield?',a:'You can earn passive income through staking, liquidity provision, and the loyalty rewards program.',qr:'Как заработать на USDI?',ar:'Вы можете получать пассивный доход через стейкинг, предоставление ликвидности и программу лояльности.'}
+];
+const faqList = document.getElementById('faq-list');
+faqs.forEach((f,i) => {
+const div = document.createElement('div');
+div.className = 'faq-item py-4 cursor-pointer';
+div.innerHTML = `<div class="flex items-center justify-between"><span class="text-sm font-semibold" style="color:#fff" data-faq-q="${i}">${f.q}</span><i data-lucide="chevron-down" class="faq-chevron" style="width:16px;height:16px;color:#00a77b"></i></div><div class="faq-answer"><p class="text-sm text-gray-400 pt-3" data-faq-a="${i}">${f.a}</p></div>`;
+div.addEventListener('click', () => div.classList.toggle('open'));
+faqList.appendChild(div);
 });
 
-// ===== MOBILE MENU =====
-document.getElementById('mobileMenuBtn').addEventListener('click', () => {
-  document.getElementById('mobileMenu').classList.toggle('hidden');
+// Update FAQ lang
+function updateFaqLang(lang) {
+faqs.forEach((f,i) => {
+const qEl = document.querySelector(`[data-faq-q="${i}"]`);
+const aEl = document.querySelector(`[data-faq-a="${i}"]`);
+if (qEl) qEl.textContent = lang === 'ru' ? f.qr : f.q;
+if (aEl) aEl.textContent = lang === 'ru' ? f.ar : f.a;
 });
-document.querySelectorAll('#mobileMenu a').forEach(a => {
-  a.addEventListener('click', () => document.getElementById('mobileMenu').classList.add('hidden'));
+}
+const origApplyLang = applyLang;
+// Override
+window.applyLangWithFaq = function(lang) {
+origApplyLang(lang);
+updateFaqLang(lang);
+};
+document.getElementById('lang-toggle').removeEventListener('click', () => {});
+document.getElementById('lang-toggle').addEventListener('click', () => {
+const newLang = currentLang === 'en' ? 'ru' : 'en';
+applyLang(newLang);
+updateFaqLang(newLang);
 });
 
-// ===== QUICK PANEL =====
-document.getElementById('quickToggle').addEventListener('click', () => {
-  const panel = document.getElementById('quickPanel');
-  const isHidden = panel.classList.contains('hidden');
-  panel.classList.toggle('hidden'); panel.classList.toggle('flex');
-  const icon = document.querySelector('#quickToggle i');
-  icon.setAttribute('data-lucide', isHidden ? 'x' : 'plus');
-  lucide.createIcons();
+// ===== TEAM =====
+const team = [
+{name:'Alexander Voronov',role:'CEO & Founder',initials:'AV'},
+{name:'Elena Petrova',role:'CTO',initials:'EP'},
+{name:'Marcus Chen',role:'Head of DeFi',initials:'MC'},
+{name:'Sarah Williams',role:'Head of Compliance',initials:'SW'}
+];
+const teamGrid = document.getElementById('team-grid');
+team.forEach(t => {
+const div = document.createElement('div');
+div.className = 'glass-card p-5 text-center';
+div.innerHTML = `<div class="w-14 h-14 rounded-full mx-auto mb-3 flex items-center justify-center font-bold text-sm" style="background:rgba(0,167,123,.15);color:#00a77b">${t.initials}</div><div class="text-sm font-semibold mb-1" style="color:#fff">${t.name}</div><div class="text-xs text-gray-400">${t.role}</div>`;
+teamGrid.appendChild(div);
 });
 
 // ===== SCROLL EFFECTS =====
-const appEl = document.getElementById('app');
-let countersAnimated = false;
-let reserveAnimated = false;
+const wrapper = document.getElementById('app-wrapper');
+wrapper.addEventListener('scroll', () => {
+const scrollTop = wrapper.scrollTop;
+const scrollHeight = wrapper.scrollHeight - wrapper.clientHeight;
+document.getElementById('scroll-progress').style.width = (scrollTop / scrollHeight * 100) + '%';
 
-appEl.addEventListener('scroll', () => {
-  // Progress bar
-  const scrollTop = appEl.scrollTop;
-  const scrollHeight = appEl.scrollHeight - appEl.clientHeight;
-  document.getElementById('scrollProgress').style.width = (scrollTop / scrollHeight * 100) + '%';
-
-  // Fade-up animations
-  document.querySelectorAll('.fade-up').forEach(el => {
-    const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight * 0.85) el.classList.add('visible');
-  });
-
-  // Counter animation trigger
-  if (!countersAnimated) {
-    const counterEl = document.querySelector('.counter');
-    if (counterEl && counterEl.getBoundingClientRect().top < window.innerHeight) { countersAnimated = true; animateCounters(); }
-  }
-
-  // Reserve bar
-  if (!reserveAnimated) {
-    const bar = document.getElementById('reserveBar');
-    if (bar && bar.getBoundingClientRect().top < window.innerHeight) { reserveAnimated = true; setTimeout(() => bar.style.width = '100%', 200); }
-  }
+// Section fade in
+document.querySelectorAll('.section-fade').forEach(el => {
+const rect = el.getBoundingClientRect();
+if (rect.top < window.innerHeight * .85) el.classList.add('visible');
 });
 
-// Initial visibility check
-setTimeout(() => {
-  document.querySelectorAll('.fade-up').forEach(el => {
-    const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight * 0.85) el.classList.add('visible');
-  });
-}, 100);
+// Stats
+const statSection = document.querySelector('.stat-number');
+if (statSection) {
+const rect = statSection.getBoundingClientRect();
+if (rect.top < window.innerHeight * .9) animateCounters();
+}
 
-// ===== SMOOTH SCROLL =====
+// Donut
+if (!donutStarted) {
+const dRect = dCanvas.getBoundingClientRect();
+if (dRect.top < window.innerHeight * .9) { donutStarted = true; animateDonut(); }
+}
+});
+let donutStarted = false;
+
+// ===== MOBILE MENU =====
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+document.querySelectorAll('#mobile-menu a').forEach(a => {
+a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+});
+
+// Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    e.preventDefault();
-    const target = document.querySelector(a.getAttribute('href'));
-    if (target) target.scrollIntoView({ behavior: 'smooth' });
-  });
+a.addEventListener('click', e => {
+e.preventDefault();
+const target = document.querySelector(a.getAttribute('href'));
+if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
 });
 
 // ===== PRELOADER =====
 window.addEventListener('load', () => {
-  setTimeout(() => document.getElementById('preloader').classList.add('done'), 800);
+setTimeout(() => {
+document.getElementById('preloader').classList.add('hide');
+setTimeout(() => document.getElementById('preloader').remove(), 600);
+}, 800);
+// Trigger initial section visibility
+setTimeout(() => {
+document.querySelectorAll('.section-fade').forEach(el => {
+const rect = el.getBoundingClientRect();
+if (rect.top < window.innerHeight * .85) el.classList.add('visible');
+});
+}, 900);
 });
 
-// ===== LUCIDE =====
+// ===== LUCIDE ICONS =====
 lucide.createIcons();
 
 // ===== ELEMENT SDK =====
 const defaultConfig = {
-  hero_title: 'Trivest USDI — Stability of the Dollar in Web3',
-  hero_subtitle: 'A fully reserve-backed stablecoin designed for institutional-grade security, deep liquidity, and seamless cross-chain transactions.',
-  reserve_ratio: '102',
-  background_color: '#020617',
-  surface_color: '#0f172a',
-  text_color: '#dcdcdc',
-  primary_color: '#00a77b',
-  secondary_color: '#f7e1d7',
-  font_family: 'DM Sans',
-  font_size: 16
+hero_title: 'Trivest USDI — Stability of the Dollar in Web3',
+hero_subtitle: 'A fully-backed stablecoin engineered for institutional-grade reliability, seamless cross-chain liquidity, and the speed your portfolio demands.',
+peg_value: '1.000',
+reserve_ratio: '102',
+background_color: '#020617',
+surface_color: '#0f172a',
+text_color: '#dcdcdc',
+primary_color: '#00a77b',
+secondary_color: '#f7e1d7',
+font_family: 'DM Sans',
+font_size: 16
 };
 
 window.elementSdk.init({
-  defaultConfig,
-  onConfigChange: async (config) => {
-    const title = document.getElementById('heroTitle');
-    if (title) title.innerHTML = (config.hero_title || defaultConfig.hero_title).replace('Stability', '<span class="text-primary">Stability</span>');
-    const sub = document.getElementById('heroSubtitle');
-    if (sub) sub.textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
-    const ratio = config.reserve_ratio || defaultConfig.reserve_ratio;
-    const ratioEl = document.getElementById('reserveRatio');
-    if (ratioEl) ratioEl.textContent = ratio + '%';
+defaultConfig,
+onConfigChange: async (config) => {
+const t = document.getElementById('hero-title');
+if (t) t.textContent = config.hero_title || defaultConfig.hero_title;
+const s = document.getElementById('hero-subtitle');
+if (s) s.textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+const peg = config.peg_value || defaultConfig.peg_value;
+const pd = document.getElementById('peg-display');
+if (pd) pd.textContent = '$' + peg;
+const ratio = config.reserve_ratio || defaultConfig.reserve_ratio;
+const rd = document.getElementById('reserve-display');
+if (rd) rd.textContent = ratio + '%';
 
-    // Colors
-    const pc = config.primary_color || defaultConfig.primary_color;
-    const bg = config.background_color || defaultConfig.background_color;
-    const sc = config.surface_color || defaultConfig.surface_color;
-    const tc = config.text_color || defaultConfig.text_color;
-    document.documentElement.style.setProperty('--tw-primary', pc);
-    document.body.style.background = `linear-gradient(180deg, ${sc}, ${bg})`;
-    document.body.style.color = tc;
+const bg = config.background_color || defaultConfig.background_color;
+const surface = config.surface_color || defaultConfig.surface_color;
+const txt = config.text_color || defaultConfig.text_color;
+const pri = config.primary_color || defaultConfig.primary_color;
+const sec = config.secondary_color || defaultConfig.secondary_color;
+const font = config.font_family || defaultConfig.font_family;
+const size = config.font_size || defaultConfig.font_size;
 
-    // Font
-    const ff = config.font_family || defaultConfig.font_family;
-    const fs = config.font_size || defaultConfig.font_size;
-    document.body.style.fontFamily = `${ff}, DM Sans, sans-serif`;
-    document.body.style.fontSize = fs + 'px';
-    if (title) title.style.fontSize = (fs * 3) + 'px';
-    if (sub) sub.style.fontSize = (fs * 1.1) + 'px';
-  },
-  mapToCapabilities: (config) => ({
-    recolorables: [
-      { get: () => config.background_color || defaultConfig.background_color, set: v => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
-      { get: () => config.surface_color || defaultConfig.surface_color, set: v => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
-      { get: () => config.text_color || defaultConfig.text_color, set: v => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
-      { get: () => config.primary_color || defaultConfig.primary_color, set: v => { config.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); } },
-      { get: () => config.secondary_color || defaultConfig.secondary_color, set: v => { config.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); } }
-    ],
-    borderables: [],
-    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: v => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
-    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: v => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
-  }),
-  mapToEditPanelValues: (config) => new Map([
-    ['hero_title', config.hero_title || defaultConfig.hero_title],
-    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
-    ['reserve_ratio', config.reserve_ratio || defaultConfig.reserve_ratio]
-  ])
+document.body.style.background = bg;
+document.body.style.color = txt;
+document.body.style.fontFamily = `${font}, DM Sans, sans-serif`;
+document.body.style.fontSize = size + 'px';
+
+document.querySelectorAll('.glass-card').forEach(el => {
+el.style.background = surface + '99';
+el.style.borderColor = pri + '1a';
+});
+document.querySelectorAll('.btn-primary').forEach(el => {
+el.style.background = `linear-gradient(135deg,${pri},${pri}cc)`;
+});
+document.querySelectorAll('.btn-outline').forEach(el => {
+el.style.borderColor = pri + '66';
+el.style.color = pri;
+});
+document.querySelectorAll('h1,h2,h3,h4,.text-sm.font-semibold').forEach(el => {
+if (!el.closest('.glass-card .text-xs')) el.style.color = '#fff';
+});
+},
+mapToCapabilities: (config) => ({
+recolorables: [
+{ get: () => config.background_color || defaultConfig.background_color, set: v => { config.background_color = v; window.elementSdk.setConfig({background_color:v}); }},
+{ get: () => config.surface_color || defaultConfig.surface_color, set: v => { config.surface_color = v; window.elementSdk.setConfig({surface_color:v}); }},
+{ get: () => config.text_color || defaultConfig.text_color, set: v => { config.text_color = v; window.elementSdk.setConfig({text_color:v}); }},
+{ get: () => config.primary_color || defaultConfig.primary_color, set: v => { config.primary_color = v; window.elementSdk.setConfig({primary_color:v}); }},
+{ get: () => config.secondary_color || defaultConfig.secondary_color, set: v => { config.secondary_color = v; window.elementSdk.setConfig({secondary_color:v}); }}
+],
+borderables: [],
+fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: v => { config.font_family = v; window.elementSdk.setConfig({font_family:v}); }},
+fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: v => { config.font_size = v; window.elementSdk.setConfig({font_size:v}); }}
+}),
+mapToEditPanelValues: (config) => new Map([
+['hero_title', config.hero_title || defaultConfig.hero_title],
+['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+['peg_value', config.peg_value || defaultConfig.peg_value],
+['reserve_ratio', config.reserve_ratio || defaultConfig.reserve_ratio]
+])
 });
 </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9ef4176771dc2dc9',t:'MTc3NjY4NzUwNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9ef470ce21ca2dc9',t:'MTc3NjY5MTE2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
