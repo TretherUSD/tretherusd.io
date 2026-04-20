@@ -47,17 +47,28 @@ canvas#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
   <style>body { box-sizing: border-box; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
  </head>
- <body class="h-full"><!-- Preloader -->
+<body class="h-full"><!-- Preloader -->
   <div id="preloader">
-   <div class="text-center">
-    <div class="relative inline-block">
-     <div class="w-16 h-16 rounded-full border-2 border-primary flex items-center justify-center text-primary font-bold text-xl">
-      U
-     </div>
-     <div class="absolute inset-0 rounded-full border-2 border-primary" style="animation:pulse-ring 1.5s ease infinite"></div>
+    <div class="text-center">
+      
+      <div class="relative inline-block">
+        
+        <div class="w-16 h-16 rounded-full border-2 border-primary flex items-center justify-center">
+          <img src="https://silver-odd-jackal-524.mypinata.cloud/ipfs/bafkreie7k5lfvoo6bxmd7tftzdeujhbuiexykdjjdk6zyvimc7pph45vm4"
+               alt="USDI Logo"
+               class="w-10 h-10 object-contain rounded-full">
+        </div>
+
+        <div class="absolute inset-0 rounded-full border-2 border-primary"
+             style="animation:pulse-ring 1.5s ease infinite"></div>
+      
+      </div>
+
+      <p class="mt-4 text-sm text-txt/60 font-mono">
+        Loading Trivest USDI
+      </p>
+
     </div>
-    <p class="mt-4 text-sm text-txt/60 font-mono">Loading Trivest USDI</p>
-   </div>
   </div><!-- Progress Bar -->
   <div class="progress-bar" id="scrollProgress" style="width:0%"></div><!-- BG Canvas -->
   <canvas id="bgCanvas"></canvas><!-- Main Wrapper -->
