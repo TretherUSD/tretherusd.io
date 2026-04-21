@@ -452,24 +452,95 @@ canvas#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
       </div>
 
       <!-- Crypto -->
-      <div class="glass rounded-2xl p-6 text-center hover:border-primary/30 transition">
-        
-        <img src="https://silver-odd-jackal-524.mypinata.cloud/ipfs/bafkreie7k5lfvoo6bxmd7tftzdeujhbuiexykdjjdk6zyvimc7pph45vm4"
-             alt="USDI Token"
-             class="w-10 h-10 object-contain mx-auto mb-3 rounded-full">
-        
-        <h3 class="text-white font-semibold mb-2" data-i18n="htb_crypto">
-          Buy with Crypto
-        </h3>
+<div class="glass rounded-2xl p-6 text-center hover:border-primary/30 transition">
 
-        <button class="btn-primary text-white text-sm font-semibold px-6 py-2 rounded-lg" data-i18n="htb_buy_btn">
-          Buy USDI
-        </button>
+  <img src="https://silver-odd-jackal-524.mypinata.cloud/ipfs/bafkreie7k5lfvoo6bxmd7tftzdeujhbuiexykdjjdk6zyvimc7pph45vm4"
+       alt="USDI Token"
+       class="w-10 h-10 object-contain mx-auto mb-3 rounded-full">
 
-      </div>
+  <h3 class="text-white font-semibold mb-2" data-i18n="htb_crypto">
+    Buy with Crypto
+  </h3>
 
-    </div>
+  <button id="buyUsdiBtn"
+          class="btn-primary text-white text-sm font-semibold px-6 py-2 rounded-lg"
+          data-i18n="htb_buy_btn">
+    Buy USDI
+  </button>
+
+</div>
+
+<!-- Wallet Modal -->
+<div id="walletModal"
+     style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:9999;">
+
+  <div style="background:#111; padding:20px; border-radius:12px; width:300px; text-align:center;">
+
+    <h3 style="color:white; margin-bottom:15px;">Connect Wallet</h3>
+
+    <button onclick="connectMetaMask()"
+            style="width:100%; margin-bottom:10px; padding:10px; border-radius:8px; cursor:pointer;">
+      MetaMask
+    </button>
+
+    <button onclick="connectWalletConnect()"
+            style="width:100%; padding:10px; border-radius:8px; cursor:pointer;">
+      WalletConnect
+    </button>
+
   </div>
+</div>
+
+<script>
+  const btn = document.getElementById("buyUsdiBtn");
+  const modal = document.getElementById("walletModal");
+
+  let userWallet = null;
+
+  // открыть выбор кошелька
+  btn.addEventListener("click", () => {
+    modal.style.display = "flex";
+  });
+
+  // MetaMask подключение
+  async function connectMetaMask() {
+    try {
+      if (!window.ethereum) {
+        alert("Please install MetaMask");
+        return;
+      }
+
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts"
+      });
+
+      userWallet = accounts[0];
+
+      modal.style.display = "none";
+
+      alert("Wallet connected:\n" + userWallet);
+
+      console.log("Connected wallet:", userWallet);
+
+    } catch (err) {
+      console.error(err);
+      alert("Connection failed");
+    }
+  }
+
+  // WalletConnect (пока заглушка)
+  function connectWalletConnect() {
+    alert("WalletConnect will be added next step");
+    modal.style.display = "none";
+  }
+
+  // закрытие по клику вне окна
+  window.onclick = function(event) {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  }
+</script>
    </section><!-- Roadmap -->
    <section class="py-16 px-4 sm:px-6">
     <div class="max-w-4xl mx-auto fade-up">
