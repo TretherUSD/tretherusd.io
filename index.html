@@ -95,44 +95,90 @@ canvas#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
       <div class="flex flex-wrap gap-3"><a href="#buy" class="btn-primary text-white font-semibold px-6 py-3 rounded-lg inline-flex items-center gap-2"><i data-lucide="wallet" class="w-4 h-4"></i> <span data-i18n="hero_buy">Buy USDI</span></a> <a href="#" class="btn-outline text-txt/80 font-medium px-6 py-3 rounded-lg inline-flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4"></i> <span data-i18n="hero_wp">Whitepaper</span></a>
       </div>
      </div><!-- Right: Chart + Peg + Network -->
-     <div class="fade-up" style="transition-delay:.2s">
-      <div class="glass rounded-2xl p-5 glow"><!-- Network Switch -->
-       <div class="flex items-center justify-between mb-4">
-        <div class="flex gap-1" id="networkSwitch"><button class="net-btn text-xs font-mono px-3 py-1 rounded-md bg-primary/20 text-primary border border-primary/30" data-net="BEP20">BEP20</button> <button class="net-btn text-xs font-mono px-3 py-1 rounded-md text-txt/50 border border-white/10 hover:border-primary/30 transition" data-net="TRC20">TRC20</button> <button class="net-btn text-xs font-mono px-3 py-1 rounded-md text-txt/50 border border-white/10 hover:border-primary/30 transition" data-net="SOL">SOL</button>
-        </div>
-        <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> <span class="text-xs text-green-400 font-mono" data-i18n="peg_label">Peg: $1.000</span>
-        </div>
-       </div><!-- Chart -->
-       <canvas id="pegChart" height="180" class="w-full"></canvas><!-- Stats row -->
-       <div class="grid grid-cols-3 gap-3 mt-4">
-        <div class="text-center">
-         <div class="text-xs text-txt/40 mb-1">
-          24h Vol
-         </div>
-         <div class="text-sm font-mono text-white">
-          $12.4M
-         </div>
-        </div>
-        <div class="text-center">
-         <div class="text-xs text-txt/40 mb-1">
-          MCap
-         </div>
-         <div class="text-sm font-mono text-white">
-          $1.0B
-         </div>
-        </div>
-        <div class="text-center">
-         <div class="text-xs text-txt/40 mb-1" data-i18n="chart_stability">
-          Stability
-         </div>
-         <div class="text-sm font-mono text-primary">
-          99.98%
-         </div>
-        </div>
-       </div>
+<div class="fade-up" style="transition-delay:.2s">
+  <div class="glass rounded-2xl p-5 glow">
+    
+    <!-- Network Switch -->
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex gap-1" id="networkSwitch">
+        <button class="net-btn text-xs font-mono px-3 py-1 rounded-md bg-primary/20 text-primary border border-primary/30" data-net="BEP20">BEP20</button>
+        <button class="net-btn text-xs font-mono px-3 py-1 rounded-md text-txt/50 border border-white/10 hover:border-primary/30 transition" data-net="TRC20">TRC20</button>
+        <button class="net-btn text-xs font-mono px-3 py-1 rounded-md text-txt/50 border border-white/10 hover:border-primary/30 transition" data-net="SOL">SOL</button>
       </div>
-     </div>
+
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+        <span class="text-xs text-green-400 font-mono" data-i18n="peg_label">Peg: $1.000</span>
+      </div>
     </div>
+
+    <!-- Chart -->
+    <canvas id="pegChart" height="180" class="w-full"></canvas>
+
+    <!-- Stats row -->
+    <div class="grid grid-cols-3 gap-3 mt-4">
+      <div class="text-center">
+        <div class="text-xs text-txt/40 mb-1">24h Vol</div>
+        <div class="text-sm font-mono text-white">$12.4M</div>
+      </div>
+      <div class="text-center">
+        <div class="text-xs text-txt/40 mb-1">MCap</div>
+        <div class="text-sm font-mono text-white">$1.0B</div>
+      </div>
+      <div class="text-center">
+        <div class="text-xs text-txt/40 mb-1" data-i18n="chart_stability">Stability</div>
+        <div class="text-sm font-mono text-primary">99.98%</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Smooth Chart Script -->
+<script>
+const ctx = document.getElementById('pegChart').getContext('2d');
+
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: [], // оставь свои данные
+    datasets: [{
+      data: [], // оставь свои данные
+      borderColor: '#4ade80',
+      backgroundColor: 'rgba(74, 222, 128, 0.1)',
+      fill: true,
+      tension: 0.4, // ← ГЛАВНОЕ: плавность линии
+      pointRadius: 0, // убирает "точки" для гладкости
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: {
+      duration: 1200,
+      easing: 'easeInOutCubic' // плавная анимация
+    },
+    plugins: {
+      legend: { display: false }
+    },
+    scales: {
+      x: {
+        grid: { display: false }
+      },
+      y: {
+        grid: {
+          color: 'rgba(255,255,255,0.05)'
+        }
+      }
+    },
+    elements: {
+      line: {
+        cubicInterpolationMode: 'monotone' // ещё больше сглаживания
+      }
+    }
+  }
+});
+</script>
    </section><!-- Trust Indicators -->
    <section class="py-12 px-4 sm:px-6">
     <div class="max-w-7xl mx-auto">
