@@ -103,30 +103,29 @@ canvas#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
         <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> <span class="text-xs text-green-400 font-mono" data-i18n="peg_label">Peg: $1.000</span>
         </div>
        </div><!-- Chart -->
-       <canvas id="pegChart" height="180" class="w-full"></canvas><!-- Stats row -->
-       <div class="grid grid-cols-3 gap-3 mt-4">
-        <div class="text-center">
-         <div class="text-xs text-txt/40 mb-1">
-          24h Vol
+      <div class="glass glow" style="border-radius:14px;padding:20px;width:100%;max-width:420px">
+       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><span style="font-size:13px;color:#dcdcdcaa" data-i18n="chart_title">USDI / USD</span>
+        <div style="display:flex;gap:6px" id="networkSwitch"><button class="tab-btn active" data-net="BEP20" style="padding:4px 12px;font-size:12px">BEP20</button> <button class="tab-btn" data-net="TRC20" style="padding:4px 12px;font-size:12px">TRC20</button> <button class="tab-btn" data-net="SOL" style="padding:4px 12px;font-size:12px">SOL</button>
+        </div>
+       </div>
+       <canvas id="priceChart" width="380" height="140" style="width:100%;height:auto"></canvas>
+       <div style="display:flex;justify-content:space-between;margin-top:12px;align-items:center">
+        <div>
+         <div style="font-size:11px;color:#dcdcdc66" data-i18n="chart_current">
+          Current Price
          </div>
-         <div class="text-sm font-mono text-white">
-          $12.4M
+         <div style="font-size:22px;font-weight:700;color:#fff;font-family:'JetBrains Mono',monospace" id="currentPrice">
+          $1.0002
          </div>
         </div>
-        <div class="text-center">
-         <div class="text-xs text-txt/40 mb-1">
-          MCap
+        <div style="text-align:right">
+         <div style="font-size:11px;color:#dcdcdc66">
+          Peg
          </div>
-         <div class="text-sm font-mono text-white">
-          $1.0B
-         </div>
-        </div>
-        <div class="text-center">
-         <div class="text-xs text-txt/40 mb-1" data-i18n="chart_stability">
-          Stability
-         </div>
-         <div class="text-sm font-mono text-primary">
-          99.98%
+         <div style="display:flex;align-items:center;gap:6px">
+          <div style="width:8px;height:8px;border-radius:50%;background:#00a77b;position:relative">
+           <div style="position:absolute;inset:0;border-radius:50%;background:#00a77b;animation:pulse-ring 2s infinite"></div>
+          </div><span style="font-size:15px;font-weight:600;color:#00a77b;font-family:'JetBrains Mono',monospace">1.000 USD</span>
          </div>
         </div>
        </div>
