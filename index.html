@@ -451,25 +451,62 @@ canvas#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
         </span>
       </div>
 
-      <!-- Crypto -->
+     <!-- Crypto -->
 <div class="glass rounded-2xl p-6 text-center hover:border-primary/30 transition">
 
   <img src="https://silver-odd-jackal-524.mypinata.cloud/ipfs/bafkreie7k5lfvoo6bxmd7tftzdeujhbuiexykdjjdk6zyvimc7pph45vm4"
        alt="USDI Token"
        class="w-10 h-10 object-contain mx-auto mb-3 rounded-full">
 
-  <h3 class="text-white font-semibold mb-2" data-i18n="htb_crypto">
+  <h3 class="text-white font-semibold mb-2">
     Buy with Crypto
   </h3>
 
   <button id="buyUsdiBtn"
-          class="btn-primary text-white text-sm font-semibold px-6 py-2 rounded-lg"
-          data-i18n="htb_buy_btn">
-    Buy USDI
+          class="btn-primary text-white text-sm font-semibold px-6 py-2 rounded-lg">
+    Connect Wallet
   </button>
 
 </div>
 
+<!-- Web3 Wallet Connect -->
+<script type="module">
+import { createWeb3Modal, defaultWagmiConfig } from "https://esm.sh/@web3modal/wagmi"
+import { mainnet } from "https://esm.sh/wagmi/chains"
+
+const projectId = "YOUR_WALLETCONNECT_PROJECT_ID"
+
+// настройки сайта
+const metadata = {
+  name: "Trivest USDI",
+  description: "Connect wallet to buy USDI",
+  url: window.location.origin,
+  icons: ["https://silver-odd-jackal-524.mypinata.cloud/ipfs/bafkreie7k5lfvoo6bxmd7tftzdeujhbuiexykdjjdk6zyvimc7pph45vm4"]
+}
+
+const chains = [mainnet]
+
+// создаём конфиг
+const wagmiConfig = defaultWagmiConfig({
+  chains,
+  projectId,
+  metadata
+})
+
+// создаём модалку выбора кошельков
+createWeb3Modal({
+  wagmiConfig,
+  projectId,
+  chains
+})
+
+// кнопка
+document.getElementById("buyUsdiBtn").addEventListener("click", async () => {
+  // открывает выбор кошелька (MetaMask / Trust / OKX / Phantom)
+  const event = new Event("open-web3modal")
+  window.dispatchEvent(event)
+})
+</script>
 <!-- Wallet Modal -->
 <div id="walletModal"
      style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:9999;">
