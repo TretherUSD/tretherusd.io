@@ -293,7 +293,7 @@ canvas#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
       </div>
      </div>
     </div>
- </section><!-- Tokenomics -->
+</section><!-- Tokenomics -->
 <section class="py-16 px-4 sm:px-6 section-anchor" id="tokenomics">
 
   <div class="max-w-5xl mx-auto fade-up">
@@ -319,7 +319,7 @@ canvas#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 
     <div class="grid md:grid-cols-2 gap-8 items-center">
 
-      <!-- CHART (оставляем как есть) -->
+      <!-- CHART -->
       <div class="flex justify-center">
         <svg id="donutChart" viewBox="0 0 200 200" width="280" height="280" class="drop-shadow-lg"></svg>
       </div>
@@ -347,6 +347,62 @@ canvas#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
     </div>
 
   </div>
+
+</section>
+
+<!-- GLOBAL CONTRACT MODAL (один на весь сайт) -->
+<div id="contractModal"
+     class="fixed inset-0 hidden items-center justify-center bg-black/70 backdrop-blur-sm z-50">
+
+  <div class="bg-bg2 border border-white/10 rounded-2xl p-6 w-[90%] max-w-md text-sm text-txt/60">
+
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-white font-semibold text-base">Contracts</h3>
+      <button onclick="closeContractModal()" class="text-white/50 hover:text-white">✕</button>
+    </div>
+
+    <div class="space-y-3">
+
+      <div class="flex justify-between">
+        <span class="text-white">BEP-20</span>
+        <span>0x0000...00000</span>
+      </div>
+
+      <div class="flex justify-between">
+        <span class="text-white">TRC-20</span>
+        <span>T0000...00000</span>
+      </div>
+
+      <div class="flex justify-between">
+        <span class="text-white">SOL</span>
+        <span>So111...00000</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- MODAL SCRIPT -->
+<script>
+function openContractModal() {
+  const modal = document.getElementById("contractModal");
+  modal.classList.remove("hidden");
+  modal.classList.add("flex");
+}
+
+function closeContractModal() {
+  const modal = document.getElementById("contractModal");
+  modal.classList.add("hidden");
+  modal.classList.remove("flex");
+}
+
+document.addEventListener("click", function(e) {
+  const modal = document.getElementById("contractModal");
+  if (e.target === modal) closeContractModal();
+});
+</script>
    </section><!-- Calculator -->
    <section class="py-16 px-4 sm:px-6 section-anchor" id="calculator">
     <div class="max-w-2xl mx-auto fade-up">
