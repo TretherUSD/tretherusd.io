@@ -293,14 +293,25 @@ canvas#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
       </div>
      </div>
     </div>
-   </section><!-- Tokenomics -->
+ </section><!-- Tokenomics -->
 <section class="py-16 px-4 sm:px-6 section-anchor" id="tokenomics">
 
   <div class="max-w-5xl mx-auto fade-up">
 
-    <h2 class="text-2xl sm:text-3xl font-bold text-white text-center mb-2" data-i18n="tok_title">
-      Tokenomics
-    </h2>
+    <div class="flex items-center justify-between mb-2">
+
+      <h2 class="text-2xl sm:text-3xl font-bold text-white" data-i18n="tok_title">
+        Tokenomics
+      </h2>
+
+      <!-- CONTRACT BUTTON -->
+      <button onclick="openContractModal()"
+              class="btn-outline text-txt/80 font-medium px-4 py-2 rounded-lg inline-flex items-center gap-2 text-sm">
+        <i data-lucide="code" class="w-4 h-4"></i>
+        Contract
+      </button>
+
+    </div>
 
     <p class="text-txt/50 text-sm text-center mb-10" data-i18n="tok_sub">
       Total Supply (Multi-Chain Distribution)
@@ -313,7 +324,7 @@ canvas#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
         <svg id="donutChart" viewBox="0 0 200 200" width="280" height="280" class="drop-shadow-lg"></svg>
       </div>
 
-      <!-- LEGEND (меняем текст) -->
+      <!-- LEGEND -->
       <div id="tokenLegend" class="space-y-3">
 
         <div class="glass rounded-xl px-5 py-4 text-sm flex justify-between items-center">
