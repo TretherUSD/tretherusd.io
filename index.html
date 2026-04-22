@@ -105,25 +105,28 @@ canvas#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
       </p>
 
       <!-- BUTTONS -->
-      <div class="flex flex-wrap gap-3">
+   <div class="flex flex-wrap gap-3 items-center">
 
-        <a href="#buy" class="btn-primary text-white font-semibold px-6 py-3 rounded-lg inline-flex items-center gap-2">
-          <i data-lucide="wallet" class="w-4 h-4"></i>
-          <span>Buy USDI</span>
-        </a>
+  <!-- BUY -->
+  <a href="#buy"
+     class="btn-primary text-white font-semibold px-5 py-2.5 rounded-lg inline-flex items-center gap-2 text-sm">
+    <i data-lucide="wallet" class="w-4 h-4"></i>
+    Buy USDI
+  </a>
 
-        <a href="https://spicy-lunaria-1af.notion.site/Trivest-USDI-USDI-White-Paper-34a82ebdada680e0a312d66d1e58e44a?source=copy_link"
-           class="btn-outline text-txt/80 font-medium px-6 py-3 rounded-lg inline-flex items-center gap-2">
-          <i data-lucide="file-text" class="w-4 h-4"></i>
-          <span>Whitepaper</span>
-        </a>
+  <!-- WHITEPAPER -->
+  <a href="https://spicy-lunaria-1af.notion.site/Trivest-USDI-USDI-White-Paper-34a82ebdada680e0a312d66d1e58e44a?source=copy_link"
+     class="btn-outline text-txt/80 font-medium px-5 py-2.5 rounded-lg inline-flex items-center gap-2 text-sm">
+    <i data-lucide="file-text" class="w-4 h-4"></i>
+    Whitepaper
+  </a>
 
-        <!-- CONTRACT BUTTON -->
-        <button onclick="openContractModal()"
-                class="btn-outline text-txt/80 font-medium px-6 py-3 rounded-lg inline-flex items-center gap-2">
-          <i data-lucide="code" class="w-4 h-4"></i>
-          <span>Contract</span>
-        </button>
+  <!-- CONTRACT -->
+  <button onclick="openContractModal()"
+          class="btn-outline text-txt/80 font-medium px-5 py-2.5 rounded-lg inline-flex items-center gap-2 text-sm">
+    <i data-lucide="code" class="w-4 h-4"></i>
+    Contract
+  </button>
 
       </div>
 
