@@ -758,8 +758,10 @@ canvas#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
     </div>
    </section><!-- Footer -->
 <footer class="py-8 px-4 sm:px-6 border-t border-white/5">
-  <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-    
+
+  <div class="max-w-7xl mx-auto flex flex-col items-center gap-6">
+
+    <!-- Logo -->
     <div class="flex items-center gap-2 text-white font-bold text-sm">
       <div class="w-6 h-6 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center">
         <img src="https://silver-odd-jackal-524.mypinata.cloud/ipfs/bafkreie7k5lfvoo6bxmd7tftzdeujhbuiexykdjjdk6zyvimc7pph45vm4"
@@ -769,17 +771,43 @@ canvas#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
       Trivest USDI
     </div>
 
-    <div class="flex gap-6 text-xs text-txt/40">
-      <a href="#" class="hover:text-primary transition" data-i18n="footer_terms">Terms of Service</a>
-      <a href="#" class="hover:text-primary transition" data-i18n="footer_privacy">Privacy Policy</a>
-      <a href="#" class="hover:text-primary transition" data-i18n="footer_docs">Documentation</a>
+    <!-- Links -->
+    <div class="flex flex-wrap justify-center gap-4 text-xs text-txt/40">
+      <a href="#" class="hover:text-primary transition">Terms of Service</a>
+      <span>|</span>
+      <a href="#" class="hover:text-primary transition">Privacy Policy</a>
+      <span>|</span>
+      <a href="#" class="hover:text-primary transition">Documentation</a>
     </div>
 
-    <div class="text-xs text-txt/30">
-      © 2025 Trivest. All rights reserved.
+    <!-- Contact -->
+    <div class="text-xs text-txt/40 text-center">
+      <div class="mb-2">
+        Contact:
+        <a href="mailto:trivestusdi@proton.me" class="hover:text-primary transition">
+          trivestusdi@proton.me
+        </a>
+      </div>
+
+      <!-- Contracts in one line -->
+      <div class="flex flex-wrap justify-center gap-2 text-txt/30">
+
+        <span>BEP-20: 0x0000...00000</span>
+        <span>|</span>
+        <span>TRC-20: T0000...00000</span>
+        <span>|</span>
+        <span>SOL: So111...00000</span>
+
+      </div>
     </div>
 
   </div>
+
+  <!-- Bottom -->
+  <div class="max-w-7xl mx-auto mt-6 text-xs text-txt/30 text-center">
+    © 2025 Trivest. All rights reserved.
+  </div>
+
 </footer>
   </div><!-- /app --> <!-- Quick Action Panel -->
   <div class="quick-panel z-50">
