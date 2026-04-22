@@ -84,111 +84,25 @@ canvas#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
      <div class="px-4 py-4 flex flex-col gap-3 text-sm text-txt/70"><a href="#about" class="hover:text-primary transition py-1" data-i18n="nav_about">About</a> <a href="#benefits" class="hover:text-primary transition py-1" data-i18n="nav_benefits">Benefits</a> <a href="#tokenomics" class="hover:text-primary transition py-1" data-i18n="nav_tokenomics">Tokenomics</a> <a href="#calculator" class="hover:text-primary transition py-1" data-i18n="nav_calculator">Calculator</a> <a href="#buy" class="hover:text-primary transition py-1" data-i18n="nav_buy">Buy</a> <a href="#community" class="hover:text-primary transition py-1" data-i18n="nav_community">Community</a>
      </div>
     </div>
- </header><!-- HERO -->
-<section class="pt-24 pb-16 sm:pt-32 sm:pb-24 px-4 sm:px-6 section-anchor" id="about">
-
-  <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
-
-    <div class="fade-up">
-
-      <div class="inline-flex items-center gap-2 text-xs font-mono text-primary/80 bg-primary/10 border border-primary/20 rounded-full px-3 py-1 mb-6">
-        <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-        <span data-i18n="hero_badge">Live on BSC, TRC20, Solana</span>
+   </header><!-- HERO -->
+   <section class="pt-24 pb-16 sm:pt-32 sm:pb-24 px-4 sm:px-6 section-anchor" id="about">
+    <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+     <div class="fade-up">
+      <div class="inline-flex items-center gap-2 text-xs font-mono text-primary/80 bg-primary/10 border border-primary/20 rounded-full px-3 py-1 mb-6"><span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> <span data-i18n="hero_badge">Live on BSC, TRC20, Solana</span>
       </div>
-
-      <h1 id="heroTitle" class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-4 glow-text">
-        Trivest USDI — <span class="text-primary">Stability</span> of the Dollar in Web3
-      </h1>
-
-      <p id="heroSubtitle" class="text-txt/60 text-base sm:text-lg mb-8 max-w-lg">
-        A fully reserve-backed stablecoin designed for institutional-grade security, deep liquidity, and seamless cross-chain transactions.
-      </p>
-
-      <!-- BUTTONS -->
-   <div class="flex flex-wrap gap-3 items-center">
-
-  <!-- BUY -->
-  <a href="#buy"
-     class="btn-primary text-white font-semibold px-5 py-2.5 rounded-lg inline-flex items-center gap-2 text-sm">
+      <h1 id="heroTitle" class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-4 glow-text">Trivest USDI — <span class="text-primary">Stability</span> of the Dollar in Web3</h1>
+      <p id="heroSubtitle" class="text-txt/60 text-base sm:text-lg mb-8 max-w-lg" data-i18n="hero_sub">A fully reserve-backed stablecoin designed for institutional-grade security, deep liquidity, and seamless cross-chain transactions.</p>
+<div class="flex flex-wrap gap-3">
+  <a href="#buy" class="btn-primary text-white font-semibold px-6 py-3 rounded-lg inline-flex items-center gap-2">
     <i data-lucide="wallet" class="w-4 h-4"></i>
-    Buy USDI
+    <span data-i18n="hero_buy">Buy USDI</span>
   </a>
 
-  <!-- WHITEPAPER -->
-  <a href="https://spicy-lunaria-1af.notion.site/Trivest-USDI-USDI-White-Paper-34a82ebdada680e0a312d66d1e58e44a?source=copy_link"
-     class="btn-outline text-txt/80 font-medium px-5 py-2.5 rounded-lg inline-flex items-center gap-2 text-sm">
+  <a href="https://spicy-lunaria-1af.notion.site/Trivest-USDI-USDI-White-Paper-34a82ebdada680e0a312d66d1e58e44a?source=copy_link" class="btn-outline text-txt/80 font-medium px-6 py-3 rounded-lg inline-flex items-center gap-2">
     <i data-lucide="file-text" class="w-4 h-4"></i>
-    Whitepaper
+    <span data-i18n="hero_wp">Whitepaper</span>
   </a>
-
-  <!-- CONTRACT -->
-  <button onclick="openContractModal()"
-          class="btn-outline text-txt/80 font-medium px-5 py-2.5 rounded-lg inline-flex items-center gap-2 text-sm">
-    <i data-lucide="code" class="w-4 h-4"></i>
-    Contract
-  </button>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-<!-- CONTRACT MODAL -->
-<div id="contractModal"
-     class="fixed inset-0 hidden items-center justify-center bg-black/70 backdrop-blur-sm z-50">
-
-  <div class="bg-bg2 border border-white/10 rounded-2xl p-6 w-[90%] max-w-md text-sm text-txt/60">
-
-    <div class="flex justify-between items-center mb-4">
-      <h3 class="text-white font-semibold text-base">Contracts</h3>
-      <button onclick="closeContractModal()" class="text-white/50 hover:text-white">✕</button>
-    </div>
-
-    <div class="space-y-3">
-
-      <div class="flex justify-between">
-        <span class="text-white">BEP-20</span>
-        <span>0x0000...00000</span>
-      </div>
-
-      <div class="flex justify-between">
-        <span class="text-white">TRC-20</span>
-        <span>T0000...00000</span>
-      </div>
-
-      <div class="flex justify-between">
-        <span class="text-white">SOL</span>
-        <span>So111...00000</span>
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-<!-- SCRIPT -->
-<script>
-function openContractModal() {
-  document.getElementById("contractModal").classList.remove("hidden");
-  document.getElementById("contractModal").classList.add("flex");
-}
-
-function closeContractModal() {
-  document.getElementById("contractModal").classList.add("hidden");
-  document.getElementById("contractModal").classList.remove("flex");
-}
-
-document.addEventListener("click", function(e) {
-  const modal = document.getElementById("contractModal");
-  if (e.target === modal) {
-    closeContractModal();
-  }
-});
-</script>
+</div>     
      </div><!-- Right: Chart + Peg + Network -->
      <div class="fade-up" style="transition-delay:.2s">
       <div class="glass rounded-2xl p-5 glow"><!-- Network Switch -->
