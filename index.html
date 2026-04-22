@@ -294,18 +294,48 @@ canvas#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
      </div>
     </div>
    </section><!-- Tokenomics -->
-   <section class="py-16 px-4 sm:px-6 section-anchor" id="tokenomics">
-    <div class="max-w-5xl mx-auto fade-up">
-     <h2 class="text-2xl sm:text-3xl font-bold text-white text-center mb-2" data-i18n="tok_title">Tokenomics</h2>
-     <p class="text-txt/50 text-sm text-center mb-10" data-i18n="tok_sub">Total Supply: 1,000,000,000 USDI</p>
-     <div class="grid md:grid-cols-2 gap-8 items-center">
+<section class="py-16 px-4 sm:px-6 section-anchor" id="tokenomics">
+
+  <div class="max-w-5xl mx-auto fade-up">
+
+    <h2 class="text-2xl sm:text-3xl font-bold text-white text-center mb-2" data-i18n="tok_title">
+      Tokenomics
+    </h2>
+
+    <p class="text-txt/50 text-sm text-center mb-10" data-i18n="tok_sub">
+      Total Supply (Multi-Chain Distribution)
+    </p>
+
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+
+      <!-- CHART (оставляем как есть) -->
       <div class="flex justify-center">
-       <svg id="donutChart" viewbox="0 0 200 200" width="280" height="280" class="drop-shadow-lg"></svg>
+        <svg id="donutChart" viewBox="0 0 200 200" width="280" height="280" class="drop-shadow-lg"></svg>
       </div>
-      <div id="tokenLegend" class="space-y-3"><!-- Filled by JS -->
+
+      <!-- LEGEND (меняем текст) -->
+      <div id="tokenLegend" class="space-y-3">
+
+        <div class="glass rounded-xl px-5 py-4 text-sm flex justify-between items-center">
+          <span class="text-white font-medium">BEP-20</span>
+          <span class="text-txt/40">1,000,000,000 USDI</span>
+        </div>
+
+        <div class="glass rounded-xl px-5 py-4 text-sm flex justify-between items-center">
+          <span class="text-white font-medium">TRC-20</span>
+          <span class="text-txt/40">1,000,000,000 USDI</span>
+        </div>
+
+        <div class="glass rounded-xl px-5 py-4 text-sm flex justify-between items-center">
+          <span class="text-white font-medium">SPL (Solana)</span>
+          <span class="text-txt/40">1,000,000,000 USDI</span>
+        </div>
+
       </div>
-     </div>
+
     </div>
+
+  </div>
    </section><!-- Calculator -->
    <section class="py-16 px-4 sm:px-6 section-anchor" id="calculator">
     <div class="max-w-2xl mx-auto fade-up">
