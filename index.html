@@ -909,12 +909,38 @@ document.addEventListener("click", function(e) {
   </div>
 
 </footer>
-  </div><!-- /app --> <!-- Quick Action Panel -->
-  <div class="quick-panel z-50">
-   <div id="quickPanel" class="hidden flex-col gap-2"><a href="#buy" class="btn-primary text-white text-xs font-semibold px-4 py-2 rounded-lg text-center">Buy</a> <a href="#calculator" class="glass text-white text-xs font-medium px-4 py-2 rounded-lg text-center hover:border-primary/30 transition">Stake</a> <a href="#" class="glass text-white text-xs font-medium px-4 py-2 rounded-lg text-center hover:border-primary/30 transition">Docs</a>
-   </div><button id="quickToggle" class="w-12 h-12 rounded-full btn-primary text-white flex items-center justify-center shadow-lg mt-2"> <i data-lucide="plus" class="w-5 h-5"></i> </button>
+ </div><!-- /app --> <!-- Quick Action Panel -->
+
+<div class="quick-panel z-50">
+
+  <div id="quickPanel" class="hidden flex-col gap-2">
+
+    <a href="#buy"
+       class="btn-primary text-white text-xs font-semibold px-4 py-2 rounded-lg text-center">
+      Buy
+    </a>
+
+    <a href="#calculator"
+       class="glass text-white text-xs font-medium px-4 py-2 rounded-lg text-center hover:border-primary/30 transition">
+      Stake
+    </a>
+
+    <a href="https://spicy-lunaria-1af.notion.site/Trivest-USDI-USDI-White-Paper-34a82ebdada680e0a312d66d1e58e44a?pvs=73"
+       target="_blank"
+       class="glass text-white text-xs font-medium px-4 py-2 rounded-lg text-center hover:border-primary/30 transition">
+      Docs
+    </a>
+
   </div>
-  <script>
+
+  <button id="quickToggle"
+          class="w-12 h-12 rounded-full btn-primary text-white flex items-center justify-center shadow-lg mt-2">
+    <i data-lucide="plus" class="w-5 h-5"></i>
+  </button>
+
+</div>
+
+<script>
 // ===== I18N =====
 const translations = {
   en: {
